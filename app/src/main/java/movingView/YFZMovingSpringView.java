@@ -135,8 +135,6 @@ public class YFZMovingSpringView extends LinearLayout {
             public void isClick(boolean isClick) {
                 if(isClick){
                     YFZUtils.toast(context,"回调：改操作为\"点击\"事件");
-                }else{
-                    YFZUtils.toast(context,"回调：改操作为\"移动\"事件");
                 }
             }
         });
