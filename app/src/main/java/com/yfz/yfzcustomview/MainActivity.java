@@ -18,14 +18,14 @@ public class MainActivity extends AppCompatActivity {
         YFZGestureButton=findViewById(R.id.YFZGestureButton);
         YFZGestureButton.setMTextColor(Color.BLUE);
         YFZGestureButton.setMTextSize(20);
-        YFZGestureButton.setMTextName("点击按钮");
+        YFZGestureButton.setMTextName("Button");
         YFZGestureButton.setMBackgroundRadiusRx(25);
         YFZGestureButton.setMBackgroundRadiusRy(25);
         YFZGestureButton.addListenerCallBack(new buttonView.YFZGestureButton.CallBackIsClick() {
             @Override
             public void isClick(boolean isClick) {
                 if(isClick) {
-                    Toast.makeText(getApplicationContext(), "被点击", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "isClick", Toast.LENGTH_SHORT).show();
                 }
             }
         });

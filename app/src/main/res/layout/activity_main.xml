@@ -5,29 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-<!--<movingView.YFZMovingSpringView-->
-<!--    android:background="@color/colorAccent"-->
-<!--    app:layout_constraintTop_toTopOf="parent"-->
-<!--    app:layout_constraintLeft_toLeftOf="parent"-->
-<!--    android:layout_width="100dp"-->
-<!--    android:layout_height="100dp">-->
-<!--</movingView.YFZMovingSpringView>-->
-    <containerView.YFZContainerShadow
+    <buttonView.YFZGestureButton
+        android:id="@+id/YFZGestureButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <buttonView.YFZGestureButton
-            android:id="@+id/YFZGestureButton"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </buttonView.YFZGestureButton>
-    </containerView.YFZContainerShadow>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </buttonView.YFZGestureButton>
+<!--    <containerView.YFZContainerShadow-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintLeft_toLeftOf="parent"-->
+<!--        app:layout_constraintRight_toRightOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+<!--        <buttonView.YFZGestureButton-->
+<!--            android:id="@+id/YFZGestureButton"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content">-->
+<!--        </buttonView.YFZGestureButton>-->
+<!--    </containerView.YFZContainerShadow>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
