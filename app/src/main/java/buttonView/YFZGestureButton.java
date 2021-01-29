@@ -20,8 +20,9 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 /**
- * 编写者姓名：游丰泽
+ * 编写人：游丰泽
  * 功能简介：带有按压交互效果的自定义按钮
+ * 创建时间：2020/11/2
  */
 public class YFZGestureButton extends ConstraintLayout {
     private String TAG=YFZGestureButton.class.getName();

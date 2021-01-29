@@ -17,10 +17,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         YFZGestureButton=findViewById(R.id.YFZGestureButton);
         YFZGestureButton.setMTextColor(Color.BLUE);
-        YFZGestureButton.setMTextSize(30);
+        YFZGestureButton.setMTextSize(20);
         YFZGestureButton.setMTextName("点击按钮");
-        YFZGestureButton.setMBackgroundRadiusRx(10);
-        YFZGestureButton.setMBackgroundRadiusRy(10);
+        YFZGestureButton.setMBackgroundRadiusRx(25);
+        YFZGestureButton.setMBackgroundRadiusRy(25);
         YFZGestureButton.setMBackgroundColorIsClick(Color.RED);
         YFZGestureButton.setMBackgroundColorUnClick(Color.GREEN);
         YFZGestureButton.addListenerCallBack(new buttonView.YFZGestureButton.CallBackIsClick() {
