@@ -113,11 +113,11 @@ public class YFZGestureButton extends ConstraintLayout {
      */
     private float mBackgroundPaddingAll=0;
     /**
-     * 背景边距 全部
+     * 背景弧度 左右
      */
     private float mBackgroundRadiusRx=0;
     /**
-     * 背景边距 全部
+     * 背景弧度 上下
      */
     private float mBackgroundRadiusRy=0;
 
