@@ -28,10 +28,6 @@ public class YFZGestureButton extends ConstraintLayout {
      */
     private Boolean isClick;
     /**
-     * 手指点击位置
-     */
-    private double mFigureDownX,mFigureDownY;
-    /**
      * 画笔
      */
     private Paint mPaint;
@@ -176,6 +172,7 @@ public class YFZGestureButton extends ConstraintLayout {
             mTextView.setTextColor(mTextColor);
             mTextView.setGravity(Gravity.CENTER);
             this.addView(mTextView);
+            mTextView.getPaint().set();
         }
     }
 
@@ -185,8 +182,6 @@ public class YFZGestureButton extends ConstraintLayout {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 this.isClick=true;
-                this.mFigureDownX=getX();
-                this.mFigureDownY=getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 this.isClick= ((event.getX()<0 || event.getX()>getWidth())
@@ -214,6 +209,7 @@ public class YFZGestureButton extends ConstraintLayout {
 
     @Override
     protected void onDraw(Canvas canvas){
+        Log.d(TAG, "onDraw: ");
         mPaint.setColor(isClick?mBackgroundColorIsClick:mBackgroundColorUnClick);
             mRectF.set(
                     0+mBackgroundPaddingAll +mBackgroundPaddingLeft,
