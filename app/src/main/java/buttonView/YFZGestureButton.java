@@ -255,7 +255,15 @@ public class YFZGestureButton extends ConstraintLayout {
         this.mTextMarginAll =Math.abs(marginAll);
         updateTextMargin();
     }
-
+    public void setMTextUnderLine(){
+        if(null!=mTextView)this.mTextView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
+    }
+    public void setMTextMiddleLine(){
+        if(null!=mTextView)this.mTextView.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
+    }
+    public void removeMTextLines(){
+        if(null!=mTextView)this.mTextView.getPaint().setFlags(0|Paint.ANTI_ALIAS_FLAG);
+    }
     public void setMBackgroundColorUnClick(int unClickColor){
         this.mBackgroundColorUnClick =unClickColor;
     }
