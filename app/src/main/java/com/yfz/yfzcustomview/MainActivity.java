@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         YFZGestureButton=findViewById(R.id.YFZGestureButton);
         YFZGestureButton.setMTextColor(Color.BLUE);
-        YFZGestureButton.setMTextSIze(20);
+        YFZGestureButton.setMTextSize(20);
         YFZGestureButton.setMTextName("点击按钮");
         YFZGestureButton.setMBackgroundRadiusRx(100);
         YFZGestureButton.setMBackgroundRadiusRy(100);

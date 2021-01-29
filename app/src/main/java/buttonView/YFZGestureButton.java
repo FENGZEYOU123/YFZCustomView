@@ -174,7 +174,6 @@ public class YFZGestureButton extends ConstraintLayout {
             mTextView.setGravity(Gravity.CENTER);
             this.addView(mTextView);
             mTextView.getPaint().setFakeBoldText(true);
-          
         }
     }
 
@@ -224,35 +223,38 @@ public class YFZGestureButton extends ConstraintLayout {
 
     public void setMTextName(String TextName){
         this.mTextName=TextName;
-        mTextView.setText(mTextName);
+        if(null!=mTextView)mTextView.setText(mTextName);
     }
     public void setMTextColor(int TextColor){
         this.mTextColor=TextColor;
-        mTextView.setTextColor(mTextColor);
+        if(null!=mTextView)mTextView.setTextColor(mTextColor);
     }
-    public void setMTextSIze(float TextSize){
+    public void setMTextSize(float TextSize){
         this.mTextSize=Math.abs(TextSize);
-        mTextView.setTextSize(mTextSize);
+        if(null!=mTextView)mTextView.setTextSize(mTextSize);
+    }
+    public void setMTextBold(boolean isBold){
+        if(null!=mTextView)this.mTextView.getPaint().setFakeBoldText(isBold);
     }
 
     public void setMTextMarginLeft(int marginLeft){
-        this.mTextMarginLeft =Math.abs(marginLeft);
+        if(null!=mTextView)this.mTextMarginLeft =Math.abs(marginLeft);
         updateTextMargin();
     }
     public void setMTextMarginTop(int marginTop){
-        this.mTextMarginTop=Math.abs(marginTop);
+        if(null!=mTextView)this.mTextMarginTop=Math.abs(marginTop);
         updateTextMargin();
     }
     public void setMTextMarginRight(int marginRight){
-        this.mTextMarginRight =Math.abs(marginRight);
+        if(null!=mTextView)this.mTextMarginRight =Math.abs(marginRight);
         updateTextMargin();
     }
     public void setMTextMarginBottom(int marginBottom){
-        this.mTextMarginBottom =Math.abs(marginBottom);
+        if(null!=mTextView)this.mTextMarginBottom =Math.abs(marginBottom);
         updateTextMargin();
     }
     public void setMTextMarginAll(int marginAll){
-        this.mTextMarginAll =Math.abs(marginAll);
+        if(null!=mTextView)this.mTextMarginAll =Math.abs(marginAll);
         updateTextMargin();
     }
     public void setMTextUnderLine(){
