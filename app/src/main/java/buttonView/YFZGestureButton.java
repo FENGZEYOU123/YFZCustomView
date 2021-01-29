@@ -22,6 +22,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class YFZGestureButton extends ConstraintLayout {
     private String TAG=YFZGestureButton.class.getName();
     private Context mContext;
+    private CallBack mCallBack;
     /**
      * 当前选中状态
      */
@@ -55,6 +56,26 @@ public class YFZGestureButton extends ConstraintLayout {
      */
     private int mTextColor=0;
     /**
+     * 文字距离背景边距 左
+     */
+    private int mTextMarginLeft=10;
+    /**
+     * 文字距离背景边距 上
+     */
+    private int mTextMarginTop=5;
+    /**
+     * 文字距离背景边距 右
+     */
+    private int mTextMarginRight=10;
+    /**
+     * 文字距离背景边距 下
+     */
+    private int mTextMarginBottom=5;
+    /**
+     * 文字距离背景边距 全部
+     */
+    private int mTextMarginAll=10;
+    /**
      * 无选中状态下背景颜色
      */
     private int mBackgroundColorUnClick;
@@ -82,6 +103,15 @@ public class YFZGestureButton extends ConstraintLayout {
      * 背景边距 全部
      */
     private float mBackgroundPaddingAll=0;
+    /**
+     * 背景边距 全部
+     */
+    private float mBackgroundRadiusRx=0;
+    /**
+     * 背景边距 全部
+     */
+    private float mBackgroundRadiusRy=0;
+
 
     public YFZGestureButton(@NonNull Context context) {
         super(context);
@@ -111,6 +141,12 @@ public class YFZGestureButton extends ConstraintLayout {
         this.setBackgroundColor(Color.TRANSPARENT);
         this.mBackgroundColorUnClick=Color.argb(10,0,0,0);
         this.mBackgroundColorIsClick=Color.argb(100,0,0,0);
+        this.setPadding(
+                mTextMarginLeft+mTextMarginAll,
+                mTextMarginTop+mTextMarginAll,
+                mTextMarginRight+mTextMarginAll,
+                mTextMarginBottom+mTextMarginAll
+        );
         initialMPaint();
         addTextView();
         refresh();
@@ -148,20 +184,18 @@ public class YFZGestureButton extends ConstraintLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                Log.d(TAG, "onTouch: ACTION_DOWN");
                 this.isClick=true;
                 this.mFigureDownX=getX();
                 this.mFigureDownY=getY();
                 break;
             case MotionEvent.ACTION_MOVE:
-                Log.d(TAG, "onTouch: ACTION_MOVE");
-//                this.isClick= ((getX()<0 || getX()>event.getX())
-//                        ||(getY()<0 || getY()>event.getHeight()))
-//                        ?false:true;
+                this.isClick= ((event.getX()<0 || event.getX()>getWidth())
+                             ||(event.getY()<0 || event.getY()>getHeight())) ?false:true;
                 break;
             case MotionEvent.ACTION_UP:
-                Log.d(TAG, "onTouch: ACTION_UP");
-
+                if(null != mCallBack) {
+                    mCallBack.isClick(isClick);
+                }
                 this.isClick=false;
                 break;
             default:
@@ -181,14 +215,12 @@ public class YFZGestureButton extends ConstraintLayout {
     @Override
     protected void onDraw(Canvas canvas){
         mPaint.setColor(isClick?mBackgroundColorIsClick:mBackgroundColorUnClick);
-
             mRectF.set(
                     0+mBackgroundPaddingAll +mBackgroundPaddingLeft,
                     0+mBackgroundPaddingAll +mBackgroundPaddingTop,
                     getRight()-getLeft()-mBackgroundPaddingAll-mBackgroundPaddingRight,
                     getBottom()-getTop()-mBackgroundPaddingAll-mBackgroundPaddingBottom);
-
-        canvas.drawRoundRect(mRectF,10,10,mPaint);
+        canvas.drawRoundRect(mRectF,mBackgroundRadiusRx,mBackgroundRadiusRy,mPaint);
         super.onDraw(canvas);
     }
 
@@ -204,6 +236,28 @@ public class YFZGestureButton extends ConstraintLayout {
         this.mTextSize=TextSize;
         mTextView.setTextSize(mTextSize);
     }
+
+    public void setMTextMarginLeft(int marginLeft){
+        this.mTextMarginLeft =marginLeft;
+        updateTextMargin();
+    }
+    public void setMTextMarginTop(int marginTop){
+        this.mTextMarginTop=marginTop;
+        updateTextMargin();
+    }
+    public void setMTextMarginRight(int marginRight){
+        this.mTextMarginRight =marginRight;
+        updateTextMargin();
+    }
+    public void setMTextMarginBottom(int marginBottom){
+        this.mTextMarginBottom =marginBottom;
+        updateTextMargin();
+    }
+    public void setMTextMarginAll(int marginAll){
+        this.mTextMarginAll =marginAll;
+        updateTextMargin();
+    }
+
     public void setMBackgroundColorUnClick(int unClickColor){
         this.mBackgroundColorUnClick =unClickColor;
     }
@@ -222,13 +276,37 @@ public class YFZGestureButton extends ConstraintLayout {
     public void setMBackgroundPaddingBottom(float paddingBottom){
         this.mBackgroundPaddingBottom =paddingBottom;
     }
-    public void setmBackgroundPaddingAll(float paddingAll){
+    public void setMBackgroundPaddingAll(float paddingAll){
         this.mBackgroundPaddingAll =paddingAll;
+    }
+    public void setMBackgroundRadiusRx(float radiusRx){
+        this.mBackgroundRadiusRx =radiusRx;
+    }
+    public void setMBackgroundRadiusRy(float radiusRy){
+        this.mBackgroundRadiusRy =radiusRy;
     }
     /**
      * 刷新UI
      */
     public void refresh(){
         invalidate();
+    }
+
+    /**
+     * CallBack回调是否触发点击
+     */
+    public void addListenerCallBack(YFZGestureButton.CallBack callback){
+        this.mCallBack=callback;
+    }
+    public interface CallBack{
+        void isClick(boolean isClick);
+    }
+    private void updateTextMargin(){
+        this.setPadding(
+                mTextMarginLeft+mTextMarginAll,
+                mTextMarginTop+mTextMarginAll,
+                mTextMarginRight+mTextMarginAll,
+                mTextMarginBottom+mTextMarginAll
+        );
     }
 }
