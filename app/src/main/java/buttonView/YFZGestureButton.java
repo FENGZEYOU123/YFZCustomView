@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -172,7 +173,8 @@ public class YFZGestureButton extends ConstraintLayout {
             mTextView.setTextColor(mTextColor);
             mTextView.setGravity(Gravity.CENTER);
             this.addView(mTextView);
-            mTextView.getPaint().set();
+            mTextView.getPaint().setFakeBoldText(true);
+          
         }
     }
 
@@ -229,28 +231,28 @@ public class YFZGestureButton extends ConstraintLayout {
         mTextView.setTextColor(mTextColor);
     }
     public void setMTextSIze(float TextSize){
-        this.mTextSize=TextSize;
+        this.mTextSize=Math.abs(TextSize);
         mTextView.setTextSize(mTextSize);
     }
 
     public void setMTextMarginLeft(int marginLeft){
-        this.mTextMarginLeft =marginLeft;
+        this.mTextMarginLeft =Math.abs(marginLeft);
         updateTextMargin();
     }
     public void setMTextMarginTop(int marginTop){
-        this.mTextMarginTop=marginTop;
+        this.mTextMarginTop=Math.abs(marginTop);
         updateTextMargin();
     }
     public void setMTextMarginRight(int marginRight){
-        this.mTextMarginRight =marginRight;
+        this.mTextMarginRight =Math.abs(marginRight);
         updateTextMargin();
     }
     public void setMTextMarginBottom(int marginBottom){
-        this.mTextMarginBottom =marginBottom;
+        this.mTextMarginBottom =Math.abs(marginBottom);
         updateTextMargin();
     }
     public void setMTextMarginAll(int marginAll){
-        this.mTextMarginAll =marginAll;
+        this.mTextMarginAll =Math.abs(marginAll);
         updateTextMargin();
     }
 
@@ -261,25 +263,25 @@ public class YFZGestureButton extends ConstraintLayout {
         this.mBackgroundColorIsClick =isClickColor;
     }
     public void setMBackgroundPaddingLeft(float paddingLeft){
-        this.mBackgroundPaddingLeft =paddingLeft;
+        this.mBackgroundPaddingLeft =Math.abs(paddingLeft);
     }
     public void setMBackgroundPaddingTop(float paddingTop){
-        this.mBackgroundPaddingTop =paddingTop;
+        this.mBackgroundPaddingTop =Math.abs(paddingTop);
     }
     public void setMBackgroundPaddingRight(float paddingRight){
-        this.mBackgroundPaddingRight =paddingRight;
+        this.mBackgroundPaddingRight =Math.abs(paddingRight);
     }
     public void setMBackgroundPaddingBottom(float paddingBottom){
-        this.mBackgroundPaddingBottom =paddingBottom;
+        this.mBackgroundPaddingBottom =Math.abs(paddingBottom);
     }
     public void setMBackgroundPaddingAll(float paddingAll){
-        this.mBackgroundPaddingAll =paddingAll;
+        this.mBackgroundPaddingAll =Math.abs(paddingAll);
     }
     public void setMBackgroundRadiusRx(float radiusRx){
-        this.mBackgroundRadiusRx =radiusRx;
+        this.mBackgroundRadiusRx =Math.abs(radiusRx);
     }
     public void setMBackgroundRadiusRy(float radiusRy){
-        this.mBackgroundRadiusRy =radiusRy;
+        this.mBackgroundRadiusRy =Math.abs(radiusRy);
     }
     /**
      * 刷新UI

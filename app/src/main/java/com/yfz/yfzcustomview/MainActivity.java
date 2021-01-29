@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         YFZGestureButton.setMBackgroundRadiusRy(100);
         YFZGestureButton.setMBackgroundColorIsClick(Color.RED);
         YFZGestureButton.setMBackgroundColorUnClick(Color.GREEN);
-
         YFZGestureButton.addListenerCallBack(new YFZGestureButton.CallBack() {
             @Override
             public void isClick(boolean isClick) {
