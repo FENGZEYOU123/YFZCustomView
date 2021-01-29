@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
         YFZGestureButton.setMTextName("点击按钮");
         YFZGestureButton.setMBackgroundRadiusRx(25);
         YFZGestureButton.setMBackgroundRadiusRy(25);
-        YFZGestureButton.setMBackgroundColorIsClick(Color.RED);
-        YFZGestureButton.setMBackgroundColorUnClick(Color.GREEN);
         YFZGestureButton.addListenerCallBack(new buttonView.YFZGestureButton.CallBackIsClick() {
             @Override
             public void isClick(boolean isClick) {

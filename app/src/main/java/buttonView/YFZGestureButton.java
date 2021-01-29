@@ -3,18 +3,14 @@ package buttonView;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -33,9 +29,21 @@ public class YFZGestureButton extends ConstraintLayout {
      */
     private Boolean isClick;
     /**
-     * 画笔
+     * 画笔-外边框
      */
-    private Paint mPaint;
+    private Paint mPaintBoxBorder;
+    /**
+     * 画笔-外边框-粗细
+     */
+    private float mBoxBorderWidth;
+    /**
+     * 画笔-外边框-颜色
+     */
+    private int mBoxBorderColor;
+    /**
+     * 画笔-背景
+     */
+    private Paint mPaintBackground;
     /**
      * 背景大小
      */
@@ -137,11 +145,14 @@ public class YFZGestureButton extends ConstraintLayout {
         this.mTextName ="显示的名字";
         this.mTextSize =10;
         this.mTextColor=Color.BLACK;
-        this.mPaint=new Paint();
+        this.mBoxBorderColor =Color.TRANSPARENT;
+        this.mBoxBorderWidth=2;
+        this.mPaintBackground =new Paint();
+        this.mPaintBoxBorder=new Paint();
         this.mRectF=new RectF();
         this.setBackgroundColor(Color.TRANSPARENT);
-        this.mBackgroundColorUnClick=Color.argb(10,0,0,0);
-        this.mBackgroundColorIsClick=Color.argb(100,0,0,0);
+        this.mBackgroundColorIsClick=Color.argb(50,0,0,0);
+        this.mBackgroundColorUnClick=Color.argb(100,0,0,0);
         this.setPadding(
                 mTextMarginLeft+mTextMarginAll,
                 mTextMarginTop+mTextMarginAll,
@@ -156,10 +167,16 @@ public class YFZGestureButton extends ConstraintLayout {
      * 初始化画笔
      */
     private void initialMPaint(){
-        if(null != mPaint){
-            mPaint.setColor(mBackgroundColorUnClick);
-            mPaint.setAntiAlias(true);
-            mPaint.setStyle(Paint.Style.FILL);
+        if(null != mPaintBackground){
+            mPaintBackground.setColor(mBackgroundColorUnClick);
+            mPaintBackground.setAntiAlias(true);
+            mPaintBackground.setStyle(Paint.Style.FILL);
+        }
+        if(null !=mPaintBoxBorder){
+            mPaintBoxBorder.setColor(mBoxBorderColor);
+            mPaintBoxBorder.setAntiAlias(true);
+            mPaintBoxBorder.setStyle(Paint.Style.STROKE);
+            mPaintBoxBorder.setStrokeWidth(mBoxBorderWidth);
         }
     }
 
@@ -215,13 +232,16 @@ public class YFZGestureButton extends ConstraintLayout {
     @Override
     protected void onDraw(Canvas canvas){
         Log.d(TAG, "onDraw: ");
-        mPaint.setColor(isClick?mBackgroundColorIsClick:mBackgroundColorUnClick);
+        mPaintBackground.setColor(isClick?mBackgroundColorIsClick:mBackgroundColorUnClick);
             mRectF.set(
                     0+mBackgroundPaddingAll +mBackgroundPaddingLeft,
                     0+mBackgroundPaddingAll +mBackgroundPaddingTop,
                     getRight()-getLeft()-mBackgroundPaddingAll-mBackgroundPaddingRight,
                     getBottom()-getTop()-mBackgroundPaddingAll-mBackgroundPaddingBottom);
-        canvas.drawRoundRect(mRectF,mBackgroundRadiusRx,mBackgroundRadiusRy,mPaint);
+        canvas.drawRoundRect(mRectF,mBackgroundRadiusRx,mBackgroundRadiusRy, mPaintBackground);
+        canvas.drawRoundRect(mRectF,mBackgroundRadiusRx,mBackgroundRadiusRy, mPaintBoxBorder);
+
+
         super.onDraw(canvas);
     }
 
@@ -296,6 +316,14 @@ public class YFZGestureButton extends ConstraintLayout {
     }
     public void setMBackgroundRadiusRy(float radiusRy){
         this.mBackgroundRadiusRy =Math.abs(radiusRy);
+    }
+    public void setMBoxBorderColor(int colorBoxBorder){
+        this.mBoxBorderColor =colorBoxBorder;
+        if(null!=mPaintBoxBorder)mPaintBoxBorder.setColor(mBoxBorderColor);
+    }
+    public void setMPaintBoxBorderWidth(float mPaintBoxBorderWidth){
+        this.mBoxBorderWidth =mPaintBoxBorderWidth;
+        if(null!=mPaintBoxBorder)mPaintBoxBorder.setStrokeWidth(mBoxBorderWidth);
     }
 //    public void aa(){
 //        LinearGradient backGradient = new LinearGradient(0, 0, getWidth(), getHeight(), new int[]{Color.RED, Color.YELLOW, Color.GRAY}, null, Shader.TileMode.CLAMP);
