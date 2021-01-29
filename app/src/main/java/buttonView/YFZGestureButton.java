@@ -3,15 +3,18 @@ package buttonView;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.os.Build;
+import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -23,7 +26,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class YFZGestureButton extends ConstraintLayout {
     private String TAG=YFZGestureButton.class.getName();
     private Context mContext;
-    private CallBack mCallBack;
+    private CallBackIsClick mCallBackIsCLick;
     /**
      * 当前选中状态
      */
@@ -189,8 +192,8 @@ public class YFZGestureButton extends ConstraintLayout {
                              ||(event.getY()<0 || event.getY()>getHeight())) ?false:true;
                 break;
             case MotionEvent.ACTION_UP:
-                if(null != mCallBack) {
-                    mCallBack.isClick(isClick);
+                if(null != mCallBackIsCLick) {
+                    mCallBackIsCLick.isClick(isClick);
                 }
                 this.isClick=false;
                 break;
@@ -293,6 +296,10 @@ public class YFZGestureButton extends ConstraintLayout {
     public void setMBackgroundRadiusRy(float radiusRy){
         this.mBackgroundRadiusRy =Math.abs(radiusRy);
     }
+//    public void aa(){
+//        LinearGradient backGradient = new LinearGradient(0, 0, getWidth(), getHeight(), new int[]{Color.RED, Color.YELLOW, Color.GRAY}, null, Shader.TileMode.CLAMP);
+//        this.mPaint.setShader(backGradient);
+//    }
     /**
      * 刷新UI
      */
@@ -303,10 +310,10 @@ public class YFZGestureButton extends ConstraintLayout {
     /**
      * CallBack回调是否触发点击
      */
-    public void addListenerCallBack(YFZGestureButton.CallBack callback){
-        this.mCallBack=callback;
+    public void addListenerCallBack(CallBackIsClick callBackIsClick){
+        this.mCallBackIsCLick =callBackIsClick;
     }
-    public interface CallBack{
+    public interface CallBackIsClick {
         void isClick(boolean isClick);
     }
     private void updateTextMargin(){
