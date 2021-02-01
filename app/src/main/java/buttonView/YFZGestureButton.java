@@ -272,7 +272,7 @@ public class YFZGestureButton extends ConstraintLayout {
         if(null!=mTextView)mTextView.setTextColor(mTextColor);
     }
     public void setMTextSize(float TextSize){
-        this.mTextSize= YFZDisplayUtils.sp2px(this.getContext(),Math.abs(TextSize));
+        this.mTextSize=TextSize;
         if(null!=mTextView)mTextView.setTextSize(mTextSize);
 
     }
@@ -352,8 +352,8 @@ public class YFZGestureButton extends ConstraintLayout {
         this.mBoxBorderColor =colorBoxBorder;
         if(null!=mPaintBoxBorder)mPaintBoxBorder.setColor(mBoxBorderColor);
     }
-    public void setMPaintBoxBorderWidth(float px){
-        this.mBoxBorderWidth =YFZDisplayUtils.sp2px(this.getContext(),Math.abs(px));
+    public void setMPaintBoxBorderWidth(float sp){
+        this.mBoxBorderWidth =sp;
         if(null!=mPaintBoxBorder)mPaintBoxBorder.setStrokeWidth(mBoxBorderWidth);
     }
 //    public void aa(){
