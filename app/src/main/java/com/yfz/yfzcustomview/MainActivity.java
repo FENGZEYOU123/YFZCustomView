@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         YFZGestureButton=findViewById(R.id.YFZGestureButton);
-        YFZGestureButton.setMTextColor(Color.BLUE);
         YFZGestureButton.addListenerCallBack(new buttonView.YFZGestureButton.CallBackIsClick() {
             @Override
             public void isClick(boolean isClick) {

@@ -16,6 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import utils.YFZDisplayUtils;
+import utils.YFZUtils;
+
 /**
  * 编写人：游丰泽
  * 功能简介：带有按压交互效果的自定义按钮
@@ -131,11 +134,11 @@ public class YFZGestureButton extends ConstraintLayout {
     /**
      * 背景弧度 左右
      */
-    private float mBackgroundRadiusRx=50;
+    private float mBackgroundRadiusRx=0;
     /**
      * 背景弧度 上下
      */
-    private float mBackgroundRadiusRy=50;
+    private float mBackgroundRadiusRy=0;
 
 
     public YFZGestureButton(@NonNull Context context) {
@@ -165,7 +168,8 @@ public class YFZGestureButton extends ConstraintLayout {
         this.mPaintBoxBorder=new Paint();
         this.mRectF=new RectF();
         this.setBackgroundColor(Color.TRANSPARENT);
-//        this.setBackground(getResources().getDrawable(R.drawable.ic_launcher_background));
+        this.mBackgroundRadiusRx=YFZDisplayUtils.dip2px(context,25);
+        this.mBackgroundRadiusRy=YFZDisplayUtils.dip2px(context,25);
         this.mBackgroundColorIsClick=Color.argb(50,0,0,0);
         this.mBackgroundColorUnClick=Color.argb(100,0,0,0);
         this.setPadding(
@@ -209,7 +213,6 @@ public class YFZGestureButton extends ConstraintLayout {
             mTextView.setTextColor(mTextColor);
             mTextView.setGravity(Gravity.CENTER);
             this.addView(mTextView);
-            mTextView.getPaint().setFakeBoldText(true);
         }
     }
 
@@ -269,31 +272,33 @@ public class YFZGestureButton extends ConstraintLayout {
         if(null!=mTextView)mTextView.setTextColor(mTextColor);
     }
     public void setMTextSize(float TextSize){
-        this.mTextSize=Math.abs(TextSize);
+        this.mTextSize= YFZDisplayUtils.sp2px(this.getContext(),Math.abs(TextSize));
         if(null!=mTextView)mTextView.setTextSize(mTextSize);
+
     }
     public void setMTextBold(boolean isBold){
         if(null!=mTextView)this.mTextView.getPaint().setFakeBoldText(isBold);
     }
 
-    public void setMTextMarginLeft(int marginLeft){
-        if(null!=mTextView)this.mTextMarginLeft =Math.abs(marginLeft);
+    public void setMTextMarginLeft(int marginLeftPX){
+        if(null!=mTextView)this.mTextMarginLeft =YFZDisplayUtils.dip2px(this.getContext(),Math.abs(marginLeftPX));
         updateTextMargin();
     }
-    public void setMTextMarginTop(int marginTop){
-        if(null!=mTextView)this.mTextMarginTop=Math.abs(marginTop);
+    public void setMTextMarginTop(int marginTopPX){
+        if(null!=mTextView)this.mTextMarginTop=YFZDisplayUtils.dip2px(this.getContext(),Math.abs(marginTopPX));
         updateTextMargin();
     }
-    public void setMTextMarginRight(int marginRight){
-        if(null!=mTextView)this.mTextMarginRight =Math.abs(marginRight);
+    public void setMTextMarginRight(int marginRightPX){
+        if(null!=mTextView)this.mTextMarginRight =YFZDisplayUtils.dip2px(this.getContext(),Math.abs(marginRightPX));
         updateTextMargin();
     }
-    public void setMTextMarginBottom(int marginBottom){
-        if(null!=mTextView)this.mTextMarginBottom =Math.abs(marginBottom);
+    public void setMTextMarginBottom(int marginBottomPX){
+        if(null!=mTextView)this.mTextMarginBottom =YFZDisplayUtils.dip2px(this.getContext(),Math.abs(marginBottomPX));
         updateTextMargin();
     }
-    public void setMTextMarginAll(int marginAll){
-        if(null!=mTextView)this.mTextMarginAll =Math.abs(marginAll);
+    public void setMTextMarginAll(int marginAllPx){
+        if(null!=mTextView)this.mTextMarginAll = YFZDisplayUtils.dip2px(this.getContext(),Math.abs(marginAllPx));
+
         updateTextMargin();
     }
     public void setMTextUnderLine(){
@@ -320,33 +325,35 @@ public class YFZGestureButton extends ConstraintLayout {
     public void setMBackgroundColorIsClick(int isClickColor){
         this.mBackgroundColorIsClick =isClickColor;
     }
-    public void setMBackgroundPaddingLeft(float paddingLeft){
-        this.mBackgroundPaddingLeft =Math.abs(paddingLeft);
+    public void setMBackgroundPaddingLeft(float paddingLeftPx){
+        this.mBackgroundPaddingLeft =YFZDisplayUtils.dip2px(this.getContext(),Math.abs(paddingLeftPx));
+
     }
-    public void setMBackgroundPaddingTop(float paddingTop){
-        this.mBackgroundPaddingTop =Math.abs(paddingTop);
+    public void setMBackgroundPaddingTop(float paddingTopPx){
+        this.mBackgroundPaddingTop =YFZDisplayUtils.dip2px(this.getContext(),Math.abs(paddingTopPx));
     }
-    public void setMBackgroundPaddingRight(float paddingRight){
-        this.mBackgroundPaddingRight =Math.abs(paddingRight);
+    public void setMBackgroundPaddingRight(float paddingRightPx){
+        this.mBackgroundPaddingRight =YFZDisplayUtils.dip2px(this.getContext(),Math.abs(paddingRightPx));
+
     }
-    public void setMBackgroundPaddingBottom(float paddingBottom){
-        this.mBackgroundPaddingBottom =Math.abs(paddingBottom);
+    public void setMBackgroundPaddingBottom(float paddingBottomPx){
+        this.mBackgroundPaddingBottom =YFZDisplayUtils.dip2px(this.getContext(),Math.abs(paddingBottomPx));
     }
-    public void setMBackgroundPaddingAll(float paddingAll){
-        this.mBackgroundPaddingAll =Math.abs(paddingAll);
+    public void setMBackgroundPaddingAll(float paddingAllPx){
+        this.mBackgroundPaddingAll =YFZDisplayUtils.dip2px(this.getContext(),Math.abs(paddingAllPx));
     }
-    public void setMBackgroundRadiusRx(float radiusRx){
-        this.mBackgroundRadiusRx =Math.abs(radiusRx);
+    public void setMBackgroundRadiusRx(float px){
+        this.mBackgroundRadiusRx=YFZDisplayUtils.dip2px(this.getContext(),Math.abs(px));
     }
-    public void setMBackgroundRadiusRy(float radiusRy){
-        this.mBackgroundRadiusRy =Math.abs(radiusRy);
+    public void setMBackgroundRadiusRy(float px){
+        this.mBackgroundRadiusRy=YFZDisplayUtils.dip2px(this.getContext(),Math.abs(px));
     }
     public void setMBoxBorderColor(int colorBoxBorder){
         this.mBoxBorderColor =colorBoxBorder;
         if(null!=mPaintBoxBorder)mPaintBoxBorder.setColor(mBoxBorderColor);
     }
-    public void setMPaintBoxBorderWidth(float mPaintBoxBorderWidth){
-        this.mBoxBorderWidth =mPaintBoxBorderWidth;
+    public void setMPaintBoxBorderWidth(float px){
+        this.mBoxBorderWidth =YFZDisplayUtils.sp2px(this.getContext(),Math.abs(px));
         if(null!=mPaintBoxBorder)mPaintBoxBorder.setStrokeWidth(mBoxBorderWidth);
     }
 //    public void aa(){
