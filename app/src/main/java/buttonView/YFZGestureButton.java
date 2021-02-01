@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -28,6 +29,12 @@ public class YFZGestureButton extends ConstraintLayout {
      * 当前选中状态
      */
     private Boolean isClick;
+    /**
+     * 回调
+     */
+    public interface CallBackIsClick {
+        void isClick(boolean isClick);
+    }
     /**
      * 画笔-外边框
      */
@@ -55,11 +62,11 @@ public class YFZGestureButton extends ConstraintLayout {
     /**
      * 文字内容
      */
-    private String mTextName ="";
+    private String mTextName ="Button";
     /**
      * 文字大小
      */
-    private float mTextSize =0;
+    private float mTextSize =20;
     /**
      * 文字颜色
      */
@@ -84,6 +91,15 @@ public class YFZGestureButton extends ConstraintLayout {
      * 文字距离背景边距 全部
      */
     private int mTextMarginAll=10;
+    /**
+     * 无选中状态下背景图片
+     */
+    private Drawable mBackgroundDrawableUnClick;
+    /**
+     * 选中状态下背景图片
+     */
+    private Drawable mBackgroundDrawableIsClick;
+    /**
     /**
      * 无选中状态下背景颜色
      */
@@ -115,11 +131,11 @@ public class YFZGestureButton extends ConstraintLayout {
     /**
      * 背景弧度 左右
      */
-    private float mBackgroundRadiusRx=0;
+    private float mBackgroundRadiusRx=50;
     /**
      * 背景弧度 上下
      */
-    private float mBackgroundRadiusRy=0;
+    private float mBackgroundRadiusRy=50;
 
 
     public YFZGestureButton(@NonNull Context context) {
@@ -142,8 +158,6 @@ public class YFZGestureButton extends ConstraintLayout {
     private void initialView(Context context){
         this.mContext=context;
         this.isClick=false;
-        this.mTextName ="显示的名字";
-        this.mTextSize =10;
         this.mTextColor=Color.BLACK;
         this.mBoxBorderColor =Color.TRANSPARENT;
         this.mBoxBorderWidth=2;
@@ -151,6 +165,7 @@ public class YFZGestureButton extends ConstraintLayout {
         this.mPaintBoxBorder=new Paint();
         this.mRectF=new RectF();
         this.setBackgroundColor(Color.TRANSPARENT);
+//        this.setBackground(getResources().getDrawable(R.drawable.ic_launcher_background));
         this.mBackgroundColorIsClick=Color.argb(50,0,0,0);
         this.mBackgroundColorUnClick=Color.argb(100,0,0,0);
         this.setPadding(
@@ -290,6 +305,15 @@ public class YFZGestureButton extends ConstraintLayout {
     public void removeMTextLines(){
         if(null!=mTextView)this.mTextView.getPaint().setFlags(0|Paint.ANTI_ALIAS_FLAG);
     }
+//    public void setMBackgroundDrawableUnClick(Drawable backgroundDrawableUnClick){
+//        this.mBackgroundDrawableUnClick =backgroundDrawableUnClick;
+//        this.mBackgroundColorUnClick =Color.TRANSPARENT;
+//        this.setBackground(mBackgroundDrawableUnClick);
+//    }
+//    public void setMBackgroundDrawableIsClick(Drawable backgroundDrawableIsClick){
+//        this.mBackgroundDrawableIsClick =backgroundDrawableIsClick;
+//        this.mBackgroundColorIsClick =Color.TRANSPARENT;
+//    }
     public void setMBackgroundColorUnClick(int unClickColor){
         this.mBackgroundColorUnClick =unClickColor;
     }
@@ -342,9 +366,7 @@ public class YFZGestureButton extends ConstraintLayout {
     public void addListenerCallBack(CallBackIsClick callBackIsClick){
         this.mCallBackIsCLick =callBackIsClick;
     }
-    public interface CallBackIsClick {
-        void isClick(boolean isClick);
-    }
+
     private void updateTextMargin(){
         this.setPadding(
                 mTextMarginLeft+mTextMarginAll,
