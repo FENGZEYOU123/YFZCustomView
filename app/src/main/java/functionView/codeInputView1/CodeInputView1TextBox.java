@@ -2,17 +2,14 @@ package functionView.codeInputView1;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Rect;
+import android.text.InputFilter;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.widget.EditText;
+import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,6 +22,7 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
     private Context context;
     private LinearLayout.LayoutParams textViewLP;
     private final String TAG=CodeInputView1TextBox.class.getName();
+    private CodeBoxCallBack codeBoxCallBack;
 
     public CodeInputView1TextBox(@NonNull Context context) {
         super(context);
@@ -53,6 +51,7 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
         this.setInputType(InputType.TYPE_CLASS_NUMBER);
         this.setFocusable(false);
         this.setFocusableInTouchMode(false);
+        this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
     }
     public void setMargin(int left,int top, int right, int bottom){
     }
@@ -62,39 +61,32 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
         return false;
     }
 
+    public void addCallBack(CodeBoxCallBack codeBoxCallBack){
+        this.codeBoxCallBack=codeBoxCallBack;
+    }
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         Log.d(TAG, "onTextChanged: "+text +"  "+start+"   "+lengthBefore+"   "+lengthAfter);
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
+        setMaxLength(text,1);
     }
 
-    @Override
-    public void addTextChangedListener(TextWatcher watcher) {
-        Log.d(TAG, "addTextChangedListener: "+watcher.toString());
-        super.addTextChangedListener(watcher);
+    private void setMaxLength(CharSequence text, int max){
+        if(text.length()==max){
+            clearFocus();
+            setFocusable(false);
+            setFocusableInTouchMode(false);
+            if(codeBoxCallBack!=null) {
+                codeBoxCallBack.back(true,this);
+            }
+        }
     }
 
-    @Override
-    public boolean hasFocus() {
-        Log.d(TAG, "hasFocus: ");
-        return super.hasFocus();
+    /**
+     * 输入内容后返回回调
+     */
+    public interface CodeBoxCallBack {
+        void back(boolean done, View view);
     }
 
-    @Override
-    public OnFocusChangeListener getOnFocusChangeListener() {
-        Log.d(TAG, "getOnFocusChangeListener: ");
-        return super.getOnFocusChangeListener();
-    }
-
-    @Override
-    public int getFocusable() {
-        Log.d(TAG, "getFocusable: ");
-        return super.getFocusable();
-    }
-
-    @Override
-    public boolean requestFocus(int direction, Rect previouslyFocusedRect) {
-        Log.d(TAG, "requestFocus: "+direction+"   ");
-        return super.requestFocus(direction, previouslyFocusedRect);
-    }
 }

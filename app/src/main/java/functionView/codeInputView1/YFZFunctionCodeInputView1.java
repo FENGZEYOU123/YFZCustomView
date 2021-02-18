@@ -7,6 +7,7 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
@@ -102,25 +103,21 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
      */
     public void setCodeBoxMaxNumber(int number){
         Log.d(TAG, "setCodeBoxMaxNumber: "+number);
-        if(number==codeBoxMaxNumber ){
-            if(textViewArrayList.size()!=number) {
-                Log.d(TAG, "first ");
-                for (int i = 0; i < codeBoxMaxNumber; i++) {
-                    this.textViewArrayList.add(new CodeInputView1TextBox(context));
-                    this.addView(this.textViewArrayList.get(i));
-                }
-            }
-        }else {
-            if(number>=1) {
-                Log.d(TAG, "second");
-                this.removeAllViews();
-                this.textViewArrayList.clear();
-                this.textViewArrayList = new ArrayList();
-                this.codeBoxMaxNumber = number;
-                for (int i = 0; i < codeBoxMaxNumber; i++) {
-                    this.textViewArrayList.add(new CodeInputView1TextBox(context));
-                    this.addView(this.textViewArrayList.get(i));
-                }
+        if(number>=1) {
+            Log.d(TAG, "second");
+            this.removeAllViews();
+            this.textViewArrayList.clear();
+            this.textViewArrayList = new ArrayList();
+            this.codeBoxMaxNumber = number;
+            for (int i = 0; i < codeBoxMaxNumber; i++) {
+                this.textViewArrayList.add(new CodeInputView1TextBox(context));
+                this.textViewArrayList.get(i).addCallBack(new CodeInputView1TextBox.CodeBoxCallBack() {
+                    @Override
+                    public void back(boolean done, View view) {
+                        Log.d(TAG, "back: "+done);
+                    }
+                });
+                this.addView(this.textViewArrayList.get(i));
             }
         }
         if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
