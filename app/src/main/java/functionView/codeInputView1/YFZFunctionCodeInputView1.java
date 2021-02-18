@@ -12,6 +12,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 import utils.YFZPreventError;
 import utils.YFZUtils;
@@ -25,6 +27,8 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
     private int codeBoxMaxNumber =6;
     private final String TAG=YFZFunctionCodeInputView1.class.getName();
     private int currentFocus=0;
+    private int nextFocus=0;
+
     public YFZFunctionCodeInputView1(Context context) {
         super(context);
         initial(context);
@@ -43,7 +47,6 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
         this.setBackgroundColor(Color.TRANSPARENT);
         setCodeBoxMaxNumber(codeBoxMaxNumber);
     }
-
 
     /**
      * 点击组件内任意地方弹出软键盘
@@ -114,7 +117,13 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
                 this.textViewArrayList.get(i).addCallBack(new CodeInputView1TextBox.CodeBoxCallBack() {
                     @Override
                     public void back(boolean done, View view) {
-                        Log.d(TAG, "back: "+done);
+                        if(textViewArrayList.contains(view)){
+                            currentFocus=textViewArrayList.indexOf(view); //当前正在输入的框
+                            nextFocus=currentFocus<textViewArrayList.size()-1?currentFocus+1:currentFocus;
+                            Log.d(TAG, "back: currentFocus "+currentFocus);
+                            Log.d(TAG, "back: nextFocus "+nextFocus);
+                            YFZUtils.showSoftKeyboard(textViewArrayList.get(nextFocus), context);
+                        }
                     }
                 });
                 this.addView(this.textViewArrayList.get(i));
