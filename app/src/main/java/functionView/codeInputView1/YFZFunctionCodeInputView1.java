@@ -21,9 +21,8 @@ import utils.YFZUtils;
 public class YFZFunctionCodeInputView1 extends LinearLayout {
     private Context context;
     private ArrayList<CodeInputView1TextBox> textViewArrayList =new ArrayList();
-    private int codeBoxMaxNumber =4;
+    private int codeBoxMaxNumber =6;
     private final String TAG=YFZFunctionCodeInputView1.class.getName();
-    private InputMethodManager inputManager;
     private int currentFocus=0;
     public YFZFunctionCodeInputView1(Context context) {
         super(context);
@@ -45,9 +44,9 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
         }
         this.setOrientation(HORIZONTAL);
         this.setBackgroundColor(Color.TRANSPARENT);
-       if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
-           YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
-       }
+           if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
+               YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
+           }
     }
 
 
@@ -65,7 +64,6 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
                     break;
                 }else {
                     YFZUtils.showSoftKeyboard(this.textViewArrayList.get(textViewArrayList.size()-1), context);
-
                 }
             }
         }
@@ -86,7 +84,6 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
                 this.textViewArrayList.add(new CodeInputView1TextBox(context));
                 this.addView(this.textViewArrayList.get(i));
             }
-
             if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
                 YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
             }

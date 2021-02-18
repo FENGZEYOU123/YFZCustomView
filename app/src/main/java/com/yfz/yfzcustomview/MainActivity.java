@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         yfzFunctionCodeInputView1=findViewById(R.id.yfzFunctionCodeInputView1);
-        yfzFunctionCodeInputView1.setCodeBoxMaxNumber(4);
+//        yfzFunctionCodeInputView1.setCodeBoxMaxNumber(4);
         yfzFunctionCodeInputView1.setCodeBoxBackgroundColor(Color.RED);
         yfzFunctionCodeInputView1.setCodeBoxMargin(30,30,30,30);
         yfzFunctionCodeInputView1.setCodeBoxHintText("");
