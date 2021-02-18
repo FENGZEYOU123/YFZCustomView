@@ -15,9 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-
 import utils.YFZDisplayUtils;
-import utils.YFZUtils;
 
 /**
  * 编写人：游丰泽
@@ -77,23 +75,23 @@ public class YFZGestureButton extends ConstraintLayout {
     /**
      * 文字距离背景边距 左
      */
-    private int mTextMarginLeft=10;
+    private int mTextMarginLeft=0;
     /**
      * 文字距离背景边距 上
      */
-    private int mTextMarginTop=5;
+    private int mTextMarginTop=0;
     /**
      * 文字距离背景边距 右
      */
-    private int mTextMarginRight=10;
+    private int mTextMarginRight=0;
     /**
      * 文字距离背景边距 下
      */
-    private int mTextMarginBottom=5;
+    private int mTextMarginBottom=0;
     /**
      * 文字距离背景边距 全部
      */
-    private int mTextMarginAll=10;
+    private int mTextMarginAll=0;
     /**
      * 无选中状态下背景图片
      */
