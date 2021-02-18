@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import buttonView.YFZGestureButton;
+import functionView.codeInputView1.YFZFunctionCodeInputView1;
 
 
 public class MainActivity extends AppCompatActivity {
     private YFZGestureButton YFZGestureButton;
+    private YFZFunctionCodeInputView1 yfzFunctionCodeInputView1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
+        yfzFunctionCodeInputView1=findViewById(R.id.yfzFunctionCodeInputView1);
+        yfzFunctionCodeInputView1.setBackgroundColor(Color.RED);
+        yfzFunctionCodeInputView1.setCodeBoxMaxNumber(3);
     }
 }

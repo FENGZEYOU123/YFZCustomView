@@ -29,6 +29,13 @@
         android:layout_width="100dp"
         android:layout_height="100dp">
     </movingView.YFZMovingSpringView>
+    <functionView.codeInputView1.YFZFunctionCodeInputView1
+        android:id="@+id/yfzFunctionCodeInputView1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+    </functionView.codeInputView1.YFZFunctionCodeInputView1>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
