@@ -63,6 +63,38 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
         }
         return true;
     }
+//    /**
+//     * 设置输入框BOX数量，需要提前设置，不然会重置所有属性
+//     * @param number
+//     */
+//    public void setCodeBoxMaxNumber(int number){
+//        Log.d(TAG, "setCodeBoxMaxNumber: "+number);
+//        if(number==codeBoxMaxNumber ){
+//            if(textViewArrayList.size()!=number) {
+//                for (int i = 0; i < codeBoxMaxNumber; i++) {
+//                    this.textViewArrayList.add(new CodeInputView1TextBox(context));
+//                    this.addView(this.textViewArrayList.get(i));
+//                }
+//            }
+//        }else {
+//            if(number>=1) {
+//                if(number-codeBoxMaxNumber<0){
+//                    for (int i = 0; i < Math.abs(number-codeBoxMaxNumber); i++) {
+//                        this.removeView(this.textViewArrayList.get(i));
+//                        this.textViewArrayList.remove(i);
+//                    }
+//                }else {
+//                    for (int i = 0; i < Math.abs(number-codeBoxMaxNumber); i++) {
+//                        this.textViewArrayList.add(new CodeInputView1TextBox(context));
+//                        this.addView(this.textViewArrayList.get(textViewArrayList.size()-1));
+//                    }
+//                }
+//            }
+//        }
+//        if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
+//            YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
+//        }
+//    }
 
     /**
      * 设置输入框BOX数量，需要提前设置，不然会重置所有属性
