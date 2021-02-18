@@ -3,6 +3,7 @@ package functionView.codeInputView1;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,19 +11,19 @@ import androidx.annotation.Nullable;
 /**
  * CodeInputView用到的TextView
  */
-public class CodeInputView1TextView extends androidx.appcompat.widget.AppCompatTextView {
+public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatTextView {
 
     private Context context;
     private LinearLayout.LayoutParams textViewLP;
-    public CodeInputView1TextView(@NonNull Context context) {
+    public CodeInputView1TextBox(@NonNull Context context) {
         super(context);
         initial(context);
     }
-    public CodeInputView1TextView(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public CodeInputView1TextBox(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initial(context);
     }
-    public CodeInputView1TextView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public CodeInputView1TextBox(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initial(context);
     }
@@ -31,8 +32,10 @@ public class CodeInputView1TextView extends androidx.appcompat.widget.AppCompatT
         this.setBackgroundColor(Color.TRANSPARENT);
         this.setText("1");
         this.textViewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-    }
-    public void setWeight(int weight){
-        this.textViewLP.weight=weight;
+        this.textViewLP.weight=1;
+        this.textViewLP.gravity= Gravity.CENTER;
+        this.setLayoutParams(textViewLP);
+        this.setGravity(Gravity.CENTER);
+
     }
 }

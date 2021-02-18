@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         yfzFunctionCodeInputView1=findViewById(R.id.yfzFunctionCodeInputView1);
-        yfzFunctionCodeInputView1.setBackgroundColor(Color.RED);
-        yfzFunctionCodeInputView1.setCodeBoxMaxNumber(3);
+        yfzFunctionCodeInputView1.setCodeBoxMaxNumber(4);
+        yfzFunctionCodeInputView1.setCodeBoxBackground(Color.RED);
     }
 }
