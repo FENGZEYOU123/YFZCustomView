@@ -24,6 +24,7 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
     private int codeBoxMaxNumber =4;
     private final String TAG=YFZFunctionCodeInputView1.class.getName();
     private InputMethodManager inputManager;
+    private int currentFocus=0;
     public YFZFunctionCodeInputView1(Context context) {
         super(context);
         initial(context);
@@ -50,16 +51,27 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
     }
 
 
+    /**
+     * 点击组件内任意地方弹出软键盘
+     * @param event
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(event.getAction()==MotionEvent.ACTION_UP) {
-            Log.d(TAG, "onTouchEvent: "+event.getAction());
-                    if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
-                        YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
-                   }
+        if(event.getAction()==MotionEvent.ACTION_UP && YFZPreventError.checkArrayList( this.textViewArrayList)) {
+            for(int i=0;i<textViewArrayList.size();i++){
+                if(textViewArrayList.get(i).length()<=0){
+                    YFZUtils.showSoftKeyboard(this.textViewArrayList.get(i), context);
+                    break;
+                }else {
+                    YFZUtils.showSoftKeyboard(this.textViewArrayList.get(textViewArrayList.size()-1), context);
+
+                }
+            }
         }
         return true;
     }
+
     /**
      * 设置输入框BOX数量，需要提前设置，不然会重置所有属性
      * @param number
