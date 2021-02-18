@@ -5,9 +5,15 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+
+import utils.YFZPreventError;
+import utils.YFZUtils;
 
 /**
  * Code输入框
@@ -16,6 +22,8 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
     private Context context;
     private ArrayList<CodeInputView1TextBox> textViewArrayList =new ArrayList();
     private int codeBoxMaxNumber =4;
+    private final String TAG=YFZFunctionCodeInputView1.class.getName();
+    private InputMethodManager inputManager;
     public YFZFunctionCodeInputView1(Context context) {
         super(context);
         initial(context);
@@ -36,20 +44,40 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
         }
         this.setOrientation(HORIZONTAL);
         this.setBackgroundColor(Color.TRANSPARENT);
+       if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
+           YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
+       }
     }
 
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction()==MotionEvent.ACTION_UP) {
+            Log.d(TAG, "onTouchEvent: "+event.getAction());
+                    if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
+                        YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
+                   }
+        }
+        return true;
+    }
     /**
      * 设置输入框BOX数量，需要提前设置，不然会重置所有属性
      * @param number
      */
     public void setCodeBoxMaxNumber(int number){
-        this.removeAllViews();
-        this.textViewArrayList.clear();
-        this.textViewArrayList =new ArrayList();
-        this.codeBoxMaxNumber =number;
-        for(int i = 0; i< codeBoxMaxNumber; i++){
-            this.textViewArrayList.add(new CodeInputView1TextBox(context));
-            this.addView( this.textViewArrayList.get(i));
+        if(number>=1) {
+            this.removeAllViews();
+            this.textViewArrayList.clear();
+            this.textViewArrayList = new ArrayList();
+            this.codeBoxMaxNumber = number;
+            for (int i = 0; i < codeBoxMaxNumber; i++) {
+                this.textViewArrayList.add(new CodeInputView1TextBox(context));
+                this.addView(this.textViewArrayList.get(i));
+            }
+
+            if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
+                YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
+            }
         }
     }
 
