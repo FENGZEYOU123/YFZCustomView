@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         yfzFunctionCodeInputView1.setCodeBoxMaxNumber(4);
         yfzFunctionCodeInputView1.setCodeBoxBackgroundColor(Color.RED);
         yfzFunctionCodeInputView1.setCodeBoxMargin(30,30,30,30);
-        yfzFunctionCodeInputView1.setCodeBoxText("ASDjs");
+        yfzFunctionCodeInputView1.setCodeBoxHintText("");
+
     }
 }

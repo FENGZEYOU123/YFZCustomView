@@ -3,6 +3,7 @@ package functionView.codeInputView1;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -52,9 +53,41 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
         }
     }
 
-    public void setCodeBoxText(Object object){
+    /**
+     * 设置输入框类型-默认是数字
+     * @param inputType
+     */
+    public void setCodeBoxInputType(int inputType){
         for(int i = 0; i< codeBoxMaxNumber; i++){
-            this.textViewArrayList.get(i).setText(object.toString());
+            this.textViewArrayList.get(i).setInputType(inputType);
+        }
+    }
+    /**
+     * 设置输入框宽度
+     * @param width
+     */
+    public void setCodeBoxWidth(int width){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setWidth(width);
+        }
+    }
+    /**
+     * 设置输入框高度
+     * @param height
+     */
+    public void setCodeBoxHeight(int height){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setHeight(height);
+        }
+    }
+
+    /**
+     * 设置输入框提示内容
+     * @param object
+     */
+    public void setCodeBoxHintText(Object object){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setHint(object.toString());
         }
     }
     /**
