@@ -38,15 +38,9 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
     }
     private void initial(Context context) {
         this.context = context;
-        for(int i = 0; i< codeBoxMaxNumber; i++){
-            this.textViewArrayList.add(new CodeInputView1TextBox(context));
-            this.addView( this.textViewArrayList.get(i));
-        }
         this.setOrientation(HORIZONTAL);
         this.setBackgroundColor(Color.TRANSPARENT);
-           if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
-               YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
-           }
+        setCodeBoxMaxNumber(codeBoxMaxNumber);
     }
 
 
@@ -75,18 +69,30 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
      * @param number
      */
     public void setCodeBoxMaxNumber(int number){
-        if(number>=1) {
-            this.removeAllViews();
-            this.textViewArrayList.clear();
-            this.textViewArrayList = new ArrayList();
-            this.codeBoxMaxNumber = number;
-            for (int i = 0; i < codeBoxMaxNumber; i++) {
-                this.textViewArrayList.add(new CodeInputView1TextBox(context));
-                this.addView(this.textViewArrayList.get(i));
+        Log.d(TAG, "setCodeBoxMaxNumber: "+number);
+        if(number==codeBoxMaxNumber ){
+            if(textViewArrayList.size()!=number) {
+                Log.d(TAG, "first ");
+                for (int i = 0; i < codeBoxMaxNumber; i++) {
+                    this.textViewArrayList.add(new CodeInputView1TextBox(context));
+                    this.addView(this.textViewArrayList.get(i));
+                }
             }
-            if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
-                YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
+        }else {
+            if(number>=1) {
+                Log.d(TAG, "second");
+                this.removeAllViews();
+                this.textViewArrayList.clear();
+                this.textViewArrayList = new ArrayList();
+                this.codeBoxMaxNumber = number;
+                for (int i = 0; i < codeBoxMaxNumber; i++) {
+                    this.textViewArrayList.add(new CodeInputView1TextBox(context));
+                    this.addView(this.textViewArrayList.get(i));
+                }
             }
+        }
+        if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
+            YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
         }
     }
 
