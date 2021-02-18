@@ -2,6 +2,7 @@ package functionView.codeInputView1;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
@@ -51,10 +52,50 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
         }
     }
 
-    public void setCodeBoxBackground(int backgroundColor){
+    public void setCodeBoxText(Object object){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setText(object.toString());
+        }
+    }
+    /**
+     * 设置输入框margin边距
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setCodeBoxMargin(int left, int top, int right, int bottom){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setMargin(left,top,right,bottom);
+        }
+    }
+
+    /**
+     * 设置输入框BOX背景
+     * @param backgroundColor
+     */
+    public void setCodeBoxBackgroundColor(int backgroundColor){
         for(int i = 0; i< codeBoxMaxNumber; i++){
             this.textViewArrayList.get(i).setBackgroundColor(backgroundColor);
+        }
+    }
 
+    /**
+     * 设置输入框BOX背景
+     * @param backgroundDrawable
+     */
+    public void setCodeBoxBackgroundDrawable(Drawable backgroundDrawable){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setBackground(backgroundDrawable);
+        }
+    }
+    /**
+     * 设置输入框BOX背景
+     * @param resId
+     */
+    public void setCodeBoxBackgroundResource(int resId){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setBackgroundResource(resId);
         }
     }
 
