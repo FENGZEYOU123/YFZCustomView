@@ -150,6 +150,8 @@ public class YFZCodeInputBaseView extends LinearLayout {
                             textViewArrayList.get(nextFocus).setText("");
                             if(-1!=codeBoxBackgroundCurrentFocus || null!=codeBoxBackgroundCurrentFocusDrawable ){
                                 textViewArrayList.get(currentFocus).setBackgroundNoInput(textViewArrayList.get(currentFocus));
+                                setCodeBoxBackgroundCurrentFocus(textViewArrayList.get(nextFocus));
+
                             }
                         }
                     }
@@ -159,7 +161,7 @@ public class YFZCodeInputBaseView extends LinearLayout {
         if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
             YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
         }
-        
+
     }
 
     /**
