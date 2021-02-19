@@ -2,8 +2,8 @@ package com.yfz.yfzcustomview;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import buttonView.YFZGestureButton;
@@ -28,8 +28,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         yfzFunctionCodeInputView1=findViewById(R.id.yfzFunctionCodeInputView1);
-        yfzFunctionCodeInputView1.setCodeBoxMaxNumber(4);
-        yfzFunctionCodeInputView1.setCodeBoxBackgroundColor(Color.RED);
-        yfzFunctionCodeInputView1.setCodeBoxMargin(30,30,30,30);
+        yfzFunctionCodeInputView1.setResultListener(new YFZFunctionCodeInputView1.TextListener() {
+            @Override
+            public void result(String finalResult) {
+               Toast.makeText(getApplicationContext(),"结果是："+finalResult,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

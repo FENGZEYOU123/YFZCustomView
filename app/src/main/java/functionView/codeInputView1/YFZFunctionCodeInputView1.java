@@ -10,11 +10,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import androidx.annotation.RequiresApi;
-
 import java.util.ArrayList;
-
 import utils.YFZPreventError;
 import utils.YFZUtils;
 
@@ -24,10 +21,13 @@ import utils.YFZUtils;
 public class YFZFunctionCodeInputView1 extends LinearLayout {
     private Context context;
     private ArrayList<CodeInputView1TextBox> textViewArrayList =new ArrayList();
-    private int codeBoxMaxNumber =6;
+    private int codeBoxMaxNumber =4;
     private final String TAG=YFZFunctionCodeInputView1.class.getName();
     private int currentFocus=0;
     private int nextFocus=0;
+    private TextListener textListener;
+
+    private String result="";
 
     public YFZFunctionCodeInputView1(Context context) {
         super(context);
@@ -119,10 +119,18 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
                     public void input(boolean done, View view) {
                         if(textViewArrayList.contains(view)){
                             currentFocus=textViewArrayList.indexOf(view); //当前正在输入的框
-                            nextFocus=currentFocus<textViewArrayList.size()-1?currentFocus+1:currentFocus;
-                            Log.d(TAG, "back: currentFocus "+currentFocus);
-                            Log.d(TAG, "back: nextFocus "+nextFocus);
-                            YFZUtils.showSoftKeyboard(textViewArrayList.get(nextFocus), context);
+                            nextFocus = currentFocus < textViewArrayList.size() - 1 ? currentFocus + 1 : currentFocus;
+                            if(null!= textListener && currentFocus==textViewArrayList.size()-1){
+                                result="";
+                                for(CodeInputView1TextBox index:textViewArrayList){
+                                    result=result+index.getEditableText();
+                                }
+                                YFZUtils.closeSoftKeyBoard(textViewArrayList.get(nextFocus), context);
+                                textListener.result(result);
+                            }else {
+                                YFZUtils.showSoftKeyboard(textViewArrayList.get(nextFocus), context);
+                            }
+
                         }
                     }
                 });
@@ -303,5 +311,14 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
             this.textViewArrayList.get(i).setBackgroundTintList(colorStateList);
         }
     }
+    /**
+     * 提供接口监听输入内容
+     */
+    public interface TextListener {
+        void result(String result);
+    }
 
+    public void setResultListener(TextListener textlistener){
+        this.textListener = textlistener;
+    }
 }

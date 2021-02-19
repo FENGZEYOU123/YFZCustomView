@@ -10,11 +10,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -44,7 +40,8 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
     }
     private void initial(Context context){
         this.context=context;
-        this.setBackgroundColor(Color.TRANSPARENT);
+        this.setBackgroundColor(Color.GRAY);
+        this.setTextColor(Color.WHITE);
         this.textViewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         this.textViewLP.weight=1;
         this.textViewLP.gravity= Gravity.CENTER;
@@ -54,16 +51,18 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
         this.setMaxLines(1);
         this.setLayoutParams(textViewLP);
         this.setGravity(Gravity.CENTER);
+        this.getPaint().setFakeBoldText(true);
         this.setInputType(InputType.TYPE_CLASS_NUMBER);
         this.setFocusable(false);
         this.setFocusableInTouchMode(false);
         this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
-
-
         this.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.d(TAG, "onKey: 删除 + "+v.toString());
+
                 if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_UP) {
+                    Log.d(TAG, "onKey: 删除");
                     addDeleteMonitor(codeBoxDeleteCallBack); //检测是否删除
                 }
                 return false;
@@ -111,6 +110,7 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
     public interface CodeBoxInputCallBack {
         void input(boolean done, View view);
     }
+
     /**
      * 删除内容后返回回调
      */

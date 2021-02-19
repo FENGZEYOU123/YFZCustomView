@@ -30,11 +30,16 @@ public class YFZUtils {
         InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
     }
-
+    /**
+     * 控制软键盘关闭
+     * @param view
+     * @param mContext
+     */
     public static void closeSoftKeyBoard(View view, Context mContext){
         InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
+
 }
 
 
