@@ -33,7 +33,7 @@ public class YFZCodeInputSlide extends View {
         this.context=context;
         this.setBackgroundColor(Color.BLACK);
         this.viewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        this.viewLP.setMargins(0,10,0,10);
+        this.viewLP.setMargins(0,20,0,20);
         this.viewLP.width=1;
         this.setLayoutParams(this.viewLP);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

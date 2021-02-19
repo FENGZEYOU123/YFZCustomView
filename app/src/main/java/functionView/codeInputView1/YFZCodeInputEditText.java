@@ -50,7 +50,7 @@ public class YFZCodeInputEditText extends androidx.appcompat.widget.AppCompatEdi
         this.textViewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         this.textViewLP.weight=1;
         this.textViewLP.gravity= Gravity.CENTER;
-        this.textViewLP.setMargins(10,10,10,10);
+        this.textViewLP.setMargins(20,20,20,20);
         this.setWidth(100);
         this.setHeight(100);
         this.setMaxLines(1);

@@ -34,6 +34,9 @@ public class CodeInputActivity extends AppCompatActivity {
         textView=findViewById(R.id.textView);
         CodeInputView1=findViewById(R.id.CodeInputView1);
         CodeInputView2=findViewById(R.id.CodeInputView2);
+        CodeInputViewSlide1=findViewById(R.id.CodeInputViewSlide1);
+        CodeInputViewSlide2=findViewById(R.id.CodeInputViewSlide2);
+
         yfzCodeInputViewBasic.setResultListener(new YFZCodeInputViewBasic.TextListener() {
             @Override
             public void result(String result) {
