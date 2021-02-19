@@ -27,5 +27,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </functionView.codeInputView1.YFZCodeInputView2>
-
+    <functionView.codeInputView1.YFZCodeInputViewSlide1
+        android:id="@+id/CodeInputViewSlide1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CodeInputView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </functionView.codeInputView1.YFZCodeInputViewSlide1>
+    <functionView.codeInputView1.YFZCodeInputViewSlide2
+        android:id="@+id/CodeInputViewSlide2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CodeInputViewSlide1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </functionView.codeInputView1.YFZCodeInputViewSlide2>
 </androidx.constraintlayout.widget.ConstraintLayout>

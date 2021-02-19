@@ -3,6 +3,7 @@ package functionView.codeInputView1;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.AttributeSet;
@@ -14,10 +15,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.yfz.yfzcustomview.R;
-
-import utils.YFZUtils;
 
 /**
  * CodeInputView用到的TextView
@@ -61,10 +58,13 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
         this.setGravity(Gravity.CENTER);
         this.getPaint().setFakeBoldText(true);
         this.setInputType(InputType.TYPE_CLASS_NUMBER);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            this.setForegroundGravity(Gravity.CENTER);
+        }
         this.setFocusable(false);
         this.setFocusableInTouchMode(false);
         this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
-        this.setOnKeyListener(new View.OnKeyListener() {
+        this.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_UP) {
