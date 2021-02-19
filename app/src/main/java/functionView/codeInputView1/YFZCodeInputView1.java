@@ -21,7 +21,9 @@ public class YFZCodeInputView1 extends YFZCodeInputBaseView {
     }
 
     private void initial(Context context){
-        this.setCodeBoxBackground(R.drawable.yfz_codeinput_codebox_background);
+        this.setCodeBoxBackgroundNoInput(R.drawable.yfz_codeinput_notinput_background);
+        this.setCodeBoxBackgroundHasInput(R.drawable.yfz_codeinput_hasinput_background);
+
         this.setCodeBoxTextColor(Color.BLACK);
         this.setCodeBoxCursorIsVisible(false);
     }
