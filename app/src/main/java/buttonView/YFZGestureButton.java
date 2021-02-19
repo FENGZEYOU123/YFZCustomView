@@ -91,7 +91,7 @@ public class YFZGestureButton extends ConstraintLayout {
     /**
      * 文字距离背景边距 全部
      */
-    private int mTextMarginAll=0;
+    private int mTextMarginAll=10;
     /**
      * 无选中状态下背景图片
      */

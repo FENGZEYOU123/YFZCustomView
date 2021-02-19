@@ -128,7 +128,6 @@ public class YFZCodeInputBaseView extends LinearLayout {
                                 }
                                 YFZUtils.closeSoftKeyBoard(textViewArrayList.get(nextFocus), context);
                             }else {
-
                                 YFZUtils.showSoftKeyboard(textViewArrayList.get(nextFocus), context);
                             }
 
@@ -338,6 +337,14 @@ public class YFZCodeInputBaseView extends LinearLayout {
             Log.e(TAG, "setCodeBoxBackground: id not found "+e.toString() );
         }
 
+    }
+    /**
+     * 删除全部输入内容
+     */
+    public void deleteCodeBoxInput(){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setText("");
+        }
     }
     /**
      * 设置输入框BOX背景

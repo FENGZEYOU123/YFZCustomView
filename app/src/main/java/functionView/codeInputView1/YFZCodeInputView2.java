@@ -3,18 +3,19 @@ package functionView.codeInputView1;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
+
 import com.yfz.yfzcustomview.R;
 
-public class YFZCodeInputView1 extends YFZCodeInputBaseView {
-    public YFZCodeInputView1(Context context) {
+public class YFZCodeInputView2 extends YFZCodeInputBaseView {
+    public YFZCodeInputView2(Context context) {
         super(context);
         initial(context);
     }
-    public YFZCodeInputView1(Context context, AttributeSet attrs) {
+    public YFZCodeInputView2(Context context, AttributeSet attrs) {
         super(context, attrs);
         initial(context);
     }
-    public YFZCodeInputView1(Context context, AttributeSet attrs, int defStyleAttr) {
+    public YFZCodeInputView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initial(context);
     }

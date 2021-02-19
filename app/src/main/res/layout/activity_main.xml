@@ -5,46 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-    <containerView.YFZContainerShadow
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <buttonView.YFZGestureButton
+        android:id="@+id/codeInputButton"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_width="100dp"
-        android:layout_height="48dp">
-        <buttonView.YFZGestureButton
-            android:id="@+id/YFZGestureButton"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </buttonView.YFZGestureButton>
-    </containerView.YFZContainerShadow>
-    <movingView.YFZMovingSpringView
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@mipmap/ic_launcher"
-        android:layout_width="100dp"
-        android:layout_height="100dp">
-    </movingView.YFZMovingSpringView>
-    <functionView.codeInputView1.YFZCodeInputBaseView
-        android:id="@+id/yfzFunctionCodeInputView1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputBaseView>
-
-    <functionView.codeInputView1.YFZCodeInputView1
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    </functionView.codeInputView1.YFZCodeInputView1>
+    </buttonView.YFZGestureButton>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
