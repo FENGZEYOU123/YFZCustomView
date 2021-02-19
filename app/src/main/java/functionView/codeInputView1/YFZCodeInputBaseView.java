@@ -349,6 +349,29 @@ public class YFZCodeInputBaseView extends LinearLayout {
         }
 
     }
+    /**
+     * 设置输入框BOX背景
+     * @param colorStateList
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void setCodeBoxBackgroundColorStateList(ColorStateList colorStateList){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setBackgroundTintList(colorStateList);
+        }
+    }
+    /**
+     * 接口
+     */
+    public interface TextListener {
+        void result(String result);
+    }
+    /**
+     * 提供接口监听输入内容
+     */
+    public void setResultListener(TextListener textlistener){
+        this.textListener = textlistener;
+    }
+
     private void setBackgroundNoInput(CodeInputView1TextBox view){
         if(-1!=codeBoxBackgroundNoInput){
             try {
@@ -367,7 +390,7 @@ public class YFZCodeInputBaseView extends LinearLayout {
     private void setBackgroundHasInput(CodeInputView1TextBox view){
         if(-1!=codeBoxBackgroundHasInput){
             try {
-              view.setBackgroundResource(codeBoxBackgroundHasInput);
+                view.setBackgroundResource(codeBoxBackgroundHasInput);
             }catch (Exception e){
                 try {
                     view.setBackgroundColor(codeBoxBackgroundHasInput);
@@ -379,25 +402,5 @@ public class YFZCodeInputBaseView extends LinearLayout {
             view.setBackground(codeBoxBackgroundHasInputDrawable);
         }
 
-    }
-    /**
-     * 设置输入框BOX背景
-     * @param colorStateList
-     */
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void setCodeBoxBackgroundColorStateList(ColorStateList colorStateList){
-        for(int i = 0; i< codeBoxMaxNumber; i++){
-            this.textViewArrayList.get(i).setBackgroundTintList(colorStateList);
-        }
-    }
-    /**
-     * 提供接口监听输入内容
-     */
-    public interface TextListener {
-        void result(String result);
-    }
-
-    public void setResultListener(TextListener textlistener){
-        this.textListener = textlistener;
     }
 }
