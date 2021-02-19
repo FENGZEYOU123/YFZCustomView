@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         yfzCodeInputBaseView =findViewById(R.id.yfzFunctionCodeInputView1);
+
         yfzCodeInputBaseView.setResultListener(new YFZCodeInputBaseView.TextListener() {
             @Override
             public void result(String finalResult) {
