@@ -5,9 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CodeInputActivity">
+    <TextView
+        android:id="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:layout_width="200dp"
+        android:background="#50000000"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:layout_height="40dp">
+    </TextView>
     <functionView.codeInputView1.YFZCodeInputViewBasic
         android:id="@+id/CodeInputBaseView"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="1dp"
         android:layout_width="wrap_content"
