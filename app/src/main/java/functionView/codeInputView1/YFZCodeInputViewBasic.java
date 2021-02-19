@@ -22,6 +22,8 @@ import utils.YFZUtils;
 public class YFZCodeInputViewBasic extends LinearLayout {
     private Context context;
     private ArrayList<YFZCodeInputEditText> textViewArrayList =new ArrayList();
+    private ArrayList<YFZCodeInputSlide> slideViewArrayList =new ArrayList();
+
     private int codeBoxMaxNumber =4;
     private final String TAG= YFZCodeInputViewBasic.class.getName();
     private int currentFocus=0;
@@ -115,6 +117,9 @@ public class YFZCodeInputViewBasic extends LinearLayout {
             this.codeBoxMaxNumber = number;
             for (int i = 0; i < codeBoxMaxNumber; i++) {
                 this.textViewArrayList.add(new YFZCodeInputEditText(context));
+                if(i<codeBoxMaxNumber-1) {
+                    this.slideViewArrayList.add(new YFZCodeInputSlide(context));
+                }
                 this.textViewArrayList.get(i).addCallBackInput(new YFZCodeInputEditText.CodeBoxInputCallBack() {
                     @Override
                     public void input(boolean done, View view) {
@@ -155,6 +160,9 @@ public class YFZCodeInputViewBasic extends LinearLayout {
                     }
                 });
                 this.addView(this.textViewArrayList.get(i));
+                if(i<codeBoxMaxNumber-1) {
+                    this.addView(this.slideViewArrayList.get(i));
+                }
             }
         if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
             YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
@@ -278,9 +286,10 @@ public class YFZCodeInputViewBasic extends LinearLayout {
      */
     public void setCodeBoxMargin(int left, int top, int right, int bottom){
         for(int i = 0; i< codeBoxMaxNumber; i++){
-            this.textViewArrayList.get(i).setMargin(left,top,right,bottom);
+                this.slideViewArrayList.get(i).setMargin(left,top,right,bottom);
         }
     }
+
     /**
      * 设置输入框padding边距
      * @param left
@@ -376,6 +385,38 @@ public class YFZCodeInputViewBasic extends LinearLayout {
      */
     public void setResultListener(TextListener textlistener){
         this.textListener = textlistener;
+    }
+
+    /**
+     * 设置线margin边距
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setSlideMargin(int left, int top, int right, int bottom){
+        for(int i = 0; i< codeBoxMaxNumber-1; i++){
+            this.slideViewArrayList.get(i).setMargin(left,top,right,bottom);
+        }
+    }
+
+    /**
+     * 设置线是否可见
+     * @param isVisible
+     */
+    public void setSlideVisible(boolean isVisible){
+        for(int i = 0; i< codeBoxMaxNumber-1; i++){
+            this.slideViewArrayList.get(i).setIsVisible(isVisible);
+        }
+    }
+    /**
+     * 设置线的颜色
+     * @param Color
+     */
+    public void setSlideColor(int Color){
+        for(int i = 0; i< codeBoxMaxNumber-1; i++){
+            this.slideViewArrayList.get(i).setColor(Color);
+        }
     }
 
     public void setBackgroundColorCurrentFocus(int color){

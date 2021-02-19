@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
- * CodeInputView用到的TextView
+ * CodeInputView用到的EditView
  * 作者：YFZ
  */
 public class YFZCodeInputEditText extends androidx.appcompat.widget.AppCompatEditText {
