@@ -18,26 +18,25 @@ import utils.YFZUtils;
 /**
  * Code输入框
  */
-public class YFZFunctionCodeInputView1 extends LinearLayout {
+public class YFZCodeInputBaseView extends LinearLayout {
     private Context context;
     private ArrayList<CodeInputView1TextBox> textViewArrayList =new ArrayList();
     private int codeBoxMaxNumber =4;
-    private final String TAG=YFZFunctionCodeInputView1.class.getName();
+    private final String TAG= YFZCodeInputBaseView.class.getName();
     private int currentFocus=0;
     private int nextFocus=0;
     private TextListener textListener;
-
     private String result="";
 
-    public YFZFunctionCodeInputView1(Context context) {
+    public YFZCodeInputBaseView(Context context) {
         super(context);
         initial(context);
     }
-    public YFZFunctionCodeInputView1(Context context, AttributeSet attrs) {
+    public YFZCodeInputBaseView(Context context, AttributeSet attrs) {
         super(context, attrs);
         initial(context);
     }
-    public YFZFunctionCodeInputView1(Context context, AttributeSet attrs, int defStyleAttr) {
+    public YFZCodeInputBaseView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initial(context);
     }
@@ -120,14 +119,17 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
                         if(textViewArrayList.contains(view)){
                             currentFocus=textViewArrayList.indexOf(view); //当前正在输入的框
                             nextFocus = currentFocus < textViewArrayList.size() - 1 ? currentFocus + 1 : currentFocus;
-                            if(null!= textListener && currentFocus==textViewArrayList.size()-1){
-                                result="";
-                                for(CodeInputView1TextBox index:textViewArrayList){
-                                    result=result+index.getEditableText();
+                            if(currentFocus==textViewArrayList.size()-1){
+                                if(null!= textListener ) {
+                                    result = "";
+                                    for (CodeInputView1TextBox index : textViewArrayList) {
+                                        result = result + index.getEditableText();
+                                    }
+                                    textListener.result(result);
                                 }
                                 YFZUtils.closeSoftKeyBoard(textViewArrayList.get(nextFocus), context);
-                                textListener.result(result);
                             }else {
+
                                 YFZUtils.showSoftKeyboard(textViewArrayList.get(nextFocus), context);
                             }
 

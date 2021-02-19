@@ -29,14 +29,22 @@
         android:layout_width="100dp"
         android:layout_height="100dp">
     </movingView.YFZMovingSpringView>
-    <functionView.codeInputView1.YFZFunctionCodeInputView1
+    <functionView.codeInputView1.YFZCodeInputBaseView
         android:id="@+id/yfzFunctionCodeInputView1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZFunctionCodeInputView1>
+    </functionView.codeInputView1.YFZCodeInputBaseView>
+
+    <functionView.codeInputView1.YFZCodeInputView1
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </functionView.codeInputView1.YFZCodeInputView1>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

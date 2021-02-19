@@ -6,12 +6,12 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import buttonView.YFZGestureButton;
-import functionView.codeInputView1.YFZFunctionCodeInputView1;
+import functionView.codeInputView1.YFZCodeInputBaseView;
 
 
 public class MainActivity extends AppCompatActivity {
     private YFZGestureButton YFZGestureButton;
-    private YFZFunctionCodeInputView1 yfzFunctionCodeInputView1;
+    private YFZCodeInputBaseView yfzCodeInputBaseView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,9 +26,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        yfzFunctionCodeInputView1=findViewById(R.id.yfzFunctionCodeInputView1);
-        yfzFunctionCodeInputView1.setCodeBoxMargin(40,40,40,40);
-        yfzFunctionCodeInputView1.setResultListener(new YFZFunctionCodeInputView1.TextListener() {
+        yfzCodeInputBaseView =findViewById(R.id.yfzFunctionCodeInputView1);
+        yfzCodeInputBaseView.setResultListener(new YFZCodeInputBaseView.TextListener() {
             @Override
             public void result(String finalResult) {
                Toast.makeText(getApplicationContext(),"结果是："+finalResult,Toast.LENGTH_SHORT).show();
