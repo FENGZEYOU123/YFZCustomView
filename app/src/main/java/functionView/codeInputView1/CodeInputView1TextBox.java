@@ -148,7 +148,7 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
         codeBoxBackgroundNoInputDrawable=drawable;
     }
 
-    private void setBackgroundNoInput(CodeInputView1TextBox view){
+    public void setBackgroundNoInput(CodeInputView1TextBox view){
         if(-1!=codeBoxBackgroundNoInput){
             try {
                 view.setBackgroundResource(codeBoxBackgroundNoInput);
@@ -163,7 +163,7 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
             view.setBackground(codeBoxBackgroundNoInputDrawable);
         }
     }
-    private void setBackgroundHasInput(CodeInputView1TextBox view){
+    public void setBackgroundHasInput(CodeInputView1TextBox view){
 
         if(-1!=codeBoxBackgroundHasInput){
             try {

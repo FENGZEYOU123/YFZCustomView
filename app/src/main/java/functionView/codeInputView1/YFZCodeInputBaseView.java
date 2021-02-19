@@ -11,6 +11,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import androidx.annotation.RequiresApi;
+
+import com.yfz.yfzcustomview.R;
+
 import java.util.ArrayList;
 import utils.YFZPreventError;
 import utils.YFZUtils;
@@ -27,6 +30,8 @@ public class YFZCodeInputBaseView extends LinearLayout {
     private int nextFocus=0;
     private TextListener textListener;
     private String result="";
+    private int codeBoxBackgroundCurrentFocus=-1;
+    private Drawable codeBoxBackgroundCurrentFocusDrawable=null;
     public YFZCodeInputBaseView(Context context) {
         super(context);
         initial(context);
@@ -118,6 +123,7 @@ public class YFZCodeInputBaseView extends LinearLayout {
                         if(textViewArrayList.contains(view)){
                             currentFocus=textViewArrayList.indexOf(view); //当前正在输入的框
                             nextFocus = currentFocus < textViewArrayList.size() - 1 ? currentFocus + 1 : currentFocus;
+                            setCodeBoxBackgroundCurrentFocus(textViewArrayList.get(nextFocus));
                             if(currentFocus==textViewArrayList.size()-1){
                                 if(null!= textListener ) {
                                     result = "";
@@ -142,15 +148,18 @@ public class YFZCodeInputBaseView extends LinearLayout {
                             nextFocus=currentFocus>0?currentFocus-1:currentFocus;
                             YFZUtils.showSoftKeyboard(textViewArrayList.get(nextFocus), context);
                             textViewArrayList.get(nextFocus).setText("");
+                            if(-1!=codeBoxBackgroundCurrentFocus || null!=codeBoxBackgroundCurrentFocusDrawable ){
+                                textViewArrayList.get(currentFocus).setBackgroundNoInput(textViewArrayList.get(currentFocus));
+                            }
                         }
                     }
                 });
                 this.addView(this.textViewArrayList.get(i));
             }
-
         if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
             YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
         }
+        
     }
 
     /**
@@ -369,5 +378,28 @@ public class YFZCodeInputBaseView extends LinearLayout {
         this.textListener = textlistener;
     }
 
+    public void setBackgroundColorCurrentFocus(int color){
+        codeBoxBackgroundCurrentFocus=color;
+    }
+    public void setBackgroundDrawableCurrentFocus(Drawable drawable){
+        codeBoxBackgroundCurrentFocusDrawable=drawable;
+    }
 
+    private void setCodeBoxBackgroundCurrentFocus(CodeInputView1TextBox view){
+
+        if(-1!=codeBoxBackgroundCurrentFocus){
+            try {
+                view.setBackgroundResource(codeBoxBackgroundCurrentFocus);
+            }catch (Exception e){
+                try {
+                    view.setBackgroundColor(codeBoxBackgroundCurrentFocus);
+                }catch (Exception d){
+                    codeBoxBackgroundCurrentFocus= -1;
+                }
+            }
+        }else if(null!=codeBoxBackgroundCurrentFocusDrawable){
+            view.setBackground(codeBoxBackgroundCurrentFocusDrawable);
+        }
+
+    }
 }
