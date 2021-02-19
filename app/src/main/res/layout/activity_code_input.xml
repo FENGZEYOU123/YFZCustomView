@@ -5,40 +5,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CodeInputActivity">
-    <functionView.codeInputView1.YFZCodeInputBaseView
+    <functionView.codeInputView1.YFZCodeInputViewBasic
         android:id="@+id/CodeInputBaseView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginBottom="1dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputBaseView>
-    <functionView.codeInputView1.YFZCodeInputView1
+    </functionView.codeInputView1.YFZCodeInputViewBasic>
+    <functionView.codeInputView1.YFZCodeInputViewBasic1
         android:id="@+id/CodeInputView1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CodeInputBaseView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputView1>
-    <functionView.codeInputView1.YFZCodeInputView2
+    </functionView.codeInputView1.YFZCodeInputViewBasic1>
+    <functionView.codeInputView1.YFZCodeInputViewBasic2
         android:id="@+id/CodeInputView2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CodeInputView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputView2>
-    <functionView.codeInputView1.YFZCodeInputViewSlide1
+    </functionView.codeInputView1.YFZCodeInputViewBasic2>
+    <functionView.codeInputView1.YFZCodeInputViewBasicSlide1
         android:id="@+id/CodeInputViewSlide1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CodeInputView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputViewSlide1>
-    <functionView.codeInputView1.YFZCodeInputViewSlide2
+    </functionView.codeInputView1.YFZCodeInputViewBasicSlide1>
+    <functionView.codeInputView1.YFZCodeInputViewBasicSlide2
         android:id="@+id/CodeInputViewSlide2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CodeInputViewSlide1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputViewSlide2>
+    </functionView.codeInputView1.YFZCodeInputViewBasicSlide2>
 </androidx.constraintlayout.widget.ConstraintLayout>

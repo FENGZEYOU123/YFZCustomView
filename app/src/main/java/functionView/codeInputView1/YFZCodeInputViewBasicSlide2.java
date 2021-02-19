@@ -6,16 +6,16 @@ import android.util.AttributeSet;
 
 import com.yfz.yfzcustomview.R;
 
-public class YFZCodeInputViewSlide2 extends YFZCodeInputBaseView {
-    public YFZCodeInputViewSlide2(Context context) {
+public class YFZCodeInputViewBasicSlide2 extends YFZCodeInputViewBasic {
+    public YFZCodeInputViewBasicSlide2(Context context) {
         super(context);
         initial(context);
     }
-    public YFZCodeInputViewSlide2(Context context, AttributeSet attrs) {
+    public YFZCodeInputViewBasicSlide2(Context context, AttributeSet attrs) {
         super(context, attrs);
         initial(context);
     }
-    public YFZCodeInputViewSlide2(Context context, AttributeSet attrs, int defStyleAttr) {
+    public YFZCodeInputViewBasicSlide2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initial(context);
     }

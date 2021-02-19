@@ -12,8 +12,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import androidx.annotation.RequiresApi;
 
-import com.yfz.yfzcustomview.R;
-
 import java.util.ArrayList;
 import utils.YFZPreventError;
 import utils.YFZUtils;
@@ -21,26 +19,26 @@ import utils.YFZUtils;
 /**
  * Code输入框
  */
-public class YFZCodeInputBaseView extends LinearLayout {
+public class YFZCodeInputViewBasic extends LinearLayout {
     private Context context;
-    private ArrayList<CodeInputView1TextBox> textViewArrayList =new ArrayList();
+    private ArrayList<YFZCodeInputEditText> textViewArrayList =new ArrayList();
     private int codeBoxMaxNumber =4;
-    private final String TAG= YFZCodeInputBaseView.class.getName();
+    private final String TAG= YFZCodeInputViewBasic.class.getName();
     private int currentFocus=0;
     private int nextFocus=0;
     private TextListener textListener;
     private String result="";
     private int codeBoxBackgroundCurrentFocus=-1;
     private Drawable codeBoxBackgroundCurrentFocusDrawable=null;
-    public YFZCodeInputBaseView(Context context) {
+    public YFZCodeInputViewBasic(Context context) {
         super(context);
         initial(context);
     }
-    public YFZCodeInputBaseView(Context context, AttributeSet attrs) {
+    public YFZCodeInputViewBasic(Context context, AttributeSet attrs) {
         super(context, attrs);
         initial(context);
     }
-    public YFZCodeInputBaseView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public YFZCodeInputViewBasic(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initial(context);
     }
@@ -116,8 +114,8 @@ public class YFZCodeInputBaseView extends LinearLayout {
             this.textViewArrayList = new ArrayList();
             this.codeBoxMaxNumber = number;
             for (int i = 0; i < codeBoxMaxNumber; i++) {
-                this.textViewArrayList.add(new CodeInputView1TextBox(context));
-                this.textViewArrayList.get(i).addCallBackInput(new CodeInputView1TextBox.CodeBoxInputCallBack() {
+                this.textViewArrayList.add(new YFZCodeInputEditText(context));
+                this.textViewArrayList.get(i).addCallBackInput(new YFZCodeInputEditText.CodeBoxInputCallBack() {
                     @Override
                     public void input(boolean done, View view) {
                         if(textViewArrayList.contains(view)){
@@ -127,7 +125,7 @@ public class YFZCodeInputBaseView extends LinearLayout {
                             if(currentFocus==textViewArrayList.size()-1){
                                 if(null!= textListener ) {
                                     result = "";
-                                    for (CodeInputView1TextBox index : textViewArrayList) {
+                                    for (YFZCodeInputEditText index : textViewArrayList) {
                                         result = result + index.getEditableText();
                                     }
                                     textListener.result(result);
@@ -140,7 +138,7 @@ public class YFZCodeInputBaseView extends LinearLayout {
                         }
                     }
                 });
-                this.textViewArrayList.get(i).addCallBackDeleted(new CodeInputView1TextBox.CodeBoxDeleteCallBack() {
+                this.textViewArrayList.get(i).addCallBackDeleted(new YFZCodeInputEditText.CodeBoxDeleteCallBack() {
                     @Override
                     public void deleted(boolean done, View view) {
                         if(textViewArrayList.contains(view)){
@@ -387,7 +385,7 @@ public class YFZCodeInputBaseView extends LinearLayout {
         codeBoxBackgroundCurrentFocusDrawable=drawable;
     }
 
-    private void setCodeBoxBackgroundCurrentFocus(CodeInputView1TextBox view){
+    private void setCodeBoxBackgroundCurrentFocus(YFZCodeInputEditText view){
 
         if(-1!=codeBoxBackgroundCurrentFocus){
             try {

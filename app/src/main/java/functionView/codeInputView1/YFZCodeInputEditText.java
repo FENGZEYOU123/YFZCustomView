@@ -20,26 +20,26 @@ import androidx.annotation.Nullable;
  * CodeInputView用到的TextView
  * 作者：YFZ
  */
-public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEditText {
+public class YFZCodeInputEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     private Context context;
     private LinearLayout.LayoutParams textViewLP;
-    private final String TAG=CodeInputView1TextBox.class.getName();
+    private final String TAG= YFZCodeInputEditText.class.getName();
     private CodeBoxInputCallBack codeBoxInputCallBack;
     private CodeBoxDeleteCallBack codeBoxDeleteCallBack;
     private int codeBoxBackgroundHasInput= -1;
     private Drawable codeBoxBackgroundHasInputDrawable=null;
     private int codeBoxBackgroundNoInput=-1;
     private Drawable codeBoxBackgroundNoInputDrawable=null;
-    public CodeInputView1TextBox(@NonNull Context context) {
+    public YFZCodeInputEditText(@NonNull Context context) {
         super(context);
         initial(context);
     }
-    public CodeInputView1TextBox(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public YFZCodeInputEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initial(context);
     }
-    public CodeInputView1TextBox(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public YFZCodeInputEditText(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initial(context);
     }
@@ -148,7 +148,7 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
         codeBoxBackgroundNoInputDrawable=drawable;
     }
 
-    public void setBackgroundNoInput(CodeInputView1TextBox view){
+    public void setBackgroundNoInput(YFZCodeInputEditText view){
         if(-1!=codeBoxBackgroundNoInput){
             try {
                 view.setBackgroundResource(codeBoxBackgroundNoInput);
@@ -163,7 +163,7 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
             view.setBackground(codeBoxBackgroundNoInputDrawable);
         }
     }
-    public void setBackgroundHasInput(CodeInputView1TextBox view){
+    public void setBackgroundHasInput(YFZCodeInputEditText view){
 
         if(-1!=codeBoxBackgroundHasInput){
             try {
