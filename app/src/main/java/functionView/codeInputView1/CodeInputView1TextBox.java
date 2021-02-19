@@ -70,6 +70,12 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
         });
     }
     public void setMargin(int left,int top, int right, int bottom){
+        this.textViewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        this.textViewLP.weight=1;
+        this.textViewLP.gravity= Gravity.CENTER;
+        this.textViewLP.setMargins(left,top,right,bottom);
+        this.setLayoutParams(textViewLP);
+
     }
 
     @Override

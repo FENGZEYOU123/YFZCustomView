@@ -3,7 +3,6 @@ package com.yfz.yfzcustomview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import buttonView.YFZGestureButton;
@@ -28,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         yfzFunctionCodeInputView1=findViewById(R.id.yfzFunctionCodeInputView1);
+        yfzFunctionCodeInputView1.setCodeBoxMargin(40,40,40,40);
         yfzFunctionCodeInputView1.setResultListener(new YFZFunctionCodeInputView1.TextListener() {
             @Override
             public void result(String finalResult) {

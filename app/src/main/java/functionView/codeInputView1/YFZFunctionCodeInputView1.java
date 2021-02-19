@@ -272,6 +272,18 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
             this.textViewArrayList.get(i).setMargin(left,top,right,bottom);
         }
     }
+    /**
+     * 设置输入框padding边距
+     * @param left
+     * @param top
+     * @param right
+     * @param bottom
+     */
+    public void setCodeBoxPadding(int left, int top, int right, int bottom){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setPadding(left,top,right,bottom);
+        }
+    }
 
     /**
      * 设置输入框BOX背景
