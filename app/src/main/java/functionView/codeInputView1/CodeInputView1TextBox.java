@@ -7,22 +7,28 @@ import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /**
  * CodeInputView用到的TextView
+ * 作者：YFZ
  */
-public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEditText{
+public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEditText {
 
     private Context context;
     private LinearLayout.LayoutParams textViewLP;
     private final String TAG=CodeInputView1TextBox.class.getName();
-    private CodeBoxCallBack codeBoxCallBack;
+    private CodeBoxInputCallBack codeBoxInputCallBack;
+    private CodeBoxDeleteCallBack codeBoxDeleteCallBack;
 
     public CodeInputView1TextBox(@NonNull Context context) {
         super(context);
@@ -52,6 +58,17 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
         this.setFocusable(false);
         this.setFocusableInTouchMode(false);
         this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(1)});
+
+
+        this.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_DEL && event.getAction() == KeyEvent.ACTION_UP) {
+                    addDeleteMonitor(codeBoxDeleteCallBack); //检测是否删除
+                }
+                return false;
+            }
+        });
     }
     public void setMargin(int left,int top, int right, int bottom){
     }
@@ -61,14 +78,17 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
         return false;
     }
 
-    public void addCallBack(CodeBoxCallBack codeBoxCallBack){
-        this.codeBoxCallBack=codeBoxCallBack;
+    public void addCallBackInput(CodeBoxInputCallBack codeBoxInputCallBack){
+        this.codeBoxInputCallBack = codeBoxInputCallBack;
+    }
+    public void addCallBackDeleted(CodeBoxDeleteCallBack codeBoxDeleteCallBack){
+        this.codeBoxDeleteCallBack = codeBoxDeleteCallBack;
     }
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         Log.d(TAG, "onTextChanged: "+text +"  "+start+"   "+lengthBefore+"   "+lengthAfter);
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
-        setMaxLength(text,1);
+        setMaxLength(text,1); //设置最大输入内容
     }
 
     private void setMaxLength(CharSequence text, int max){
@@ -76,17 +96,26 @@ public class CodeInputView1TextBox extends androidx.appcompat.widget.AppCompatEd
             clearFocus();
             setFocusable(false);
             setFocusableInTouchMode(false);
-            if(codeBoxCallBack!=null) {
-                codeBoxCallBack.back(true,this);
+            if(codeBoxInputCallBack !=null) {
+                codeBoxInputCallBack.input(true,this);
             }
         }
+    }
+    private void addDeleteMonitor(CodeBoxDeleteCallBack codeBoxDeleteCallBack){
+        if(codeBoxDeleteCallBack!=null)codeBoxDeleteCallBack.deleted(true,this);
     }
 
     /**
      * 输入内容后返回回调
      */
-    public interface CodeBoxCallBack {
-        void back(boolean done, View view);
+    public interface CodeBoxInputCallBack {
+        void input(boolean done, View view);
+    }
+    /**
+     * 删除内容后返回回调
+     */
+    public interface CodeBoxDeleteCallBack {
+        void deleted(boolean done, View view);
     }
 
 }

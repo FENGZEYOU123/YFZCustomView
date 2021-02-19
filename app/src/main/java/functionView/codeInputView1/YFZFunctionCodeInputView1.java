@@ -1,19 +1,19 @@
 package functionView.codeInputView1;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.text.InputType;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
 
 import utils.YFZPreventError;
 import utils.YFZUtils;
@@ -106,7 +106,7 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
      */
     public void setCodeBoxMaxNumber(int number){
         Log.d(TAG, "setCodeBoxMaxNumber: "+number);
-        if(number>=1) {
+        if(number<1) number=codeBoxMaxNumber;
             Log.d(TAG, "second");
             this.removeAllViews();
             this.textViewArrayList.clear();
@@ -114,9 +114,9 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
             this.codeBoxMaxNumber = number;
             for (int i = 0; i < codeBoxMaxNumber; i++) {
                 this.textViewArrayList.add(new CodeInputView1TextBox(context));
-                this.textViewArrayList.get(i).addCallBack(new CodeInputView1TextBox.CodeBoxCallBack() {
+                this.textViewArrayList.get(i).addCallBackInput(new CodeInputView1TextBox.CodeBoxInputCallBack() {
                     @Override
-                    public void back(boolean done, View view) {
+                    public void input(boolean done, View view) {
                         if(textViewArrayList.contains(view)){
                             currentFocus=textViewArrayList.indexOf(view); //当前正在输入的框
                             nextFocus=currentFocus<textViewArrayList.size()-1?currentFocus+1:currentFocus;
@@ -126,14 +126,63 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
                         }
                     }
                 });
+                this.textViewArrayList.get(i).addCallBackDeleted(new CodeInputView1TextBox.CodeBoxDeleteCallBack() {
+                    @Override
+                    public void deleted(boolean done, View view) {
+                        if(textViewArrayList.contains(view)){
+                            currentFocus=textViewArrayList.indexOf(view); //当前正在输入的框
+                            nextFocus=currentFocus>0?currentFocus-1:currentFocus;
+                            YFZUtils.showSoftKeyboard(textViewArrayList.get(nextFocus), context);
+                            textViewArrayList.get(nextFocus).setText("");
+                        }
+                    }
+                });
                 this.addView(this.textViewArrayList.get(i));
             }
-        }
+
         if(YFZPreventError.checkArrayList( this.textViewArrayList)) {
             YFZUtils.showSoftKeyboard(this.textViewArrayList.get(0), context);
         }
     }
 
+    /**
+     * 设置输入框文字颜色
+     * @param color
+     */
+    public void setCodeBoxTextColor(ColorStateList color){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setTextColor(color);
+        }
+    }
+
+    /**
+     * 设置输入框文字颜色
+     * @param color
+     */
+    public void setCodeBoxTextColor(int color){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setTextColor(color);
+        }
+    }
+
+    /**
+     * 设置输入框文字大小
+     * @param size
+     */
+    public void setCodeBoxTextSize(float size){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setTextSize(size);
+        }
+    }
+    /**
+     * 设置输入框文字粗细
+     * @param isBold
+     */
+    public void setCodeBoxTextBold(boolean isBold){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).getPaint().setFakeBoldText(isBold);
+        }
+    }
     /**
      * 设置输入框类型-默认是数字
      * @param inputType
@@ -210,6 +259,16 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
     public void setCodeBoxBackgroundResource(int resId){
         for(int i = 0; i< codeBoxMaxNumber; i++){
             this.textViewArrayList.get(i).setBackgroundResource(resId);
+        }
+    }
+    /**
+     * 设置输入框BOX背景
+     * @param colorStateList
+     */
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void setCodeBoxBackgroundColorStateList(ColorStateList colorStateList){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setBackgroundTintList(colorStateList);
         }
     }
 

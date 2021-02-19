@@ -145,9 +145,6 @@ public class YFZMovingSpringView extends LinearLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {  //拿到测量的组件值
         View_X_Width=getMeasuredWidth();  //记录组件宽度
         View_Y_Hight=getMeasuredHeight();   //记录组件长度
-        Log.d(TAG, "View_X_Width 组件宽度 "+View_X_Width);
-        Log.d(TAG, "View_Y_Hight 组件长度 "+View_Y_Hight);
-        Log.e(TAG, "-----------------------------------------");
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 

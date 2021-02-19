@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import buttonView.YFZGestureButton;
@@ -32,6 +33,5 @@ public class MainActivity extends AppCompatActivity {
         yfzFunctionCodeInputView1.setCodeBoxBackgroundColor(Color.RED);
         yfzFunctionCodeInputView1.setCodeBoxMargin(30,30,30,30);
         yfzFunctionCodeInputView1.setCodeBoxHintText("");
-
     }
 }
