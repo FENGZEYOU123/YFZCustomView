@@ -146,6 +146,38 @@ public class YFZFunctionCodeInputView1 extends LinearLayout {
     }
 
     /**
+     * 设置输入框光标颜色
+     * @param textCursorDrawable
+     */
+    public void setCodeBoxCursorColor(Drawable textCursorDrawable){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                this.textViewArrayList.get(i).setTextCursorDrawable(textCursorDrawable);
+            }
+        }
+    }
+    /**
+     * 设置输入框光标颜色
+     * @param textCursorDrawable
+     */
+
+    public void setCodeBoxCursorColor(int textCursorDrawable){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                this.textViewArrayList.get(i).setTextCursorDrawable(textCursorDrawable);
+            }
+        }
+    }
+    /**
+     * 设置输入框光标是否显示
+     * @param hideCursor
+     */
+    public void setCodeBoxCursorIsVisible(boolean hideCursor){
+        for(int i = 0; i< codeBoxMaxNumber; i++){
+            this.textViewArrayList.get(i).setCursorVisible(hideCursor);
+        }
+    }
+    /**
      * 设置输入框文字颜色
      * @param color
      */
