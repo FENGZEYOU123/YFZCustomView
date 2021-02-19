@@ -287,21 +287,21 @@ public class YFZCodeInputBaseView extends LinearLayout {
         }
     }
 
-    /**
-     * 设置输入框BOX背景
-     * @param backgroundColor
-     */
-    public void setCodeBoxBackgroundColor(int backgroundColor){
-        for(int i = 0; i< codeBoxMaxNumber; i++){
-            this.textViewArrayList.get(i).setBackgroundColor(backgroundColor);
-        }
-    }
+//    /**
+//     * 设置输入框BOX背景
+//     * @param backgroundColor
+//     */
+//    public void setCodeBoxBackground(int backgroundColor){
+//        for(int i = 0; i< codeBoxMaxNumber; i++){
+//            this.textViewArrayList.get(i).setBackgroundColor(backgroundColor);
+//        }
+//    }
 
     /**
      * 设置输入框BOX背景
      * @param backgroundDrawable
      */
-    public void setCodeBoxBackgroundDrawable(Drawable backgroundDrawable){
+    public void setCodeBoxBackground(Drawable backgroundDrawable){
         for(int i = 0; i< codeBoxMaxNumber; i++){
             this.textViewArrayList.get(i).setBackground(backgroundDrawable);
         }
@@ -310,10 +310,16 @@ public class YFZCodeInputBaseView extends LinearLayout {
      * 设置输入框BOX背景
      * @param resId
      */
-    public void setCodeBoxBackgroundResource(int resId){
-        for(int i = 0; i< codeBoxMaxNumber; i++){
-            this.textViewArrayList.get(i).setBackgroundResource(resId);
+    public void setCodeBoxBackground(int resId){
+        try {
+            getResources().getResourceTypeName(resId);
+            for(int i = 0; i< codeBoxMaxNumber; i++){
+                this.textViewArrayList.get(i).setBackgroundResource(resId);
+            }
+        }catch (Exception e){
+            Log.e(TAG, "setCodeBoxBackground: "+e.toString() );
         }
+
     }
     /**
      * 设置输入框BOX背景
