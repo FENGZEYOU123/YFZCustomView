@@ -64,6 +64,7 @@ public class YFZCodeInputBaseView extends LinearLayout {
                     break;
                 }else {
                     YFZUtils.showSoftKeyboard(this.textViewArrayList.get(textViewArrayList.size()-1), context);
+                    break;
                 }
             }
         }
