@@ -26,6 +26,7 @@ public class YFZCodeInputViewBasicSlide2 extends YFZCodeInputViewBasic {
         this.setCodeBoxTextColor(Color.BLACK);
         this.setCodeBoxCursorIsVisible(false);
         this.setSlideColor(Color.BLUE);
+        this.setSlideWidth(2);
     }
 
 }

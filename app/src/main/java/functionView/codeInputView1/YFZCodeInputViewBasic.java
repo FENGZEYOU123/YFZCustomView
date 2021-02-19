@@ -419,6 +419,15 @@ public class YFZCodeInputViewBasic extends LinearLayout {
         }
     }
 
+    /**
+     * 设置线的宽度
+     * @param width
+     */
+    public void setSlideWidth(int width){
+        for(int i = 0; i< codeBoxMaxNumber-1; i++){
+            this.slideViewArrayList.get(i).setWidth(width);
+        }
+    }
     public void setBackgroundColorCurrentFocus(int color){
         codeBoxBackgroundCurrentFocus=color;
     }

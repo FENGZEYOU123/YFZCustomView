@@ -42,7 +42,6 @@ public class YFZCodeInputSlide extends View {
         this.setVisibility(View.GONE);
     }
     public void setMargin(int left,int top, int right, int bottom){
-        this.viewLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         this.viewLP.setMargins(left,top,right,bottom);
         this.setLayoutParams(viewLP);
     }
@@ -52,4 +51,10 @@ public class YFZCodeInputSlide extends View {
     public void setColor(int color){
         this.setBackgroundColor(color);
     }
+
+    public void setWidth(int width){
+        this.viewLP.width=width;
+        this.setLayoutParams(this.viewLP);
+    }
+
 }
