@@ -1,4 +1,4 @@
-package functionView.codeInputView1;
+package codeInputView;
 
 import android.content.Context;
 import android.graphics.Color;

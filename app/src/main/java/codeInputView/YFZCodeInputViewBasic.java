@@ -1,4 +1,4 @@
-package functionView.codeInputView1;
+package codeInputView;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
+
 import utils.YFZPreventError;
 import utils.YFZUtils;
 

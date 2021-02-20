@@ -17,7 +17,7 @@
         android:textSize="20dp"
         android:layout_height="40dp">
     </TextView>
-    <functionView.codeInputView1.YFZCodeInputViewBasic
+    <codeInputView.YFZCodeInputViewBasic
         android:id="@+id/CodeInputBaseView"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -25,37 +25,37 @@
         android:layout_marginBottom="1dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputViewBasic>
-    <functionView.codeInputView1.YFZCodeInputViewBasic1
+    </codeInputView.YFZCodeInputViewBasic>
+    <codeInputView.YFZCodeInputViewBasic1
         android:id="@+id/CodeInputView1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CodeInputBaseView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputViewBasic1>
-    <functionView.codeInputView1.YFZCodeInputViewBasic2
+    </codeInputView.YFZCodeInputViewBasic1>
+    <codeInputView.YFZCodeInputViewBasic2
         android:id="@+id/CodeInputView2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CodeInputView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputViewBasic2>
-    <functionView.codeInputView1.YFZCodeInputViewBasicSlide1
+    </codeInputView.YFZCodeInputViewBasic2>
+    <codeInputView.YFZCodeInputViewBasicSlide1
         android:id="@+id/CodeInputViewSlide1"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CodeInputView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputViewBasicSlide1>
-    <functionView.codeInputView1.YFZCodeInputViewBasicSlide2
+    </codeInputView.YFZCodeInputViewBasicSlide1>
+    <codeInputView.YFZCodeInputViewBasicSlide2
         android:id="@+id/CodeInputViewSlide2"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/CodeInputViewSlide1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </functionView.codeInputView1.YFZCodeInputViewBasicSlide2>
+    </codeInputView.YFZCodeInputViewBasicSlide2>
 </androidx.constraintlayout.widget.ConstraintLayout>

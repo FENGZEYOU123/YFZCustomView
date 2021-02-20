@@ -3,15 +3,13 @@ package com.yfz.yfzcustomview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.TextClock;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import functionView.codeInputView1.YFZCodeInputViewBasic;
-import functionView.codeInputView1.YFZCodeInputViewBasic1;
-import functionView.codeInputView1.YFZCodeInputViewBasic2;
-import functionView.codeInputView1.YFZCodeInputViewBasicSlide1;
-import functionView.codeInputView1.YFZCodeInputViewBasicSlide2;
+import codeInputView.YFZCodeInputViewBasic;
+import codeInputView.YFZCodeInputViewBasic1;
+import codeInputView.YFZCodeInputViewBasic2;
+import codeInputView.YFZCodeInputViewBasicSlide1;
+import codeInputView.YFZCodeInputViewBasicSlide2;
 
 public class CodeInputActivity extends AppCompatActivity {
     private YFZCodeInputViewBasic yfzCodeInputViewBasic;
