@@ -13,13 +13,17 @@
         android:layout_height="wrap_content">
     </buttonView.YFZGestureButton>
 
-    <codeInputView.CodeText
+    <codeInputView.PasswordCodeText
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginBottom="30dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </codeInputView.CodeText>
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
+        android:textSize="13sp"
+        app:boxLength="6"
+        app:boxStrokeWidth="1"
+        >
+    </codeInputView.PasswordCodeText>
 </androidx.constraintlayout.widget.ConstraintLayout>

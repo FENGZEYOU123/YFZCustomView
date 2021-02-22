@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CodeText11">
-    <attr name="boxMaxNumber" format="integer"></attr>
-    <attr name="boxMargin" format="integer"></attr>
-    <attr name="boxHeight" format="integer"></attr>
-    <attr name="boxSize" format="integer"></attr>
-    <attr name="boxStyle">
-        <enum name="Stroke" value="0" />
-        <enum name="Filled" value="1" />
-    </attr>
-    <attr name="boxColor" format="color"></attr>
-    <attr name="boxStrokeWidth" format="float"></attr>
+    <declare-styleable name="PasswordCodeText">
+        <attr name="boxStyle">
+            <enum name="Stroke" value="0" />
+            <enum name="Filled" value="1" />
+        </attr>
+        <attr name="boxLength" format="integer"></attr>
+        <attr name="boxMargin" format="integer"></attr>
+        <attr name="boxSize" format="integer"></attr>
+        <attr name="boxColor" format="color"></attr>
+        <attr name="boxStrokeWidth" format="integer"></attr>
+        <attr name="TextColor" format="color"></attr>
+
+
+
     </declare-styleable>
 </resources>
