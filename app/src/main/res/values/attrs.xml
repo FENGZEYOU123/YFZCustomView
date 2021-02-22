@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="codeText">
-    <attr name="maxNumber" format="integer"></attr>
-    <attr name="backgroundColor" format="color"></attr>
-    <attr name="textColor" format="color"></attr>
-    <attr name="textSpace" format="float"></attr>
+    <attr name="boxMaxNumber" format="integer"></attr>
+    <attr name="boxBackground" format="color|reference"></attr>
+    <attr name="boxMargin" format="integer"></attr>
+    <attr name="boxHeight" format="integer"></attr>
+    <attr name="boxWidth" format="integer"></attr>
+    <attr name="boxStyle">
+        <enum name="Stroke" value="0" />
+        <enum name="Filled" value="1" />
+    </attr>
+    <attr name="boxColor" format="integer|color|reference"></attr>
+
     </declare-styleable>
 </resources>
