@@ -16,6 +16,9 @@ public class YFZDisplayUtils {
     public static int dip2px(Context context, float dipValue) {
         return (int) (dipValue * (context.getResources().getDisplayMetrics().density) + 0.5f);
     }
+    public static float dip2pxFloat(Context context, float dipValue) {
+        return (float) (dipValue * (context.getResources().getDisplayMetrics().density) + 0.5f);
+    }
 
     public static int px2sp(Context context, float pxValue) {
         return (int) (pxValue / ( context.getResources().getDisplayMetrics().scaledDensity)+0.5f);
