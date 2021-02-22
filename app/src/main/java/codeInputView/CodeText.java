@@ -4,18 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.text.Editable;
+import android.graphics.RectF;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import java.util.ArrayList;
-
 import utils.YFZDisplayUtils;
 
 public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
@@ -25,6 +19,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int viewWidth;
     private Paint mPaintBox;
     private Paint mPaintText;
+    private RectF mBoxRectF;
     private int mBoxMaxLength=4;
     private int mBoxSize=50;
     private int mBoxMargin=10;
@@ -62,6 +57,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         }
         setMeasuredDimension(viewWidth, viewHeight);
     }
+
     private void initial(Context context){
         this.mContext=context;
         this.setBackgroundColor(Color.TRANSPARENT);
@@ -69,16 +65,18 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.setCursorVisible(false);
         this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(mBoxMaxLength)});
         this.passwordArray=new String[mBoxMaxLength];
+        this.mBoxSize=YFZDisplayUtils.dip2px(mContext,mBoxSize);
+        this.mBoxMargin=YFZDisplayUtils.dip2px(mContext,mBoxMargin);
+        this.mBoxRectF=new RectF();
         initialPaint();
-        mBoxSize=YFZDisplayUtils.dip2px(mContext,mBoxSize);
-        mBoxMargin=YFZDisplayUtils.dip2px(mContext,mBoxMargin);
     }
+
     private void initialPaint(){
-        this.mPaintBox=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText.setStyle(Paint.Style.FILL);
         this.mPaintText.setTextSize(YFZDisplayUtils.dip2pxFloat(this.getContext(),20f));
         this.mPaintText.setColor(Color.BLACK);
+        this.mPaintBox=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintBox.setStyle(Paint.Style.STROKE);
         this.mPaintBox.setStrokeWidth(2f);
     }
@@ -87,10 +85,13 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     protected void onDraw(Canvas canvas) {
         Log.d(TAG, "onDraw: ");
         this.mPaintBox.setColor(Color.RED);
-        canvas.drawRect(0,0,getWidth(),getHeight(),mPaintBox);
-
             for (int i = 0; i < mBoxMaxLength; i++) {
                 if(null!=passwordArray[i]) {
+                    mBoxRectF.left=i*(mBoxSize+mBoxMargin);
+                    mBoxRectF.right=mBoxRectF.left+mBoxSize;
+                    mBoxRectF.top=0;
+                    mBoxRectF.bottom=viewHeight;
+                    canvas.drawRect(mBoxRectF,mPaintBox);
                     canvas.drawText(passwordArray[i], ((i + 1) * getWidth() / mBoxMaxLength) / 2, getHeight() / 2, mPaintText);
                 }
             }
