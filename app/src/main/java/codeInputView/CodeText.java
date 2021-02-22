@@ -87,8 +87,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     @Override
     protected void onDraw(Canvas canvas) {
         Log.d(TAG, "onDraw: ");
-        this.mPaintBox.setColor(Color.RED);
             for (int i = 0; i < mBoxMaxLength; i++) {
+                this.mPaintBox.setColor(Color.RED);
                 if(null!=passwordArray[i]) {
                     mBoxRectF.left=i*(mBoxSize+mBoxMargin)+1;
                     mBoxRectF.right=mBoxRectF.left+mBoxSize-2;
@@ -99,6 +99,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                     canvas.drawText(passwordArray[i], (mBoxRectF.left+mBoxRectF.right)/2-(mTextRect.left+mTextRect.right)/2, (mBoxRectF.top+mBoxRectF.bottom) / 2-(mTextRect.top+mTextRect.bottom)/2, mPaintText);
                 }
         }
+            this.mPaintBox.setColor(Color.BLACK);
+            canvas.drawRect(0,0,getWidth(),getHeight(),mPaintBox);
     }
 
 
