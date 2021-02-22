@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.InputFilter;
 import android.util.AttributeSet;
@@ -20,6 +21,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private Paint mPaintBox;
     private Paint mPaintText;
     private RectF mBoxRectF;
+    private Rect mTextRect;
     private int mBoxMaxLength=4;
     private int mBoxSize=50;
     private int mBoxMargin=10;
@@ -68,6 +70,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mBoxSize=YFZDisplayUtils.dip2px(mContext,mBoxSize);
         this.mBoxMargin=YFZDisplayUtils.dip2px(mContext,mBoxMargin);
         this.mBoxRectF=new RectF();
+        this.mTextRect=new Rect();
         initialPaint();
     }
 
@@ -92,9 +95,10 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                     mBoxRectF.top=1;
                     mBoxRectF.bottom=viewHeight-1;
                     canvas.drawRect(mBoxRectF,mPaintBox);
-                    canvas.drawText(passwordArray[i], ((i + 1) * getWidth() / mBoxMaxLength) / 2, getHeight() / 2, mPaintText);
+                    mPaintText.getTextBounds(passwordArray[i],0,passwordArray[i].length(),mTextRect);
+                    canvas.drawText(passwordArray[i], (mBoxRectF.left+mBoxRectF.right)/2-(mTextRect.left+mTextRect.right)/2, (mBoxRectF.top+mBoxRectF.bottom) / 2-(mTextRect.top+mTextRect.bottom)/2, mPaintText);
                 }
-            }
+        }
     }
 
 
