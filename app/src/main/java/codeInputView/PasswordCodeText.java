@@ -33,14 +33,15 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
     //盒子长宽大小
     private int mBoxSize=50;
     //盒子（空心）线粗细程度
-    private float mBoxStrokeWidth=1;
+    private int mBoxStrokeWidth=1;
     //盒子边距
     private int mBoxMargin=10;
     //盒子颜色
     private int mBoxColor=Color.RED;
+    //盒子样式（空心实心）
+    private int mBoxStrokeMode=BOX_STROKE;
     //文字笔刷
     private Paint mPaintText;
-
     //文字矩形
     private Rect mTextRect;
     //当前输入的文字内容-string数组储存
@@ -56,7 +57,8 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
         mBoxMargin=typedArray.getInt(R.styleable.PasswordCodeText_boxMargin,mBoxMargin);//获取盒子边距
         mBoxSize=typedArray.getInt(R.styleable.PasswordCodeText_boxSize,mBoxSize);//获取盒子大小
         mBoxColor=typedArray.getColor(R.styleable.PasswordCodeText_boxColor,mBoxColor);//获取盒子颜色
-        mBoxStrokeWidth =typedArray.getFloat(R.styleable.PasswordCodeText_boxStrokeWidth, mBoxStrokeWidth);//获取盒子（空心）线粗细程度
+        mBoxStrokeWidth =typedArray.getInt(R.styleable.PasswordCodeText_boxStrokeWidth, mBoxStrokeWidth);//获取盒子（空心）线粗细程度
+        mBoxStrokeMode=typedArray.getInt(R.styleable.PasswordCodeText_boxStrokeStyle, mBoxStrokeMode);//获取盒子（空心）线粗细程度
         typedArray.recycle();
         initial(context);
     }
@@ -66,7 +68,7 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
         measureMode=MeasureSpec.getMode(widthMeasureSpec);
         switch (measureMode){
             case MeasureSpec.AT_MOST:
-                viewWidth = mBoxSize * mBoxMaxLength + mBoxMargin * (mBoxMaxLength - 1);
+                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +mBoxStrokeWidth;
                 viewHeight= mBoxSize;
                 break;
             case MeasureSpec.EXACTLY:
@@ -101,7 +103,7 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
         this.mPaintText.setTextSize(YFZDisplayUtils.dip2pxFloat(this.getContext(),getTextSize()));
         this.mPaintText.setColor(getCurrentTextColor());
         this.mPaintBox=new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.mPaintBox.setStyle(Paint.Style.STROKE);
+        this.mPaintBox.setStyle(mBoxStrokeMode==BOX_STROKE?Paint.Style.STROKE:Paint.Style.FILL);
         this.mPaintBox.setColor(mBoxColor);
         this.mPaintBox.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(),mBoxStrokeWidth));
     }
@@ -113,13 +115,19 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
 
         for (int i = 0; i < mBoxMaxLength; i++) {
                 if(null!=passwordArray[i]) {
-                    mBoxRectF.left=i*(mBoxSize+mBoxMargin)+mBoxStrokeWidth+1;
-                    mBoxRectF.right=mBoxRectF.left+mBoxSize-mBoxStrokeWidth-2;
-                    mBoxRectF.top=mBoxStrokeWidth+1;
-                    mBoxRectF.bottom=viewHeight-mBoxStrokeWidth-1;
-                    canvas.drawRect(mBoxRectF,mPaintBox);
+
+//                        mBoxRectF.left = i * (mBoxSize + mBoxMargin) + mBoxStrokeWidth + 1;
+//                        mBoxRectF.right = mBoxRectF.left + mBoxSize - mBoxStrokeWidth - 2;
+//                        mBoxRectF.top = mBoxStrokeWidth + 1;
+//                        mBoxRectF.bottom = viewHeight - mBoxStrokeWidth - 1;
+
+                        mBoxRectF.left = i * (mBoxSize + mBoxMargin) + mBoxStrokeWidth ;
+                        mBoxRectF.right = mBoxRectF.left + mBoxSize - mBoxStrokeWidth ;
+                        mBoxRectF.top = mBoxStrokeWidth ;
+                        mBoxRectF.bottom = viewHeight - mBoxStrokeWidth ;
+                        canvas.drawRect(mBoxRectF, mPaintBox);
                     mPaintText.getTextBounds(passwordArray[i],0,passwordArray[i].length(),mTextRect);
-                    canvas.drawText(passwordArray[i], (mBoxRectF.left+mBoxRectF.right)/2-(mTextRect.left+mTextRect.right)/2, (mBoxRectF.top+mBoxRectF.bottom) / 2-(mTextRect.top+mTextRect.bottom)/2, mPaintText);
+                    canvas.drawText(passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
                 }
         }
     }

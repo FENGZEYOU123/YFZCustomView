@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="PasswordCodeText">
-        <attr name="boxStyle">
-            <enum name="Stroke" value="0" />
-            <enum name="Filled" value="1" />
+        <attr name="boxStrokeStyle">
+            <enum name="Stroke" value="101" />
+            <enum name="Filled" value="100" />
         </attr>
         <attr name="boxLength" format="integer"></attr>
         <attr name="boxMargin" format="integer"></attr>

@@ -24,6 +24,8 @@
         android:textSize="13sp"
         app:boxLength="6"
         app:boxStrokeWidth="1"
+        app:boxMargin="10"
+        app:boxStrokeStyle="Stroke"
         >
     </codeInputView.PasswordCodeText>
 </androidx.constraintlayout.widget.ConstraintLayout>
