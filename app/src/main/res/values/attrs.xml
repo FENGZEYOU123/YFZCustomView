@@ -29,10 +29,12 @@
             <enum name="Filled" value="100" />
         </attr>
 
-        <attr name="codeText_isHideCode" format="boolean"></attr>
-        <attr name="codeText_isHideCode_displayContent" format="string"></attr>
+        <attr name="codeText_enableHideCode" format="boolean"></attr>
+        <attr name="codeText_enableHideCode_displayContent" format="string"></attr>
 
-
+        <attr name="codeText_cursorStrokeWidth" format="integer"></attr>
+        <attr name="codeText_cursorColor" format="color"></attr>
+        <attr name="codeText_enableCursor" format="boolean"></attr>
 
 
     </declare-styleable>

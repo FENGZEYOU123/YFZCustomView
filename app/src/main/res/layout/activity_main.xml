@@ -27,7 +27,12 @@
         app:codeText_highLightRadius="30"
         app:codeText_highLightStrokeWidth="20"
         app:codeText_boxStrokeStyle="Filled"
-        app:codeText_isHideCode="true"
+        app:codeText_enableHideCode="false"
+        app:codeText_enableCursor="true"
+        app:codeText_cursorColor="@color/colorPrimaryDark"
+        app:codeText_cursorStrokeWidth="4"
+
+
         >
     </codeInputView.CodeText>
 

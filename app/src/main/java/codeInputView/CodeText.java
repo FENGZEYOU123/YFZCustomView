@@ -16,6 +16,10 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.yfz.yfzcustomview.R;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 import utils.YFZDisplayUtils;
 
 public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
@@ -34,7 +38,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     //view的模式
     private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;
     //view控制-是否隐藏code
-    private boolean mHideCode =false;
+    private boolean mEnableHideCode =false;
     //view控制-是否隐藏code-隐藏时显示的内容
     private String mHideCodeString;
     //盒子笔刷
@@ -76,6 +80,18 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int mHighLightStrokeWidth=1;
     //高亮圆弧半径
     private float mHighLightRadius=5f;
+    //光标-笔刷
+    private Paint mCursorPaint;
+    //光标-宽度
+    private int mCursorStrokeWidth=4;
+    private int mCursorColor=Color.BLACK;
+    //光标-是否显示
+    private boolean mCursorEnable =true;
+    private boolean mCursorDisplaying =false;
+    //光标-Timer计时器
+
+    private Timer timer;
+    private TimerTask timerTask;
     public CodeText(@NonNull Context context) {
         super(context);
         initial(context);
@@ -103,8 +119,12 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mHighLightStrokeWidth=typedArray.getInt(R.styleable.CodeText_codeText_highLightStrokeWidth, mBoxStrokeWidth);//空心线粗细-默认跟盒子一样
         mHighLightRadius=typedArray.getFloat(R.styleable.CodeText_codeText_highLightRadius,mBoxRadius);//圆弧半径-默认跟盒子一样
         //控制
-        mHideCode=typedArray.getBoolean(R.styleable.CodeText_codeText_isHideCode, mHideCode);//是否隐藏输入内容
-        mHideCodeString=typedArray.getString(R.styleable.CodeText_codeText_isHideCode_displayContent);//隐藏内容时-显示的文案
+        mEnableHideCode =typedArray.getBoolean(R.styleable.CodeText_codeText_enableHideCode, mEnableHideCode);//是否隐藏输入内容
+        mHideCodeString=typedArray.getString(R.styleable.CodeText_codeText_enableHideCode_displayContent);//隐藏内容时-显示的文案
+        //光标
+        mCursorStrokeWidth=typedArray.getInt(R.styleable.CodeText_codeText_cursorStrokeWidth, mCursorStrokeWidth);//线粗细
+        mCursorColor=typedArray.getColor(R.styleable.CodeText_codeText_cursorColor, mCursorColor);//颜色
+        mCursorEnable=typedArray.getBoolean(R.styleable.CodeText_codeText_enableCursor,mCursorEnable);//开启关闭
         typedArray.recycle();
         initial(context);
     }
@@ -160,6 +180,14 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         }catch (Exception e){
             Log.e(TAG, "initial: "+e.toString() );
         }
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                mCursorDisplaying = !mCursorDisplaying;
+                postInvalidate();
+            }
+        };
+        timer = new Timer();
         initialPaint();
     }
 
@@ -180,13 +208,18 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mHighLightPaint.setStyle(mHighLightStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
         this.mHighLightPaint.setColor(mHighLightBackgroundColor);
         this.mHighLightPaint.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(),mHighLightStrokeWidth));
+        //光标
+        this.mCursorPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        this.mCursorPaint.setColor(mCursorColor);
+        this.mCursorPaint.setStyle(Paint.Style.FILL);
+        this.mCursorPaint.setStrokeWidth(mCursorStrokeWidth);
 
 
     }
     //                    if (mBoxBackgroundBitmap != null) {
 //                        canvas.drawBitmap(mBoxBackgroundBitmap, mBoxRectF.left, mBoxRectF.right, mPaintBox);
 //                    }
-    //画布
+    //画布-绘制板
     @Override
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < mBoxMaxLength; i++) {
@@ -197,15 +230,28 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             if(mCodeStyle==CODE_TEXT_STYLE_HIGHLIGHT && i == mHighLightIndex){
                 mPaintBox.setColor(mHighLightBackgroundColor);
                 canvas.drawRoundRect(mBoxRectF, mHighLightRadius, mHighLightRadius, mHighLightPaint);
+                onDrawCursor(canvas,mCursorPaint,mBoxRectF);
             }else{
                 mPaintBox.setColor(mBoxBackgroundColor);
                 canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
             }
             if (null != mCodeArray[i]) {
                 canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
-                mPaintText.getTextBounds(mHideCode?mHideCodeString: mCodeArray[i], 0, mCodeArray[i].length(), mTextRect);
-                canvas.drawText(mHideCode?mHideCodeString: mCodeArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
+                mPaintText.getTextBounds(mEnableHideCode ?mHideCodeString: mCodeArray[i], 0, mCodeArray[i].length(), mTextRect);
+                canvas.drawText(mEnableHideCode ?mHideCodeString: mCodeArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
             }
+        }
+
+    }
+    //绘制-光标
+    private void onDrawCursor(Canvas canvas,Paint paint,RectF rectF){
+        if(paint!=null && mCursorEnable){
+            if(mCursorDisplaying){
+                mCursorPaint.setColor(mCursorColor);
+            }else{
+                mCursorPaint.setColor(Color.TRANSPARENT);
+            }
+            canvas.drawRect((float)( (rectF.left+rectF.right)/2-mCursorStrokeWidth),(float)(mCursorStrokeWidth),(float)( (rectF.left+rectF.right)/2+mCursorStrokeWidth),(float)( rectF.bottom-mCursorStrokeWidth),paint);
         }
     }
 
@@ -227,6 +273,20 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             }
             postInvalidate();
         }
+    }
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        //cursorFlashTime为光标闪动的间隔时间
+        if(mCursorEnable) {
+            timer.scheduleAtFixedRate(timerTask, 0, 500);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        timer.cancel();
     }
 
 }
