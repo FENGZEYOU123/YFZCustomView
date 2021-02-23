@@ -31,67 +31,44 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int measureMode=0;
     private int viewHeight=0;
     private int viewWidth=0;
-    //view的背景-颜色
-    private int mViewBackgroundColor =Color.TRANSPARENT;
-    //view的背景-Drawable
-    private Drawable mViewBackgroundDrawable;
-    //view的模式
-    private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;
-    //view控制-是否隐藏code
-    private boolean mEnableHideCode =false;
-    //view控制-是否隐藏code-隐藏时显示的内容
-    private String mHideCodeString;
-    //盒子笔刷
-    private Paint mPaintBox;
-    //盒子矩形
-    private RectF mBoxRectF;
-    //盒子数量
-    private int mBoxMaxLength=4;
-    //盒子长宽大小
-    private int mBoxSize=50;
-    //盒子（空心）线粗细程度
-    private int mBoxStrokeWidth=1;
-    //盒子边距
-    private int mBoxMargin=10;
-    //盒子背景-纯色
-    private int mBoxBackgroundColor =Color.RED;
-    //盒子颜色
-    private int mBoxBackgroundDrawable;
+    //组件
+    private int mViewBackgroundColor =Color.TRANSPARENT;//背景颜色
+    private Drawable mViewBackgroundDrawable;//背景Drawable
+    private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;//组件模式 （正常，高光）
+    private boolean mEnableHideCode =false;//是否隐藏输入code
+    private String mHideCodeString;//隐藏输入code-显示的内容
+    //盒子
+    private Paint mPaintBox;//笔刷
+    private RectF mBoxRectF;//矩形（绘制位置）
+    private int mBoxMaxLength=4;//数量
+    private int mBoxSize=50;//大小
+    private int mBoxStrokeWidth=1;//边框宽度（仅空心）
+    private int mBoxMargin=10;//盒子之间的间距
+    private int mBoxBackgroundColor =Color.RED;//背景颜色（空心边框，实心背景）
+    private int mBoxBackgroundDrawable;//背景Drawable
     private Bitmap mBoxBackgroundBitmap;
-    //盒子样式（空心实心）
-    private int mBoxStrokeStyle = PAINT_STROKE;
-    //盒子圆弧半径
-    private float mBoxRadius=5f;
-    //文字笔刷
-    private Paint mPaintText;
-    //文字矩形
-    private Rect mTextRect;
-    //文字内容-string数组储存
-    private String[] mCodeArray;
-    //高亮-下坐标
-    private int mHighLightIndex =0;
-    //高亮-颜色
-    private int mHighLightBackgroundColor=Color.BLUE;
-    //高亮样式（空心实心）
-    private int mHighLightStrokeStyle = PAINT_STROKE;
-    //高亮笔刷
-    private Paint mHighLightPaint;
-    //高亮（空心）线粗细程度
-    private int mHighLightStrokeWidth=1;
-    //高亮圆弧半径
-    private float mHighLightRadius=5f;
+    private int mBoxStrokeStyle = PAINT_STROKE;//盒子样式（空心，实心）
+    private float mBoxRadius=5f;//圆弧半径
+    //文字
+    private Paint mPaintText;//笔刷
+    private Rect mTextRect;//矩形（绘制位置）
+    private String[] mCodeArray;//输入Code内容
+    //高亮
+    private Paint mHighLightPaint;//笔刷
+    private int mHighLightIndex =0;//下坐标
+    private int mHighLightBackgroundColor=Color.BLUE;//颜色
+    private int mHighLightStrokeStyle = PAINT_STROKE;//高亮样式（空心，实心）
+    private int mHighLightStrokeWidth=1;//边框宽度（仅空心）
+    private float mHighLightRadius=5f;//圆弧半径
     //光标-笔刷
-    private Paint mCursorPaint;
-    //光标-宽度
-    private int mCursorStrokeWidth=4;
-    private int mCursorColor=Color.BLACK;
-    //光标-是否显示
-    private boolean mCursorEnable =true;
-    private boolean mCursorDisplaying =false;
-    //光标-Timer计时器
-
-    private Timer timer;
-    private TimerTask timerTask;
+    private Paint mCursorPaint;//笔刷
+    private int mCursorStrokeWidth=4;//宽度
+    private int mCursorColor=Color.BLACK;//颜色
+    private boolean mCursorEnable =true;//是否显示
+    private boolean mCursorDisplaying =false;//显示-定时器-闪烁效果
+    private Timer mCursorTimer;//定时器
+    private TimerTask mCursorTimerTask;//定时器任务
+    
     public CodeText(@NonNull Context context) {
         super(context);
         initial(context);
@@ -180,14 +157,14 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         }catch (Exception e){
             Log.e(TAG, "initial: "+e.toString() );
         }
-        timerTask = new TimerTask() {
+        mCursorTimerTask = new TimerTask() {
             @Override
             public void run() {
                 mCursorDisplaying = !mCursorDisplaying;
                 postInvalidate();
             }
         };
-        timer = new Timer();
+        mCursorTimer = new Timer();
         initialPaint();
     }
 
@@ -279,14 +256,14 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         super.onAttachedToWindow();
         //cursorFlashTime为光标闪动的间隔时间
         if(mCursorEnable) {
-            timer.scheduleAtFixedRate(timerTask, 0, 500);
+            mCursorTimer.scheduleAtFixedRate(mCursorTimerTask, 0, 500);
         }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        timer.cancel();
+        mCursorTimer.cancel();
     }
 
 }
