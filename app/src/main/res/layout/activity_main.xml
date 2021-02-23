@@ -20,18 +20,10 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:codeText_boxBackgroundDrawable="@drawable/yfz_codeinput_notinput_background"
-        app:codeText_Style="Highlight"
-        app:codeText_highLightBackgroundColor="@color/colorAccent"
-        app:codeText_highLightStrokeStyle="Filled"
-        app:codeText_highLightRadius="30"
-        app:codeText_highLightStrokeWidth="20"
-        app:codeText_boxStrokeStyle="Filled"
-        app:codeText_enableHideCode="false"
         app:codeText_enableCursor="true"
-        app:codeText_cursorColor="@color/colorPrimaryDark"
-        app:codeText_cursorStrokeWidth="4"
-
+        app:codeText_enableHideCode="true"
+        app:codeText_enableHighLight="true"
+        app:codeText_cursorFrequencyMillisecond="500"
 
         >
     </codeInputView.CodeText>

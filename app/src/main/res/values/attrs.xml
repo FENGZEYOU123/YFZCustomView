@@ -2,10 +2,7 @@
 <resources>
     <declare-styleable name="CodeText">
         <attr name="codeText_textColor" format="color"></attr>
-        <attr name="codeText_Style" format="integer">
-            <enum name="Normal" value="200" />
-            <enum name="Highlight" value="201" />
-        </attr>
+
 
         <attr name="codeText_boxStrokeStyle">
             <enum name="Stroke" value="101" />
@@ -21,6 +18,7 @@
         <attr name="codeText_backgroundColor" format="color"></attr>
         <attr name="codeText_backgroundDrawable" format="reference"></attr>
 
+        <attr name="codeText_enableHighLight" format="boolean"></attr>
         <attr name="codeText_highLightStrokeWidth" format="integer"></attr>
         <attr name="codeText_highLightRadius" format="float"></attr>
         <attr name="codeText_highLightBackgroundColor" format="color"></attr>
@@ -32,9 +30,13 @@
         <attr name="codeText_enableHideCode" format="boolean"></attr>
         <attr name="codeText_enableHideCode_displayContent" format="string"></attr>
 
+        <attr name="codeText_enableCursor" format="boolean"></attr>
         <attr name="codeText_cursorStrokeWidth" format="integer"></attr>
         <attr name="codeText_cursorColor" format="color"></attr>
-        <attr name="codeText_enableCursor" format="boolean"></attr>
+        <attr name="codeText_cursorHeightPadding" format="integer"></attr>
+        <attr name="codeText_cursorFrequencyMillisecond" format="integer"></attr>
+
+
 
 
     </declare-styleable>
