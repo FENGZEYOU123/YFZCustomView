@@ -62,6 +62,10 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private Drawable mViewBackgroundDrawable;
     //view的模式
     private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;
+    //高亮-下坐标
+    private int mHighLightIndex =0;
+    //高亮-颜色
+    private int mHighLightBackgroundColor=Color.BLUE;
 
     public CodeText(@NonNull Context context) {
         super(context);
@@ -78,9 +82,10 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mBoxStrokeWidth =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeWidth, mBoxStrokeWidth);//获取盒子（空心）线粗细程度
         mBoxStrokeMode=typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeStyle, mBoxStrokeMode);//获取盒子（空心）线粗细程度
         mBoxRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxRadius,mBoxRadius);//获取盒子圆弧半径
-        mViewBackgroundColor =typedArray.getInt(R.styleable.CodeText_codeText_BackgroundColor, mViewBackgroundColor);//View背景颜色
-        mViewBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_BackgroundDrawable);//View背景Drawable
+        mViewBackgroundColor =typedArray.getInt(R.styleable.CodeText_codeText_backgroundColor, mViewBackgroundColor);//View背景颜色
+        mViewBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_backgroundDrawable);//View背景Drawable
         mCodeStyle=typedArray.getInt(R.styleable.CodeText_codeText_Style,mCodeStyle);//View的样式
+        mHighLightBackgroundColor=typedArray.getInt(R.styleable.CodeText_codeText_highLightBackgroundColor,mHighLightBackgroundColor);//高亮颜色
         typedArray.recycle();
         initial(context);
     }
@@ -144,24 +149,28 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mPaintBox.setColor(mBoxBackgroundColor);
         this.mPaintBox.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(),mBoxStrokeWidth));
     }
-
+    //                    if (mBoxBackgroundBitmap != null) {
+//                        canvas.drawBitmap(mBoxBackgroundBitmap, mBoxRectF.left, mBoxRectF.right, mPaintBox);
+//                    }
     //画布
     @Override
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < mBoxMaxLength; i++) {
-                if(null!=passwordArray[i]) {
-                        mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(mBoxStrokeMode==BOX_STROKE? mBoxStrokeWidth:0 )) ;
-                        mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth:0 ));
-                        mBoxRectF.top =(float)( mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth :0);
-                        mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeMode==BOX_STROKE? mBoxStrokeWidth :0));
-                    if(mBoxBackgroundBitmap!=null) {
-                        canvas.drawBitmap(mBoxBackgroundBitmap, mBoxRectF.left, mBoxRectF.right, mPaintBox);
-                    }else{
-                        canvas.drawRoundRect(mBoxRectF,mBoxRadius,mBoxRadius, mPaintBox);
-                    }
-                    mPaintText.getTextBounds(passwordArray[i],0,passwordArray[i].length(),mTextRect);
-                    canvas.drawText(passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
-                }
+            mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(mBoxStrokeMode==BOX_STROKE? mBoxStrokeWidth:0 )) ;
+            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth:0 ));
+            mBoxRectF.top =(float)( mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth :0);
+            mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeMode==BOX_STROKE? mBoxStrokeWidth :0));
+            if(mCodeStyle==CODE_TEXT_STYLE_HIGHLIGHT && i == mHighLightIndex){
+                mPaintBox.setColor(mHighLightBackgroundColor);
+            }else{
+                mPaintBox.setColor(mBoxBackgroundColor);
+            }
+            canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
+            if (null != passwordArray[i]) {
+                canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
+                mPaintText.getTextBounds(passwordArray[i], 0, passwordArray[i].length(), mTextRect);
+                canvas.drawText(passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
+            }
         }
     }
 
@@ -169,6 +178,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
+        mHighLightIndex =text.length();
+        Log.d(TAG, "onTextChanged: 高亮下坐标: "+mHighLightIndex);
         if(null!=passwordArray) {
             if (lengthAfter > lengthBefore) {
                 for (int i = 0; i < text.length(); i++) {
