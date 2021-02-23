@@ -27,6 +27,7 @@
         app:codeText_highLightRadius="30"
         app:codeText_highLightStrokeWidth="20"
         app:codeText_boxStrokeStyle="Filled"
+        app:codeText_isHideCode="true"
         >
     </codeInputView.CodeText>
 </androidx.constraintlayout.widget.ConstraintLayout>

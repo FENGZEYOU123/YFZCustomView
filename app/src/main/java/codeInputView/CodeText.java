@@ -22,10 +22,21 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private final String TAG= CodeText.class.getName();
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
     private final int CODE_TEXT_STYLE_NORMAL=200,CODE_TEXT_STYLE_HIGHLIGHT=201;
+    private final String DEFAULT_HIDE_CONTENT="*";
     private Context mContext;
     private int measureMode=0;
     private int viewHeight=0;
     private int viewWidth=0;
+    //view的背景-颜色
+    private int mViewBackgroundColor =Color.TRANSPARENT;
+    //view的背景-Drawable
+    private Drawable mViewBackgroundDrawable;
+    //view的模式
+    private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;
+    //view控制-是否隐藏code
+    private boolean mHideCode =false;
+    //view控制-是否隐藏code-隐藏时显示的内容
+    private String mHideCodeString;
     //盒子笔刷
     private Paint mPaintBox;
     //盒子矩形
@@ -51,14 +62,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private Paint mPaintText;
     //文字矩形
     private Rect mTextRect;
-    //输入的文字内容-string数组储存
+    //文字内容-string数组储存
     private String[]passwordArray;
-    //view的背景-颜色
-    private int mViewBackgroundColor =Color.TRANSPARENT;
-    //view的背景-Drawable
-    private Drawable mViewBackgroundDrawable;
-    //view的模式
-    private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;
     //高亮-下坐标
     private int mHighLightIndex =0;
     //高亮-颜色
@@ -97,6 +102,9 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mHighLightStrokeStyle =typedArray.getInt(R.styleable.CodeText_codeText_highLightStrokeStyle, mBoxStrokeStyle);//笔刷样式-默认跟盒子一样
         mHighLightStrokeWidth=typedArray.getInt(R.styleable.CodeText_codeText_highLightStrokeWidth, mBoxStrokeWidth);//空心线粗细-默认跟盒子一样
         mHighLightRadius=typedArray.getFloat(R.styleable.CodeText_codeText_highLightRadius,mBoxRadius);//圆弧半径-默认跟盒子一样
+        //控制
+        mHideCode=typedArray.getBoolean(R.styleable.CodeText_codeText_isHideCode, mHideCode);//是否隐藏输入内容
+        mHideCodeString=typedArray.getString(R.styleable.CodeText_codeText_isHideCode_displayContent);//隐藏内容时-显示的文案
         typedArray.recycle();
         initial(context);
     }
@@ -142,6 +150,11 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mHighLightRadius=YFZDisplayUtils.dip2pxFloat(mContext,mHighLightRadius);
         this.mBoxRectF=new RectF();
         this.mTextRect=new Rect();
+        if(null==this.mHideCodeString){
+            this.mHideCodeString=DEFAULT_HIDE_CONTENT;
+        }else if(this.mHideCodeString.length()>0) {
+            this.mHideCodeString = mHideCodeString.substring(0, 1);
+        }
         try {
             this.mBoxBackgroundBitmap = BitmapFactory.decodeResource(getResources(), mBoxBackgroundDrawable).copy(Bitmap.Config.RGB_565, false);
         }catch (Exception e){
@@ -190,8 +203,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             }
             if (null != passwordArray[i]) {
                 canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
-                mPaintText.getTextBounds(passwordArray[i], 0, passwordArray[i].length(), mTextRect);
-                canvas.drawText(passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
+                mPaintText.getTextBounds(mHideCode?mHideCodeString:passwordArray[i], 0, passwordArray[i].length(), mTextRect);
+                canvas.drawText(mHideCode?mHideCodeString:passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
             }
         }
     }
