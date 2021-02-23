@@ -3,7 +3,9 @@ package com.yfz.yfzcustomview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import codeInputView.CodeText;
 
@@ -19,7 +21,7 @@ public class CodeTextActivity extends AppCompatActivity {
         codeText.setOnResultListener(new CodeText.OnResultListener() {
             @Override
             public void finish(String result) {
-                codeText.setText(result);
+                codeTextDisplay.setText("输入结果： "+result);
             }
         });
     }

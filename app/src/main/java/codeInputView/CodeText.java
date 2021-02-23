@@ -191,7 +191,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             }
         };
         mCursorTimer = new Timer();
-        this.addTextChangedListener(new CodeTextWatcher());
         initialPaint();
     }
 
@@ -280,7 +279,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             postInvalidate();
             this.mCursorDisplayingByIndex=true;
             if( null!=mOnResultListener && text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
-                mOnResultListener.finish(text.toString());有bug，会一致调
+                mOnResultListener.finish(text.toString());
             }
         }
     }
@@ -310,25 +309,5 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mOnResultListener=onResultListener;
     }
 
-    //输入内容监听器
-    class CodeTextWatcher implements TextWatcher{
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            if( null!=mOnResultListener && editable.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
-                mOnResultListener.finish(editable.toString());
-            }
-        }
-    }
 
 }

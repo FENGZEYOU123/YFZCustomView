@@ -8,10 +8,14 @@
 
     <TextView
         android:id="@+id/codeTextDisplay"
+        android:gravity="center"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:textSize="20sp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:text="输入结果："
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="40dp">
