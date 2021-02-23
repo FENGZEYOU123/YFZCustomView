@@ -23,8 +23,6 @@
         app:codeText_enableCursor="true"
         app:codeText_enableHideCode="true"
         app:codeText_enableHighLight="true"
-        app:codeText_cursorFrequencyMillisecond="500"
-
         >
     </codeInputView.CodeText>
 

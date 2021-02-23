@@ -32,21 +32,21 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int viewHeight=0;
     private int viewWidth=0;
     //组件
+    private boolean mEnableHideCode =false;//是否隐藏输入code
+    private String mHideCodeString;//隐藏输入code-显示的内容
     private int mViewBackgroundColor =Color.TRANSPARENT;//背景颜色
     private Drawable mViewBackgroundDrawable;//背景Drawable
 //    private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;//组件模式 （正常，高光）
-    private boolean mEnableHideCode =false;//是否隐藏输入code
-    private String mHideCodeString;//隐藏输入code-显示的内容
     //盒子
     private Paint mPaintBox;//笔刷
     private RectF mBoxRectF;//矩形（绘制位置）
+    private Bitmap mBoxBackgroundBitmap;
     private int mBoxMaxLength=4;//数量
     private int mBoxSize=50;//大小
     private int mBoxStrokeWidth=1;//边框宽度（仅空心）
     private int mBoxMargin=10;//盒子之间的间距
     private int mBoxBackgroundColor =Color.RED;//背景颜色（空心边框，实心背景）
     private int mBoxBackgroundDrawable;//背景Drawable
-    private Bitmap mBoxBackgroundBitmap;
     private int mBoxStrokeStyle = PAINT_STROKE;//盒子样式（空心，实心）
     private float mBoxRadius=5f;//圆弧半径
     //文字
@@ -63,15 +63,16 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private float mHighLightRadius=5f;//圆弧半径
     //光标-笔刷
     private Paint mCursorPaint;//笔刷
+    private Timer mCursorTimer;//定时器
+    private TimerTask mCursorTimerTask;//定时器任务
     private int mCursorStrokeWidth=1;//宽度
     private int mCursorColor=Color.BLACK;//颜色
+    private int mCursorHeightPadding=1;//上下边距
+    private int mCursorFrequency=500;//闪烁频率
     private boolean mCursorEnable =true;//是否开启光标
     private boolean mCursorDisplayingByTimer =false;//显示光标-定时器-闪烁效果
     private boolean mCursorDisplayingByIndex =false;//显示光标-第一次下坐标
-    private Timer mCursorTimer;//定时器
-    private TimerTask mCursorTimerTask;//定时器任务
-    private int mCursorHeightPadding=1;//上下边距
-    private int mCursorFrequency=500;//闪烁频率
+
 
 
     public CodeText(@NonNull Context context) {
