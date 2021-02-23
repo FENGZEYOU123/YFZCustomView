@@ -12,10 +12,20 @@
         <attr name="codeText_boxBackgroundDrawable" format="reference|color"></attr>
         <attr name="codeText_boxStrokeWidth" format="integer"></attr>
         <attr name="codeText_boxRadius" format="float"></attr>
+
         <attr name="codeText_textColor" format="color"></attr>
+
         <attr name="codeText_backgroundColor" format="color"></attr>
         <attr name="codeText_backgroundDrawable" format="reference"></attr>
+        <attr name="codeText_highLightStrokeWidth" format="integer"></attr>
+        <attr name="codeText_highLightRadius" format="float"></attr>
+
+
         <attr name="codeText_highLightBackgroundColor" format="color"></attr>
+        <attr name="codeText_highLightStrokeStyle">
+            <enum name="Stroke" value="101" />
+            <enum name="Filled" value="100" />
+        </attr>
 
         <attr name="codeText_Style" format="integer">
             <enum name="Normal" value="200" />
