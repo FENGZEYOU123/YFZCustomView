@@ -16,13 +16,25 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.yfz.yfzcustomview.R;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
 import utils.YFZDisplayUtils;
 
+/**
+ * 简介：自定义验证码输入框
+ * 作者：游丰泽
+ */
 public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
+    /**
+     * 主要功能:
+     * mEnableHideCode 是否隐藏输入内容
+     * mEnableHighLight 是否开启高亮
+     * mCursorEnable 是否开启光标
+     */
+    private boolean mEnableHideCode =false;//是否隐藏输入code
+    private boolean mEnableHighLight=false;//是否开启高亮
+    private boolean mEnableCursor =true;//是否开启光标
+
     private final String TAG= CodeText.class.getName();
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
 //    private final int CODE_TEXT_STYLE_NORMAL=200,CODE_TEXT_STYLE_HIGHLIGHT=201;
@@ -32,7 +44,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int viewHeight=0;
     private int viewWidth=0;
     //组件
-    private boolean mEnableHideCode =false;//是否隐藏输入code
     private String mHideCodeString;//隐藏输入code-显示的内容
     private int mViewBackgroundColor =Color.TRANSPARENT;//背景颜色
     private Drawable mViewBackgroundDrawable;//背景Drawable
@@ -55,7 +66,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private String[] mCodeArray;//输入Code内容
     //高亮
     private Paint mHighLightPaint;//笔刷
-    private boolean mEnableHighLight=false;//是否开启高亮
     private int mHighLightIndex =0;//下坐标
     private int mHighLightBackgroundColor=Color.BLUE;//颜色
     private int mHighLightStrokeStyle = PAINT_STROKE;//高亮样式（空心，实心）
@@ -69,7 +79,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int mCursorColor=Color.BLACK;//颜色
     private int mCursorHeightPadding=1;//上下边距
     private int mCursorFrequency=500;//闪烁频率
-    private boolean mCursorEnable =true;//是否开启光标
     private boolean mCursorDisplayingByTimer =false;//显示光标-定时器-闪烁效果
     private boolean mCursorDisplayingByIndex =false;//显示光标-第一次下坐标
 
@@ -112,7 +121,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         //光标
         mCursorStrokeWidth=typedArray.getInt(R.styleable.CodeText_codeText_cursorStrokeWidth, mCursorStrokeWidth);//线粗细
         mCursorColor=typedArray.getColor(R.styleable.CodeText_codeText_cursorColor, mCursorColor);//颜色
-        mCursorEnable=typedArray.getBoolean(R.styleable.CodeText_codeText_enableCursor,mCursorEnable);//开启关闭
+        mEnableCursor =typedArray.getBoolean(R.styleable.CodeText_codeText_enableCursor, mEnableCursor);//开启关闭
         mCursorHeightPadding=typedArray.getInt(R.styleable.CodeText_codeText_cursorHeightPadding,1);//高度边距
         mCursorFrequency=typedArray.getInt(R.styleable.CodeText_codeText_cursorFrequencyMillisecond,mCursorFrequency);//闪烁频率
 
@@ -236,7 +245,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     }
     //绘制-光标
     private void onDrawCursor(Canvas canvas,Paint paint,RectF rectF){
-        if(paint!=null && mCursorEnable){
+        if(paint!=null && mEnableCursor){
             mCursorPaint.setColor((mCursorDisplayingByTimer || mCursorDisplayingByIndex) ?mCursorColor:Color.TRANSPARENT);
             canvas.drawRect(
                     (float)((rectF.left+rectF.right)/2-mCursorStrokeWidth),
@@ -272,7 +281,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         //cursorFlashTime为光标闪动的间隔时间
-        if(mCursorEnable) {
+        if(mEnableCursor) {
             mCursorTimer.scheduleAtFixedRate(mCursorTimerTask, 0, mCursorFrequency);
         }
     }
