@@ -53,6 +53,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int mViewBackgroundColor =Color.TRANSPARENT;
     //view的背景-Drawable
     private Drawable mViewBackgroundDrawable;
+
     public CodeText(@NonNull Context context) {
         super(context);
         initial(context);
@@ -72,6 +73,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         typedArray.recycle();
         initial(context);
     }
+
+    //测量-CodeText大小
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -93,6 +96,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         setMeasuredDimension(viewWidth, viewHeight);
     }
 
+    //初始化-CodeText
     private void initial(Context context){
         this.mContext=context;
         this.setSingleLine();
@@ -113,6 +117,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         initialPaint();
     }
 
+    //初始化-笔刷
     private void initialPaint(){
         this.mPaintText=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText.setStyle(Paint.Style.FILL);
@@ -124,6 +129,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mPaintBox.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(),mBoxStrokeWidth));
     }
 
+    //画布
     @Override
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < mBoxMaxLength; i++) {
@@ -139,6 +145,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         }
     }
 
+    //检测输入内容，并画在画布上
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
