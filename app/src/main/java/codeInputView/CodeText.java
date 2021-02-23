@@ -29,11 +29,11 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
      * 主要功能:
      * mEnableHideCode 是否隐藏输入内容
      * mEnableHighLight 是否开启高亮
-     * mCursorEnable 是否开启光标
+     * mEnableCursor 是否开启光标
      */
     private boolean mEnableHideCode =false;//是否隐藏输入code
     private boolean mEnableHighLight=false;//是否开启高亮
-    private boolean mEnableCursor =true;//是否开启光标
+    private boolean mEnableCursor =false;//是否开启光标
 
     private final String TAG= CodeText.class.getName();
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
