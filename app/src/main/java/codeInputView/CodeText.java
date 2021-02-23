@@ -10,7 +10,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -43,6 +45,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int measureMode=0;
     private int viewHeight=0;
     private int viewWidth=0;
+    private OnResultListener mOnResultListener;
     //组件
     private String mHideCodeString;//隐藏输入code-显示的内容
     private int mViewBackgroundColor =Color.TRANSPARENT;//背景颜色
@@ -188,6 +191,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             }
         };
         mCursorTimer = new Timer();
+        this.addTextChangedListener(new CodeTextWatcher());
         initialPaint();
     }
 
@@ -275,21 +279,56 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             }
             postInvalidate();
             this.mCursorDisplayingByIndex=true;
+            if( null!=mOnResultListener && text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
+                mOnResultListener.finish(text.toString());有bug，会一致调
+            }
         }
     }
+
+    //开始计时器，开始光标闪烁
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        //cursorFlashTime为光标闪动的间隔时间
         if(mEnableCursor) {
             mCursorTimer.scheduleAtFixedRate(mCursorTimerTask, 0, mCursorFrequency);
         }
     }
-
+    //停止计时器，停止光标闪烁
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mCursorTimer.cancel();
+    }
+
+    //接口回调输入结果
+    public interface OnResultListener {
+        void finish(String result);
+    }
+
+    //监听接口回调
+    public void setOnResultListener(OnResultListener onResultListener){
+        this.mOnResultListener=onResultListener;
+    }
+
+    //输入内容监听器
+    class CodeTextWatcher implements TextWatcher{
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if( null!=mOnResultListener && editable.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
+                mOnResultListener.finish(editable.toString());
+            }
+        }
     }
 
 }

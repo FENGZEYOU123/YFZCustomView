@@ -13,17 +13,12 @@
         android:layout_height="wrap_content">
     </buttonView.YFZGestureButton>
 
-    <codeInputView.CodeText
+    <buttonView.YFZGestureButton
+        android:id="@+id/newCodeInputButton"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:codeText_enableCursor="true"
-        app:codeText_enableHideCode="true"
-        app:codeText_enableHighLight="true"
-        >
-    </codeInputView.CodeText>
+        android:layout_height="wrap_content">
+    </buttonView.YFZGestureButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
