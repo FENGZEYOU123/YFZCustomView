@@ -63,7 +63,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     //文字矩形
     private Rect mTextRect;
     //文字内容-string数组储存
-    private String[]passwordArray;
+    private String[] mCodeArray;
     //高亮-下坐标
     private int mHighLightIndex =0;
     //高亮-颜色
@@ -143,7 +143,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         }
         this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(mBoxMaxLength)});
         this.setInputType(getInputType());
-        this.passwordArray=new String[mBoxMaxLength];
+        this.mCodeArray =new String[mBoxMaxLength];
         this.mBoxSize=YFZDisplayUtils.dip2px(mContext,mBoxSize);
         this.mBoxMargin=YFZDisplayUtils.dip2px(mContext,mBoxMargin);
         this.mBoxRadius=YFZDisplayUtils.dip2pxFloat(mContext,mBoxRadius);
@@ -201,10 +201,10 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 mPaintBox.setColor(mBoxBackgroundColor);
                 canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
             }
-            if (null != passwordArray[i]) {
+            if (null != mCodeArray[i]) {
                 canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
-                mPaintText.getTextBounds(mHideCode?mHideCodeString:passwordArray[i], 0, passwordArray[i].length(), mTextRect);
-                canvas.drawText(mHideCode?mHideCodeString:passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
+                mPaintText.getTextBounds(mHideCode?mHideCodeString: mCodeArray[i], 0, mCodeArray[i].length(), mTextRect);
+                canvas.drawText(mHideCode?mHideCodeString: mCodeArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
             }
         }
     }
@@ -215,14 +215,14 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         super.onTextChanged(text, start, lengthBefore, lengthAfter);
         mHighLightIndex =text.length();
         Log.d(TAG, "onTextChanged: 高亮下坐标: "+mHighLightIndex);
-        if(null!=passwordArray) {
+        if(null!= mCodeArray) {
             if (lengthAfter > lengthBefore) {
                 for (int i = 0; i < text.length(); i++) {
-                    passwordArray[i] = String.valueOf(text.charAt(i));
+                    mCodeArray[i] = String.valueOf(text.charAt(i));
                 }
             } else {
-                for (int i = passwordArray.length; i > text.length(); i--) {
-                    passwordArray[i-1] = null;
+                for (int i = mCodeArray.length; i > text.length(); i--) {
+                    mCodeArray[i-1] = null;
                 }
             }
             postInvalidate();

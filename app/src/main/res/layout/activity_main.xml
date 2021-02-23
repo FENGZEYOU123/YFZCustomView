@@ -30,4 +30,5 @@
         app:codeText_isHideCode="true"
         >
     </codeInputView.CodeText>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
