@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -17,8 +18,8 @@ import com.yfz.yfzcustomview.R;
 
 import utils.YFZDisplayUtils;
 
-public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditText {
-    private final String TAG= PasswordCodeText.class.getName();
+public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
+    private final String TAG= CodeText.class.getName();
     private final int BOX_FILLED=100,BOX_STROKE=101;
     private Context mContext;
     private int measureMode=0;
@@ -40,25 +41,34 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
     private int mBoxColor=Color.RED;
     //盒子样式（空心实心）
     private int mBoxStrokeMode=BOX_STROKE;
+    //盒子圆弧半径
+    private float mBoxRadius=5f;
     //文字笔刷
     private Paint mPaintText;
     //文字矩形
     private Rect mTextRect;
-    //当前输入的文字内容-string数组储存
+    //输入的文字内容-string数组储存
     private String[]passwordArray;
-    public PasswordCodeText(@NonNull Context context) {
+    //view的背景-颜色
+    private int mViewBackgroundColor =Color.TRANSPARENT;
+    //view的背景-Drawable
+    private Drawable mViewBackgroundDrawable;
+    public CodeText(@NonNull Context context) {
         super(context);
         initial(context);
     }
-    public PasswordCodeText(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public CodeText(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.PasswordCodeText);
-        mBoxMaxLength=typedArray.getInt(R.styleable.PasswordCodeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
-        mBoxMargin=typedArray.getInt(R.styleable.PasswordCodeText_boxMargin,mBoxMargin);//获取盒子边距
-        mBoxSize=typedArray.getInt(R.styleable.PasswordCodeText_boxSize,mBoxSize);//获取盒子大小
-        mBoxColor=typedArray.getColor(R.styleable.PasswordCodeText_boxColor,mBoxColor);//获取盒子颜色
-        mBoxStrokeWidth =typedArray.getInt(R.styleable.PasswordCodeText_boxStrokeWidth, mBoxStrokeWidth);//获取盒子（空心）线粗细程度
-        mBoxStrokeMode=typedArray.getInt(R.styleable.PasswordCodeText_boxStrokeStyle, mBoxStrokeMode);//获取盒子（空心）线粗细程度
+        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.CodeText);
+        mBoxMaxLength=typedArray.getInt(R.styleable.CodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
+        mBoxMargin=typedArray.getInt(R.styleable.CodeText_codeText_boxMargin,mBoxMargin);//获取盒子边距
+        mBoxSize=typedArray.getInt(R.styleable.CodeText_codeText_boxSize,mBoxSize);//获取盒子大小
+        mBoxColor=typedArray.getColor(R.styleable.CodeText_codeText_boxColor,mBoxColor);//获取盒子颜色
+        mBoxStrokeWidth =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeWidth, mBoxStrokeWidth);//获取盒子（空心）线粗细程度
+        mBoxStrokeMode=typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeStyle, mBoxStrokeMode);//获取盒子（空心）线粗细程度
+        mBoxRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxRadius,mBoxRadius);//V获取盒子圆弧半径
+        mViewBackgroundColor =typedArray.getInt(R.styleable.CodeText_codeText_viewBackgroundColor, mViewBackgroundColor);//View背景颜色
+        mViewBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_viewBackgroundDrawable);//View背景Drawable
         typedArray.recycle();
         initial(context);
     }
@@ -85,13 +95,19 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
 
     private void initial(Context context){
         this.mContext=context;
-        this.setBackgroundColor(Color.TRANSPARENT);
         this.setSingleLine();
         this.setCursorVisible(false);
+        if (mViewBackgroundDrawable != null) {
+            this.setBackgroundDrawable(mViewBackgroundDrawable);
+        }else {
+            this.setBackgroundColor(mViewBackgroundColor);
+        }
         this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(mBoxMaxLength)});
+        this.setInputType(getInputType());
         this.passwordArray=new String[mBoxMaxLength];
         this.mBoxSize=YFZDisplayUtils.dip2px(mContext,mBoxSize);
         this.mBoxMargin=YFZDisplayUtils.dip2px(mContext,mBoxMargin);
+        this.mBoxRadius=YFZDisplayUtils.dip2pxFloat(mContext,mBoxRadius);
         this.mBoxRectF=new RectF();
         this.mTextRect=new Rect();
         initialPaint();
@@ -110,15 +126,13 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.d(TAG, "onDraw: ");
-        canvas.drawRect(0,0,getWidth(),getHeight(),mPaintText);
         for (int i = 0; i < mBoxMaxLength; i++) {
                 if(null!=passwordArray[i]) {
                         mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(mBoxStrokeMode==BOX_STROKE? mBoxStrokeWidth:0 )) ;
                         mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth:0 ));
                         mBoxRectF.top =(float)( mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth :0);
                         mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeMode==BOX_STROKE? mBoxStrokeWidth :0));
-                        canvas.drawRect(mBoxRectF, mPaintBox);
+                    canvas.drawRoundRect(mBoxRectF,mBoxRadius,mBoxRadius, mPaintBox);
                     mPaintText.getTextBounds(passwordArray[i],0,passwordArray[i].length(),mTextRect);
                     canvas.drawText(passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
                 }

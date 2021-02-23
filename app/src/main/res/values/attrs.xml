@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="PasswordCodeText">
-        <attr name="boxStrokeStyle">
+    <declare-styleable name="CodeText">
+        <attr name="codeText_boxStrokeStyle">
             <enum name="Stroke" value="101" />
             <enum name="Filled" value="100" />
         </attr>
-        <attr name="boxLength" format="integer"></attr>
-        <attr name="boxMargin" format="integer"></attr>
-        <attr name="boxSize" format="integer"></attr>
-        <attr name="boxColor" format="color"></attr>
-        <attr name="boxStrokeWidth" format="integer"></attr>
-        <attr name="TextColor" format="color"></attr>
-
-
-
+        <attr name="codeText_boxLength" format="integer"></attr>
+        <attr name="codeText_boxMargin" format="integer"></attr>
+        <attr name="codeText_boxSize" format="integer"></attr>
+        <attr name="codeText_boxColor" format="color"></attr>
+        <attr name="codeText_boxStrokeWidth" format="integer"></attr>
+        <attr name="codeText_boxRadius" format="float"></attr>
+        <attr name="codeText_textColor" format="color"></attr>
+        <attr name="codeText_viewBackgroundColor" format="color"></attr>
+        <attr name="codeText_viewBackgroundDrawable" format="reference"></attr>
     </declare-styleable>
 </resources>
