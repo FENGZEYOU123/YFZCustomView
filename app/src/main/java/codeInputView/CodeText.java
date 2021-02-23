@@ -24,6 +24,7 @@ import utils.YFZDisplayUtils;
 public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private final String TAG= CodeText.class.getName();
     private final int BOX_FILLED=100,BOX_STROKE=101;
+    private final int CODE_TEXT_STYLE_NORMAL=200,CODE_TEXT_STYLE_HIGHLIGHT=201;
     private Context mContext;
     private int measureMode=0;
     private int viewHeight=0;
@@ -59,6 +60,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int mViewBackgroundColor =Color.TRANSPARENT;
     //view的背景-Drawable
     private Drawable mViewBackgroundDrawable;
+    //view的模式
+    private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;
 
     public CodeText(@NonNull Context context) {
         super(context);
@@ -74,9 +77,10 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mBoxBackgroundDrawable=typedArray.getResourceId(R.styleable.CodeText_codeText_boxBackgroundDrawable,-1);//获取盒子背景Drawable
         mBoxStrokeWidth =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeWidth, mBoxStrokeWidth);//获取盒子（空心）线粗细程度
         mBoxStrokeMode=typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeStyle, mBoxStrokeMode);//获取盒子（空心）线粗细程度
-        mBoxRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxRadius,mBoxRadius);//V获取盒子圆弧半径
-        mViewBackgroundColor =typedArray.getInt(R.styleable.CodeText_codeText_viewBackgroundColor, mViewBackgroundColor);//View背景颜色
-        mViewBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_viewBackgroundDrawable);//View背景Drawable
+        mBoxRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxRadius,mBoxRadius);//获取盒子圆弧半径
+        mViewBackgroundColor =typedArray.getInt(R.styleable.CodeText_codeText_BackgroundColor, mViewBackgroundColor);//View背景颜色
+        mViewBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_BackgroundDrawable);//View背景Drawable
+        mCodeStyle=typedArray.getInt(R.styleable.CodeText_codeText_Style,mCodeStyle);//View的样式
         typedArray.recycle();
         initial(context);
     }
@@ -157,7 +161,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                     }
                     mPaintText.getTextBounds(passwordArray[i],0,passwordArray[i].length(),mTextRect);
                     canvas.drawText(passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
-               canvas.save();
                 }
         }
     }
