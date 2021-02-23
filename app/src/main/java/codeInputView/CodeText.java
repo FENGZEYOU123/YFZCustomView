@@ -13,12 +13,9 @@ import android.graphics.drawable.Drawable;
 import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.yfz.yfzcustomview.R;
-
 import utils.YFZDisplayUtils;
 
 public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
@@ -180,10 +177,10 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     @Override
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < mBoxMaxLength; i++) {
-            mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(mBoxStrokeStyle == PAINT_STROKE ? mBoxStrokeWidth:0 )) ;
-            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeStyle == PAINT_STROKE ?mBoxStrokeWidth:0 ));
-            mBoxRectF.top =(float)( mBoxStrokeStyle == PAINT_STROKE ?mBoxStrokeWidth :0);
-            mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeStyle == PAINT_STROKE ? mBoxStrokeWidth :0));
+            mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(mBoxStrokeStyle == PAINT_STROKE || mHighLightStrokeStyle == PAINT_STROKE ? mBoxStrokeWidth:0 )) ;
+            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeStyle == PAINT_STROKE || mHighLightStrokeStyle == PAINT_STROKE ?mBoxStrokeWidth:0 ));
+            mBoxRectF.top =(float)( mBoxStrokeStyle == PAINT_STROKE|| mHighLightStrokeStyle == PAINT_STROKE ?mBoxStrokeWidth :0);
+            mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeStyle == PAINT_STROKE|| mHighLightStrokeStyle == PAINT_STROKE ? mBoxStrokeWidth :0));
             if(mCodeStyle==CODE_TEXT_STYLE_HIGHLIGHT && i == mHighLightIndex){
                 mPaintBox.setColor(mHighLightBackgroundColor);
                 canvas.drawRoundRect(mBoxRectF, mHighLightRadius, mHighLightRadius, mHighLightPaint);

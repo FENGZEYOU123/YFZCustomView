@@ -22,6 +22,11 @@
         android:layout_height="wrap_content"
         app:codeText_boxBackgroundDrawable="@drawable/yfz_codeinput_notinput_background"
         app:codeText_Style="Highlight"
+        app:codeText_highLightBackgroundColor="@color/colorAccent"
+        app:codeText_highLightStrokeStyle="Filled"
+        app:codeText_highLightRadius="30"
+        app:codeText_highLightStrokeWidth="20"
+        app:codeText_boxStrokeStyle="Filled"
         >
     </codeInputView.CodeText>
 </androidx.constraintlayout.widget.ConstraintLayout>
