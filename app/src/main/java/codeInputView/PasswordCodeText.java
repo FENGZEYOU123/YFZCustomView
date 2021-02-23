@@ -109,12 +109,14 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
     @Override
     protected void onDraw(Canvas canvas) {
         Log.d(TAG, "onDraw: ");
-            for (int i = 0; i < mBoxMaxLength; i++) {
+        canvas.drawRect(0,0,getWidth(),getHeight(),mPaintText);
+
+        for (int i = 0; i < mBoxMaxLength; i++) {
                 if(null!=passwordArray[i]) {
-                    mBoxRectF.left=i*(mBoxSize+mBoxMargin)+1;
-                    mBoxRectF.right=mBoxRectF.left+mBoxSize-2;
-                    mBoxRectF.top=1;
-                    mBoxRectF.bottom=viewHeight-1;
+                    mBoxRectF.left=i*(mBoxSize+mBoxMargin)+mBoxStrokeWidth+1;
+                    mBoxRectF.right=mBoxRectF.left+mBoxSize-mBoxStrokeWidth-2;
+                    mBoxRectF.top=mBoxStrokeWidth+1;
+                    mBoxRectF.bottom=viewHeight-mBoxStrokeWidth-1;
                     canvas.drawRect(mBoxRectF,mPaintBox);
                     mPaintText.getTextBounds(passwordArray[i],0,passwordArray[i].length(),mTextRect);
                     canvas.drawText(passwordArray[i], (mBoxRectF.left+mBoxRectF.right)/2-(mTextRect.left+mTextRect.right)/2, (mBoxRectF.top+mBoxRectF.bottom) / 2-(mTextRect.top+mTextRect.bottom)/2, mPaintText);
