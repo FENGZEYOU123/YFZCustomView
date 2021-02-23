@@ -112,27 +112,18 @@ public class PasswordCodeText extends androidx.appcompat.widget.AppCompatEditTex
     protected void onDraw(Canvas canvas) {
         Log.d(TAG, "onDraw: ");
         canvas.drawRect(0,0,getWidth(),getHeight(),mPaintText);
-
         for (int i = 0; i < mBoxMaxLength; i++) {
                 if(null!=passwordArray[i]) {
-
-//                        mBoxRectF.left = i * (mBoxSize + mBoxMargin) + mBoxStrokeWidth + 1;
-//                        mBoxRectF.right = mBoxRectF.left + mBoxSize - mBoxStrokeWidth - 2;
-//                        mBoxRectF.top = mBoxStrokeWidth + 1;
-//                        mBoxRectF.bottom = viewHeight - mBoxStrokeWidth - 1;
-
-                        mBoxRectF.left = i * (mBoxSize + mBoxMargin) + mBoxStrokeWidth ;
-                        mBoxRectF.right = mBoxRectF.left + mBoxSize - mBoxStrokeWidth ;
-                        mBoxRectF.top = mBoxStrokeWidth ;
-                        mBoxRectF.bottom = viewHeight - mBoxStrokeWidth ;
+                        mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(mBoxStrokeMode==BOX_STROKE? mBoxStrokeWidth:0 )) ;
+                        mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth:0 ));
+                        mBoxRectF.top =(float)( mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth :0);
+                        mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeMode==BOX_STROKE? mBoxStrokeWidth :0));
                         canvas.drawRect(mBoxRectF, mPaintBox);
                     mPaintText.getTextBounds(passwordArray[i],0,passwordArray[i].length(),mTextRect);
                     canvas.drawText(passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
                 }
         }
     }
-
-
 
     @Override
     protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {

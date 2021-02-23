@@ -25,7 +25,7 @@
         app:boxLength="6"
         app:boxStrokeWidth="1"
         app:boxMargin="10"
-        app:boxStrokeStyle="Stroke"
+        app:boxStrokeStyle="Filled"
         >
     </codeInputView.PasswordCodeText>
 </androidx.constraintlayout.widget.ConstraintLayout>
