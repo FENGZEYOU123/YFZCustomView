@@ -2,6 +2,8 @@ package codeInputView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -37,8 +40,11 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int mBoxStrokeWidth=1;
     //盒子边距
     private int mBoxMargin=10;
+    //盒子背景-纯色
+    private int mBoxBackgroundColor =Color.RED;
     //盒子颜色
-    private int mBoxColor=Color.RED;
+    private int mBoxBackgroundDrawable;
+    private Bitmap mBoxBackgroundBitmap;
     //盒子样式（空心实心）
     private int mBoxStrokeMode=BOX_STROKE;
     //盒子圆弧半径
@@ -64,7 +70,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mBoxMaxLength=typedArray.getInt(R.styleable.CodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
         mBoxMargin=typedArray.getInt(R.styleable.CodeText_codeText_boxMargin,mBoxMargin);//获取盒子边距
         mBoxSize=typedArray.getInt(R.styleable.CodeText_codeText_boxSize,mBoxSize);//获取盒子大小
-        mBoxColor=typedArray.getColor(R.styleable.CodeText_codeText_boxColor,mBoxColor);//获取盒子颜色
+        mBoxBackgroundColor =typedArray.getColor(R.styleable.CodeText_codeText_boxBackgroundColor, mBoxBackgroundColor);//获取盒子背景颜色
+        mBoxBackgroundDrawable=typedArray.getResourceId(R.styleable.CodeText_codeText_boxBackgroundDrawable,-1);//获取盒子背景Drawable
         mBoxStrokeWidth =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeWidth, mBoxStrokeWidth);//获取盒子（空心）线粗细程度
         mBoxStrokeMode=typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeStyle, mBoxStrokeMode);//获取盒子（空心）线粗细程度
         mBoxRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxRadius,mBoxRadius);//V获取盒子圆弧半径
@@ -114,6 +121,11 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mBoxRadius=YFZDisplayUtils.dip2pxFloat(mContext,mBoxRadius);
         this.mBoxRectF=new RectF();
         this.mTextRect=new Rect();
+        try {
+            this.mBoxBackgroundBitmap = BitmapFactory.decodeResource(getResources(), mBoxBackgroundDrawable).copy(Bitmap.Config.RGB_565, false);
+        }catch (Exception e){
+            Log.e(TAG, "initial: "+e.toString() );
+        }
         initialPaint();
     }
 
@@ -125,7 +137,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mPaintText.setColor(getCurrentTextColor());
         this.mPaintBox=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintBox.setStyle(mBoxStrokeMode==BOX_STROKE?Paint.Style.STROKE:Paint.Style.FILL);
-        this.mPaintBox.setColor(mBoxColor);
+        this.mPaintBox.setColor(mBoxBackgroundColor);
         this.mPaintBox.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(),mBoxStrokeWidth));
     }
 
@@ -138,9 +150,14 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                         mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth:0 ));
                         mBoxRectF.top =(float)( mBoxStrokeMode==BOX_STROKE?mBoxStrokeWidth :0);
                         mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeMode==BOX_STROKE? mBoxStrokeWidth :0));
-                    canvas.drawRoundRect(mBoxRectF,mBoxRadius,mBoxRadius, mPaintBox);
+                    if(mBoxBackgroundBitmap!=null) {
+                        canvas.drawBitmap(mBoxBackgroundBitmap, mBoxRectF.left, mBoxRectF.right, mPaintBox);
+                    }else{
+                        canvas.drawRoundRect(mBoxRectF,mBoxRadius,mBoxRadius, mPaintBox);
+                    }
                     mPaintText.getTextBounds(passwordArray[i],0,passwordArray[i].length(),mTextRect);
                     canvas.drawText(passwordArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
+               canvas.save();
                 }
         }
     }

@@ -8,7 +8,8 @@
         <attr name="codeText_boxLength" format="integer"></attr>
         <attr name="codeText_boxMargin" format="integer"></attr>
         <attr name="codeText_boxSize" format="integer"></attr>
-        <attr name="codeText_boxColor" format="color"></attr>
+        <attr name="codeText_boxBackgroundColor" format="color"></attr>
+        <attr name="codeText_boxBackgroundDrawable" format="reference|color"></attr>
         <attr name="codeText_boxStrokeWidth" format="integer"></attr>
         <attr name="codeText_boxRadius" format="float"></attr>
         <attr name="codeText_textColor" format="color"></attr>

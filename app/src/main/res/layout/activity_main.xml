@@ -20,6 +20,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:codeText_boxBackgroundDrawable="@drawable/yfz_codeinput_notinput_background"
         >
     </codeInputView.CodeText>
 </androidx.constraintlayout.widget.ConstraintLayout>
