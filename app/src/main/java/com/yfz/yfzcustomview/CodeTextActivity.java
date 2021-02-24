@@ -26,14 +26,5 @@ public class CodeTextActivity extends AppCompatActivity {
                 codeTextDisplay.setText("输入结果： "+result);
             }
         });
-        codeText1=findViewById(R.id.codeText1);
-        codeText1.setOnResultListener(new CodeText.OnResultListener() {
-            @Override
-            public void finish(String result) {
-                codeText.setUnLock();
-            }
-        });
-
     }
-
 }

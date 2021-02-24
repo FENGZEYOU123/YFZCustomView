@@ -20,34 +20,13 @@
         android:layout_width="match_parent"
         android:layout_height="40dp">
     </TextView>
+
     <codeInputView.CodeText
         android:id="@+id/codeText"
         app:layout_constraintTop_toBottomOf="@+id/codeTextDisplay"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:codeText_boxBackgroundColor="@color/colorAccent"
-        app:codeText_boxHighLightBackgroundColor="@color/colorPrimaryDark"
-        app:codeText_boxAfterBackgroundColor="@color/colorGray"
-        app:codeText_boxAfterStrokeWidth="1"
-        app:codeText_boxAfterRadius="40"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:codeText_enableLockTextView="true"
-        app:codeText_boxLockStrokeStyle="Filled"
-        app:codeText_boxLockBackgroundColor="@color/colorYellow"
-        app:codeText_boxLockTextColor="@color/colorPink"
-        app:codeText_enableSoftKeyboardAutoShow="true"
-        app:codeText_enableHideCode="true"
-        app:codeText_enableHighLight="true">
-    </codeInputView.CodeText>
-
-    <codeInputView.CodeText
-        android:id="@+id/codeText1"
-        app:layout_constraintTop_toBottomOf="@+id/codeText"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
     </codeInputView.CodeText>
