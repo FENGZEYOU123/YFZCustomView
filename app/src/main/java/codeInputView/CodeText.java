@@ -297,9 +297,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mBoxAfterPaint.setColor(mBoxAfterBackgroundColor);
         this.mBoxAfterPaint.setStyle(mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
         this.mBoxAfterPaint.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(), mBoxAfterStrokeWidth));
-        //锁定
-        this.mBoxLockPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.mBoxLockPaint.setStyle(mBoxLockStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
     }
     //                    if (mBoxBackgroundBitmap != null) {
 //                        canvas.drawBitmap(mBoxBackgroundBitmap, mBoxRectF.left, mBoxRectF.right, mPaintBox);
@@ -318,9 +315,11 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             } else if (null != mCodeArray[i]) {
 
                 if(i<mBoxHighLightIndex){
+                    mBoxAfterPaint.setStyle(mIsLocked?mBoxLockStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL:mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
                     mBoxAfterPaint.setColor((mIsLocked&&mBoxLockBackgroundColor!=-1)?mBoxLockBackgroundColor:mBoxAfterBackgroundColor);
                     canvas.drawRoundRect(mBoxRectF, mBoxAfterRadius, mBoxAfterRadius, mBoxAfterPaint);
                 }else {
+                    mPaintBox.setStyle(mIsLocked?mBoxLockStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL:mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
                     mPaintBox.setColor((mIsLocked&&mBoxLockBackgroundColor!=-1)?mBoxLockBackgroundColor:mBoxBackgroundColor);
                     canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
                 }
