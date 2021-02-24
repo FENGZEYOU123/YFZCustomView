@@ -196,8 +196,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mBoxRadius=YFZDisplayUtils.dip2pxFloat(mContext,mBoxRadius);
         this.mBoxHighLightRadius =YFZDisplayUtils.dip2pxFloat(mContext, mBoxHighLightRadius);
         this.mBoxAfterRadius =YFZDisplayUtils.dip2pxFloat(mContext, mBoxAfterRadius);
-
-
         this.mBoxRectF=new RectF();
         this.mTextRect=new Rect();
         if(null==this.mHideCodeString){
@@ -220,14 +218,14 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mCursorTimer = new Timer();
         initialPaint();
         layoutListener();
-        setOnFocusChangeListener(new OnFocusChangeListener() {
+        this.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 Log.d(TAG, "onFocusChange: "+hasFocus);
             }
         });
     }
-
+    
     //监听View是否渲染完成
     private void layoutListener(){
         this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -369,15 +367,15 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private void openSoftKeyboard(){
         if(mEnableSoftKeyboardAutoShow ) {
             this.setFocusable(true);
-            this.setFocusableInTouchMode(true);
-            this.requestFocus();
+//            this.setFocusableInTouchMode(true);
+//            this.requestFocus();
             inputMethodManager.showSoftInput(this, 0);
         }
     }
     //关闭软键盘
     private void closeSoftKeyboard(){
         if(mEnableSoftKeyboardAutoClose) {
-            this.setFocusableInTouchMode(false);
+            this.clearAnimation();
 //            this.setFocusable(false);
             inputMethodManager.hideSoftInputFromWindow(this.getWindowToken(), 0);
         }

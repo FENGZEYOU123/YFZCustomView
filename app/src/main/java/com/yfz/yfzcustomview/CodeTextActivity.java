@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,5 +26,7 @@ public class CodeTextActivity extends AppCompatActivity {
                 codeTextDisplay.setText("输入结果： "+result);
             }
         });
+
     }
+
 }
