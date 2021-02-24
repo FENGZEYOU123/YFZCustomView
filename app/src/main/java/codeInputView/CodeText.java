@@ -180,6 +180,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 viewHeight = mBoxSize;
                 break;
             case MeasureSpec.UNSPECIFIED:
+                Log.d(TAG, "onMeasure:UNSPECIFIED ");
                 break;
             default:
                 break;
@@ -321,8 +322,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
             }
         }
-        canvas.drawRect(0,0,getWidth(),getHeight(),mPaintBox);
-
     }
     //绘制-光标
     private void onDrawCursor(Canvas canvas,Paint paint,RectF rectF){
