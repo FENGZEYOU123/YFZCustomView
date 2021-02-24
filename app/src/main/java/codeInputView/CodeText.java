@@ -131,6 +131,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mBoxMaxLength=typedArray.getInt(R.styleable.CodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
         mBoxMargin=typedArray.getInt(R.styleable.CodeText_codeText_boxMargin,mBoxMargin);//获取盒子边距
         mBoxSize=typedArray.getInt(R.styleable.CodeText_codeText_boxSize,mBoxSize);//获取盒子大小
+        if(mBoxSize<50)mBoxSize=50;
         mBoxBackgroundColor =typedArray.getColor(R.styleable.CodeText_codeText_boxBackgroundColor, mBoxBackgroundColor);//获取盒子背景颜色
         mBoxBackgroundDrawable=typedArray.getResourceId(R.styleable.CodeText_codeText_boxBackgroundDrawable,-1);//获取盒子背景Drawable
         mBoxStrokeWidth =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeWidth, mBoxStrokeWidth);//空心线粗细
@@ -165,14 +166,18 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         measureMode=MeasureSpec.getMode(widthMeasureSpec);
-        switch (measureMode){
+
+        switch (measureMode) {
             case MeasureSpec.AT_MOST:
-                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +mBoxStrokeWidth;
-                viewHeight= mBoxSize;
+                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) + mBoxStrokeWidth;
+                viewHeight = mBoxSize;
                 break;
             case MeasureSpec.EXACTLY:
-                viewWidth=MeasureSpec.getSize(widthMeasureSpec);
-                viewHeight=MeasureSpec.getSize(heightMeasureSpec);
+//                viewWidth = MeasureSpec.getSize(widthMeasureSpec);
+//                if(viewWidth<mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +mBoxStrokeWidth) {
+                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) + mBoxStrokeWidth;
+//        }
+                viewHeight = mBoxSize;
                 break;
             case MeasureSpec.UNSPECIFIED:
                 break;
@@ -257,11 +262,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         });
     }
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-    }
-
     //初始化-笔刷
     private void initialPaint(){
         //文字
@@ -321,6 +321,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
             }
         }
+        canvas.drawRect(0,0,getWidth(),getHeight(),mPaintBox);
 
     }
     //绘制-光标
