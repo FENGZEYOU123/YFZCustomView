@@ -47,6 +47,13 @@
         <attr name="codeText_cursorFrequencyMillisecond" format="integer"></attr>
 
 
+        <attr name="codeText_boxLockTextColor" format="color"></attr>
+        <attr name="codeText_boxLockBackgroundColor" format="color"></attr>
+        <attr name="codeText_boxLockStrokeStyle">
+            <enum name="Stroke" value="101" />
+            <enum name="Filled" value="100" />
+        </attr>
+
 
 
     </declare-styleable>

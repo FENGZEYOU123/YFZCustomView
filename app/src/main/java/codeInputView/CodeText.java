@@ -88,12 +88,10 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private Paint mBoxAfterPaint;//笔刷
     private int mBoxAfterStrokeWidth;//宽度
     private float mBoxAfterRadius =5f;//圆弧半径
-
     //文字
     private Paint mPaintText;//笔刷
     private Rect mTextRect;//矩形（绘制位置）
     private String[] mCodeArray;//输入Code内容
-
     //光标-笔刷
     private Paint mCursorPaint;//笔刷
     private Timer mCursorTimer;//定时器
@@ -104,7 +102,11 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int mCursorFrequency=500;//闪烁频率
     private boolean mCursorDisplayingByTimer =false;//显示光标-定时器-闪烁效果
     private boolean mCursorDisplayingByIndex =false;//显示光标-第一次下坐标
-
+    //锁定盒子
+    private int mBoxLockBackgroundColor =-1; //背景
+    private int mBoxLockStrokeStyle = PAINT_STROKE;//高亮样式（空心，实心）
+    private int mBoxLockTextColor = -1;//文字颜色
+    private Paint mBoxLockPaint;//笔刷
 
 
 
@@ -156,6 +158,10 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mCursorColor=typedArray.getColor(R.styleable.CodeText_codeText_cursorColor, mCursorColor);//颜色
         mCursorHeightPadding=typedArray.getInt(R.styleable.CodeText_codeText_cursorHeightPadding,1);//高度边距
         mCursorFrequency=typedArray.getInt(R.styleable.CodeText_codeText_cursorFrequencyMillisecond,mCursorFrequency);//闪烁频率
+        //锁定
+        mBoxLockBackgroundColor=typedArray.getColor(R.styleable.CodeText_codeText_boxLockBackgroundColor, mBoxLockBackgroundColor);//颜色
+        mBoxLockStrokeStyle=typedArray.getInt(R.styleable.CodeText_codeText_boxLockStrokeStyle,mBoxLockStrokeStyle);//空心实心
+        mBoxLockTextColor=typedArray.getColor(R.styleable.CodeText_codeText_boxLockTextColor, mBoxLockTextColor);//颜色
 
         typedArray.recycle();
         initial(context);
@@ -240,7 +246,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     }
     //解除锁定CodeText
     public void setUnLock(){
-        mEnableLockCodeTextIfMaxCode=false;
+//        mEnableLockCodeTextIfMaxCode=false;
         mIsLocked=false;
         openSoftKeyboard();
     }
@@ -291,7 +297,9 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mBoxAfterPaint.setColor(mBoxAfterBackgroundColor);
         this.mBoxAfterPaint.setStyle(mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
         this.mBoxAfterPaint.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(), mBoxAfterStrokeWidth));
-
+        //锁定
+        this.mBoxLockPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
+        this.mBoxLockPaint.setStyle(mBoxLockStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
     }
     //                    if (mBoxBackgroundBitmap != null) {
 //                        canvas.drawBitmap(mBoxBackgroundBitmap, mBoxRectF.left, mBoxRectF.right, mPaintBox);
@@ -308,11 +316,15 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 canvas.drawRoundRect(mBoxRectF, mBoxHighLightRadius, mBoxHighLightRadius, mBoxHighLightPaint);
                 onDrawCursor(canvas,mCursorPaint,mBoxRectF);
             } else if (null != mCodeArray[i]) {
+
                 if(i<mBoxHighLightIndex){
+                    mBoxAfterPaint.setColor((mIsLocked&&mBoxLockBackgroundColor!=-1)?mBoxLockBackgroundColor:mBoxAfterBackgroundColor);
                     canvas.drawRoundRect(mBoxRectF, mBoxAfterRadius, mBoxAfterRadius, mBoxAfterPaint);
                 }else {
+                    mPaintBox.setColor((mIsLocked&&mBoxLockBackgroundColor!=-1)?mBoxLockBackgroundColor:mBoxBackgroundColor);
                     canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
                 }
+                mPaintText.setColor((mIsLocked&&mBoxLockTextColor!=-1)?mBoxLockTextColor: getCurrentTextColor());
                 mPaintText.getTextBounds(mEnableHideCode ?mHideCodeString: mCodeArray[i], 0, mCodeArray[i].length(), mTextRect);
                 canvas.drawText(mEnableHideCode ?mHideCodeString: mCodeArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
             }else if(!mEnableHideNotInputBox){

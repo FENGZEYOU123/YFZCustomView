@@ -34,6 +34,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:codeText_enableLockTextView="true"
+        app:codeText_boxLockBackgroundColor="@color/colorYellow"
+        app:codeText_boxLockTextColor="@color/colorPink"
         app:codeText_enableSoftKeyboardAutoShow="true"
         app:codeText_enableHideCode="true"
         app:codeText_enableHighLight="true">

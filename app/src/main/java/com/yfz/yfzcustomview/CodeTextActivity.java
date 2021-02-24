@@ -13,7 +13,7 @@ import codeInputView.CodeText;
 
 public class CodeTextActivity extends AppCompatActivity {
     private TextView codeTextDisplay;
-    private CodeText codeText;
+    private CodeText codeText,codeText1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +24,13 @@ public class CodeTextActivity extends AppCompatActivity {
             @Override
             public void finish(String result) {
                 codeTextDisplay.setText("输入结果： "+result);
+            }
+        });
+        codeText1=findViewById(R.id.codeText1);
+        codeText1.setOnResultListener(new CodeText.OnResultListener() {
+            @Override
+            public void finish(String result) {
+                codeText.setUnLock();
             }
         });
 
