@@ -1,5 +1,6 @@
 package codeInputView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -10,9 +11,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -48,8 +47,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private OnResultListener mOnResultListener;
     //组件
     private String mHideCodeString;//隐藏输入code-显示的内容
-    private int mViewBackgroundColor =Color.TRANSPARENT;//背景颜色
-    private Drawable mViewBackgroundDrawable;//背景Drawable
+    private int mViewBackground=Color.TRANSPARENT;//背景Drawable
 //    private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;//组件模式 （正常，高光）
     //盒子
     private Paint mPaintBox;//笔刷
@@ -101,8 +99,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
 //            <enum name="Highlight" value="201" />
 //        </attr>
 //        mCodeStyle=typedArray.getInt(R.styleable.CodeText_codeText_Style,mCodeStyle);//View的样式
-        mViewBackgroundColor =typedArray.getInt(R.styleable.CodeText_codeText_backgroundColor, mViewBackgroundColor);//View背景颜色
-        mViewBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_backgroundDrawable);//View背景Drawable
+        mViewBackground =typedArray.getResourceId(R.styleable.CodeText_codeText_viewBackground,Color.TRANSPARENT);//View背景Drawable
         //盒子
         mBoxMaxLength=typedArray.getInt(R.styleable.CodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
         mBoxMargin=typedArray.getInt(R.styleable.CodeText_codeText_boxMargin,mBoxMargin);//获取盒子边距
@@ -155,15 +152,12 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     }
 
     //初始化-CodeText
+    @SuppressLint("ResourceType")
     private void initial(Context context){
         this.mContext=context;
         this.setSingleLine();
         this.setCursorVisible(false);
-        if (mViewBackgroundDrawable != null) {
-            this.setBackgroundDrawable(mViewBackgroundDrawable);
-        }else {
-            this.setBackgroundColor(mViewBackgroundColor);
-        }
+        this.setBackgroundResource(mViewBackground);
         this.setFilters(new InputFilter[]{new InputFilter.LengthFilter(mBoxMaxLength)});
         this.setInputType(getInputType());
         this.mCodeArray =new String[mBoxMaxLength];

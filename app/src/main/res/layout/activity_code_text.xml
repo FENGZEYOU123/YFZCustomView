@@ -22,6 +22,7 @@
     </TextView>
     <codeInputView.CodeText
         android:id="@+id/codeText"
+        app:codeText_viewBackground="@drawable/yfz_codeinput_notinput_background"
         app:layout_constraintTop_toBottomOf="@+id/codeTextDisplay"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
