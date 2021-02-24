@@ -32,11 +32,15 @@ import utils.YFZDisplayUtils;
  */
 public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     /**
-     * 主要功能:
+     * 主要功能: （以下功能涉及到盒子样式的改变，均可单独控制功能的盒子样式）
+     * codeText_box 基础盒子，codeText_boxAfter输入内容后的盒子，codeText_boxHighLight 高亮盒子，codeText_boxLock 锁住状态下盒子
      * mEnableHideCode 是否隐藏输入内容
      * mEnableHighLight 是否开启高亮
      * mEnableCursor 是否开启光标
      * mEnableHideNotInputBox 是否将没有输入内容的盒子隐藏
+     * mEnableSoftKeyboardAutoClose 开关自动关闭软键盘
+     * mEnableSoftKeyboardAutoShow 开关自动展现软键盘
+     * mEnableLockCodeTextIfMaxCode 开关输入内容满足长度后是否锁定
      */
     private boolean mEnableHideCode =false;//是否隐藏输入code
     private boolean mEnableHighLight=false;//是否开启高亮
