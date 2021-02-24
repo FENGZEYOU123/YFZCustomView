@@ -51,7 +51,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int mIsFirstTime=0;
     private final String TAG= CodeText.class.getName();
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
-//    private final int CODE_TEXT_STYLE_NORMAL=200,CODE_TEXT_STYLE_HIGHLIGHT=201;
     private final String DEFAULT_HIDE_CONTENT="*";
     private Context mContext;
     private int measureMode=0;
@@ -118,12 +117,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         super(context, attrs);
 
         TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.CodeText);
-        //view
-//                 <attr name="codeText_Style" format="integer">
-//            <enum name="Normal" value="200" />
-//            <enum name="Highlight" value="201" />
-//        </attr>
-//        mCodeStyle=typedArray.getInt(R.styleable.CodeText_codeText_Style,mCodeStyle);//View的样式
         mViewBackground =typedArray.getResourceId(R.styleable.CodeText_codeText_viewBackground,Color.TRANSPARENT);//View背景Drawable
         //控制
         mEnableSoftKeyboardAutoShow=typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoShow, mEnableSoftKeyboardAutoShow);//自动弹出键盘
@@ -262,7 +255,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 }
             }
         });
-        
     }
 
     @Override
@@ -298,9 +290,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mBoxAfterPaint.setStyle(mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
         this.mBoxAfterPaint.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(), mBoxAfterStrokeWidth));
     }
-    //                    if (mBoxBackgroundBitmap != null) {
-//                        canvas.drawBitmap(mBoxBackgroundBitmap, mBoxRectF.left, mBoxRectF.right, mPaintBox);
-//                    }
+
     //画布-绘制板
     @Override
     protected void onDraw(Canvas canvas) {
