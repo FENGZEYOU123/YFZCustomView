@@ -91,6 +91,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private Paint mPaintText;//笔刷
     private Rect mTextRect;//矩形（绘制位置）
     private String[] mCodeArray;//输入Code内容
+    private int mTextColor=Color.BLACK;//颜色
     //光标-笔刷
     private Paint mCursorPaint;//笔刷
     private Timer mCursorTimer;//定时器
@@ -118,6 +119,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
 
         TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.CodeText);
         mViewBackground =typedArray.getResourceId(R.styleable.CodeText_codeText_viewBackground,Color.TRANSPARENT);//View背景Drawable
+        //文字颜色
+        mTextColor=typedArray.getColor(R.styleable.CodeText_codeText_textColor,mTextColor);
         //控制
         mEnableSoftKeyboardAutoShow=typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoShow, mEnableSoftKeyboardAutoShow);//自动弹出键盘
         mEnableSoftKeyboardAutoClose =typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoClose, mEnableSoftKeyboardAutoClose);//自动隐藏键盘
@@ -269,7 +272,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mPaintText=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText.setStyle(Paint.Style.FILL);
         this.mPaintText.setTextSize(YFZDisplayUtils.dip2pxFloat(this.getContext(),getTextSize()));
-        this.mPaintText.setColor(getCurrentTextColor());
+        this.mPaintText.setColor(mTextColor);
         //盒子
         this.mPaintBox=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintBox.setStyle(mBoxStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
@@ -314,7 +317,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                     mPaintBox.setColor((mIsLocked&&mBoxLockBackgroundColor!=-1)?mBoxLockBackgroundColor:mBoxBackgroundColor);
                     canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
                 }
-                mPaintText.setColor((mIsLocked&&mBoxLockTextColor!=-1)?mBoxLockTextColor: getCurrentTextColor());
+                mPaintText.setColor((mIsLocked&&mBoxLockTextColor!=-1)?mBoxLockTextColor: mTextColor);
                 mPaintText.getTextBounds(mEnableHideCode ?mHideCodeString: mCodeArray[i], 0, mCodeArray[i].length(), mTextRect);
                 canvas.drawText(mEnableHideCode ?mHideCodeString: mCodeArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
             }else if(!mEnableHideNotInputBox){
@@ -354,12 +357,16 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 }
             }
             this.mCursorDisplayingByIndex=true;
-            if( null!=mOnResultListener && text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
-                mIsCodeFull =true;
+            if( text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
+                mIsCodeFull = true;
+            if(null!=mOnResultListener) {
                 mOnResultListener.finish(text.toString());
-                mIsLocked= mEnableLockCodeTextIfMaxCode?true:false;
-                closeSoftKeyboard();
+               }
 
+            if(mEnableSoftKeyboardAutoClose){
+                closeSoftKeyboard();
+              }
+                mIsLocked = mEnableLockCodeTextIfMaxCode ? true : false;
             }
             postInvalidate();
         }
@@ -382,12 +389,11 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     }
     //打开软键盘
     private void openSoftKeyboard(){
-        if(mEnableSoftKeyboardAutoShow ) {
             this.setFocusable(true);
             this.setFocusableInTouchMode(true);
             this.requestFocus();
             inputMethodManager.showSoftInput(this, 0);
-        }
+
     }
     //关闭软键盘
     private void closeSoftKeyboard(){

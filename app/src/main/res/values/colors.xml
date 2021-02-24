@@ -9,5 +9,8 @@
     <color name="colorGray">#708090</color>
     <color name="colorPink">#708</color>
     <color name="colorYellow">#FF2</color>
+    <color name="colorRed">#ff0000</color>
+
+
 
 </resources>
