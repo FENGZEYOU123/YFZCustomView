@@ -42,7 +42,7 @@
     </TextView>
     <codeInputView.CodeText
     android:id="@+id/codeTextBasic"
-    app:layout_constraintTop_toBottomOf="@+id/codeTextDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/codeTextDisplay"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     android:layout_marginTop="20dp"
@@ -218,4 +218,5 @@
         android:text="未完成"
         android:layout_width="80dp"
         android:layout_height="50dp"></Button>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

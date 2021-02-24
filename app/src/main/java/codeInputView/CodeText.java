@@ -4,13 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -32,8 +31,9 @@ import utils.YFZDisplayUtils;
  */
 public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     /**
-     * 主要功能: （以下功能涉及到盒子样式的改变，均可单独控制功能的盒子样式）
+     * 主要功能: （以下功能涉及到盒子样式的改变，均可单独控制功能的盒子样式,默认为线，可自定设置backgroundDrawable替代）
      * codeText_box 基础盒子，codeText_boxAfter输入内容后的盒子，codeText_boxHighLight 高亮盒子，codeText_boxLock 锁住状态下盒子
+     *
      * mEnableHideCode 是否隐藏输入内容
      * mEnableHighLight 是否开启高亮
      * mEnableCursor 是否开启光标
@@ -50,6 +50,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private boolean mEnableSoftKeyboardAutoClose=false;//是否将没有输入内容的盒子隐藏
     private boolean mEnableLockCodeTextIfMaxCode =false;//是否限制输满后锁定view
 
+    private boolean mIsEnableLock=false;
     private boolean mIsLocked=false;
     private boolean mIsCodeFull =false;
     private int mIsFirstTime=0;
@@ -69,25 +70,27 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     //盒子
     private Paint mPaintBox;//笔刷
     private RectF mBoxRectF;//矩形（绘制位置）
-    private Bitmap mBoxBackgroundBitmap;
+    private Rect mBoxRect;//矩形（绘制位置）
     private int mBoxMaxLength=4;//数量
     private int mBoxSize=50;//大小
     private int mBoxStrokeWidth=1;//边框宽度（仅空心）
     private int mBoxMargin=10;//盒子之间的间距
     private int mBoxBackgroundColor =Color.RED;//背景颜色（空心边框，实心背景）
-    private int mBoxBackgroundDrawable;//背景Drawable
+    private Drawable mBoxBackgroundDrawable;//背景Drawable
     private int mBoxStrokeStyle = PAINT_STROKE;//盒子样式（空心，实心）
     private float mBoxRadius=5f;//圆弧半径
     //高亮盒子
     private Paint mBoxHighLightPaint;//笔刷
     private int mBoxHighLightIndex =0;//下坐标
+    private Drawable mBoxHighBackgroundDrawable;//背景
     private int mBoxHighLightBackgroundColor =Color.BLUE;//颜色
     private int mBoxHighLightStrokeStyle = PAINT_STROKE;//高亮样式（空心，实心）
     private int mBoxHighLightStrokeWidth =1;//边框宽度（仅空心）
     private float mBoxHighLightRadius =5f;//圆弧半径
     //输入后的盒子
     private int mBoxAfterStrokeStyle = PAINT_STROKE;//高亮样式（空心，实心）
-    private int mBoxAfterBackgroundColor =Color.RED;
+    private int mBoxAfterBackgroundColor =Color.RED;//背景s
+    private Drawable mBoxAfterBackgroundDrawable;//背景
     private Paint mBoxAfterPaint;//笔刷
     private int mBoxAfterStrokeWidth;//宽度
     private float mBoxAfterRadius =5f;//圆弧半径
@@ -101,7 +104,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private Timer mCursorTimer;//定时器
     private TimerTask mCursorTimerTask;//定时器任务
     private int mCursorStrokeWidth=1;//宽度
-    private int mCursorColor=Color.BLACK;//颜色
+    private int mCursorBackgroundColor =Color.BLACK;//颜色
+    private Drawable mCursorBackgroundDrawable;//背景
     private int mCursorHeightPadding=1;//上下边距
     private int mCursorFrequency=500;//闪烁频率
     private boolean mCursorDisplayingByTimer =false;//显示光标-定时器-闪烁效果
@@ -110,6 +114,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int mBoxLockBackgroundColor =-1; //背景
     private int mBoxLockStrokeStyle = PAINT_STROKE;//高亮样式（空心，实心）
     private int mBoxLockTextColor = -1;//文字颜色
+    private Drawable  mBoxLockBackgroundDrawable;
     private Paint mBoxLockPaint;//笔刷
 
 
@@ -140,29 +145,34 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mBoxSize=typedArray.getInt(R.styleable.CodeText_codeText_boxSize,mBoxSize);//获取盒子大小
         if(mBoxSize<50)mBoxSize=50;
         mBoxBackgroundColor =typedArray.getColor(R.styleable.CodeText_codeText_boxBackgroundColor, mBoxBackgroundColor);//获取盒子背景颜色
-        mBoxBackgroundDrawable=typedArray.getResourceId(R.styleable.CodeText_codeText_boxBackgroundDrawable,-1);//获取盒子背景Drawable
+        mBoxBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_boxBackgroundDrawable);//获取盒子背景Drawable
         mBoxStrokeWidth =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeWidth, mBoxStrokeWidth);//空心线粗细
         mBoxStrokeStyle =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeStyle, mBoxStrokeStyle);//笔刷样式
         mBoxRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxRadius,mBoxRadius);//圆弧半径
         //高亮
+        mBoxHighBackgroundDrawable =typedArray.getDrawable(R.styleable.CodeText_codeText_boxHighLightBackgroundDrawable);//背景
         mBoxHighLightBackgroundColor =typedArray.getInt(R.styleable.CodeText_codeText_boxHighLightBackgroundColor, mBoxHighLightBackgroundColor);//颜色-默认跟盒子一样
         mBoxHighLightStrokeStyle =typedArray.getInt(R.styleable.CodeText_codeText_boxHighLightStrokeStyle, mBoxStrokeStyle);//笔刷样式-默认跟盒子一样
         mBoxHighLightStrokeWidth =typedArray.getInt(R.styleable.CodeText_codeText_boxHighLightStrokeWidth, mBoxStrokeWidth);//空心线粗细-默认跟盒子一样
         mBoxHighLightRadius =typedArray.getFloat(R.styleable.CodeText_codeText_boxHighLightRadius,mBoxRadius);//圆弧半径-默认跟盒子一样
+
         //输入之后的盒子样式
         mBoxAfterStrokeStyle=typedArray.getInt(R.styleable.CodeText_codeText_boxAfterStrokeStyle,mBoxStrokeStyle);//样式-默认跟普通盒子一样
         mBoxAfterBackgroundColor=typedArray.getColor(R.styleable.CodeText_codeText_boxAfterBackgroundColor,mBoxBackgroundColor);//背景颜色-默认跟普通盒子一样
+        mBoxAfterBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_boxAfterBackgroundDrawable);//背景
         mBoxAfterRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxAfterRadius,mBoxRadius);//圆弧半径-默认跟普通盒子一样
         mBoxAfterStrokeWidth =typedArray.getInt(R.styleable.CodeText_codeText_boxAfterStrokeWidth, mBoxStrokeWidth);//空心线粗细-默认跟普通盒子一样
         //光标
         mCursorStrokeWidth=typedArray.getInt(R.styleable.CodeText_codeText_cursorStrokeWidth, mCursorStrokeWidth);//线粗细
-        mCursorColor=typedArray.getColor(R.styleable.CodeText_codeText_cursorColor, mCursorColor);//颜色
+        mCursorBackgroundColor =typedArray.getColor(R.styleable.CodeText_codeText_cursorBackgroundColor, mCursorBackgroundColor);//颜色
         mCursorHeightPadding=typedArray.getInt(R.styleable.CodeText_codeText_cursorHeightPadding,1);//高度边距
         mCursorFrequency=typedArray.getInt(R.styleable.CodeText_codeText_cursorFrequencyMillisecond,mCursorFrequency);//闪烁频率
+        mCursorBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_cursorBackgroundDrawable);//背景
         //锁定
         mBoxLockBackgroundColor=typedArray.getColor(R.styleable.CodeText_codeText_boxLockBackgroundColor, mBoxLockBackgroundColor);//颜色
         mBoxLockStrokeStyle=typedArray.getInt(R.styleable.CodeText_codeText_boxLockStrokeStyle,mBoxLockStrokeStyle);//空心实心
         mBoxLockTextColor=typedArray.getColor(R.styleable.CodeText_codeText_boxLockTextColor, mBoxLockTextColor);//颜色
+        mBoxLockBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_boxLockBackgroundDrawable);//背景
 
         typedArray.recycle();
         initial(context);
@@ -213,16 +223,13 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mBoxHighLightRadius =YFZDisplayUtils.dip2pxFloat(mContext, mBoxHighLightRadius);
         this.mBoxAfterRadius =YFZDisplayUtils.dip2pxFloat(mContext, mBoxAfterRadius);
         this.mBoxRectF=new RectF();
+        this.mBoxRect=new Rect();
         this.mTextRect=new Rect();
+        this.mIsEnableLock=mEnableLockCodeTextIfMaxCode;
         if(null==this.mHideCodeString){
             this.mHideCodeString=DEFAULT_HIDE_CONTENT;
         }else if(this.mHideCodeString.length()>0) {
             this.mHideCodeString = mHideCodeString.substring(0, 1);
-        }
-        try {
-            this.mBoxBackgroundBitmap = BitmapFactory.decodeResource(getResources(), mBoxBackgroundDrawable).copy(Bitmap.Config.RGB_565, false);
-        }catch (Exception e){
-            Log.e(TAG, "initial: "+e.toString() );
         }
         mCursorTimerTask = new TimerTask() {
             @Override
@@ -289,7 +296,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.mBoxHighLightPaint.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(), mBoxHighLightStrokeWidth));
         //光标
         this.mCursorPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.mCursorPaint.setColor(mCursorColor);
+        this.mCursorPaint.setColor(mCursorBackgroundColor);
         this.mCursorPaint.setStyle(Paint.Style.FILL);
         this.mCursorPaint.setStrokeWidth(mCursorStrokeWidth);
         //输入后
@@ -304,18 +311,44 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < mBoxMaxLength; i++) {
             mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(mBoxStrokeStyle == PAINT_STROKE || mBoxHighLightStrokeStyle == PAINT_STROKE ? mBoxStrokeWidth:0 )) ;
-            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeStyle == PAINT_STROKE || mBoxHighLightStrokeStyle == PAINT_STROKE ?mBoxStrokeWidth:0 ));
             mBoxRectF.top =(float)( mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ?mBoxStrokeWidth :0);
+            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeStyle == PAINT_STROKE || mBoxHighLightStrokeStyle == PAINT_STROKE ?mBoxStrokeWidth:0 ));
             mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ? mBoxStrokeWidth :0));
+
+            mBoxRect.left=i * (mBoxSize + mBoxMargin) ;
+            mBoxRect.top=0 ;
+            mBoxRect.right=(int) mBoxRect.left+ mBoxSize;
+            mBoxRect.bottom=(int)viewHeight ;
             if(mEnableHighLight && i == mBoxHighLightIndex){
-                canvas.drawRoundRect(mBoxRectF, mBoxHighLightRadius, mBoxHighLightRadius, mBoxHighLightPaint);
-                onDrawCursor(canvas,mCursorPaint,mBoxRectF);
+                if(null!= mBoxHighBackgroundDrawable) {  //如果有规定drawable，则使用drawable
+                    mBoxHighBackgroundDrawable.setBounds(mBoxRect);
+                    mBoxHighBackgroundDrawable.draw(canvas);
+                }else {
+                    canvas.drawRoundRect(mBoxRectF, mBoxHighLightRadius, mBoxHighLightRadius, mBoxHighLightPaint);
+                }
+
+                    onDrawCursor(canvas, mCursorPaint, mBoxRectF,mBoxRect);
+
             } else if (null != mCodeArray[i]) {
 
                 if(i<mBoxHighLightIndex){
                     mBoxAfterPaint.setStyle(mIsLocked?mBoxLockStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL:mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
                     mBoxAfterPaint.setColor((mIsLocked&&mBoxLockBackgroundColor!=-1)?mBoxLockBackgroundColor:mBoxAfterBackgroundColor);
-                    canvas.drawRoundRect(mBoxRectF, mBoxAfterRadius, mBoxAfterRadius, mBoxAfterPaint);
+                    if(null!=mBoxAfterBackgroundDrawable) {  //如果有规定drawable，则使用drawable
+                        if(mIsLocked){
+                            if(null!=mBoxLockBackgroundDrawable){
+                                mBoxLockBackgroundDrawable.setBounds(mBoxRect);
+                                mBoxLockBackgroundDrawable.draw(canvas);
+                            }else {
+                                canvas.drawRoundRect(mBoxRectF, mBoxAfterRadius, mBoxAfterRadius, mBoxAfterPaint);
+                            }
+                        }else {
+                            mBoxAfterBackgroundDrawable.setBounds(mBoxRect);
+                            mBoxAfterBackgroundDrawable.draw(canvas);
+                        }
+                    }else {
+                        canvas.drawRoundRect(mBoxRectF, mBoxAfterRadius, mBoxAfterRadius, mBoxAfterPaint);
+                    }
                 }else {
                     mPaintBox.setStyle(mIsLocked?mBoxLockStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL:mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
                     mPaintBox.setColor((mIsLocked&&mBoxLockBackgroundColor!=-1)?mBoxLockBackgroundColor:mBoxBackgroundColor);
@@ -325,22 +358,39 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 mPaintText.getTextBounds(mEnableHideCode ?mHideCodeString: mCodeArray[i], 0, mCodeArray[i].length(), mTextRect);
                 canvas.drawText(mEnableHideCode ?mHideCodeString: mCodeArray[i], (mBoxRectF.left + mBoxRectF.right) / 2 - (mTextRect.left + mTextRect.right) / 2, (mBoxRectF.top + mBoxRectF.bottom) / 2 - (mTextRect.top + mTextRect.bottom) / 2, mPaintText);
             }else if(!mEnableHideNotInputBox){
-                mPaintBox.setColor(mBoxBackgroundColor);
-                canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
+                if(null!=mBoxBackgroundDrawable) {  //如果有规定drawable，则使用drawable
+                    mBoxBackgroundDrawable.setBounds(mBoxRect);
+                    mBoxBackgroundDrawable.draw(canvas);
+                }else{
+                    mPaintBox.setColor(mBoxBackgroundColor);
+                    canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
+                }
             }
         }
     }
     //绘制-光标
-    private void onDrawCursor(Canvas canvas,Paint paint,RectF rectF){
+    private void onDrawCursor(Canvas canvas,Paint paint,RectF rectF,Rect rect){
         if(paint!=null && mEnableCursor){
-            mCursorPaint.setColor((mCursorDisplayingByTimer || mCursorDisplayingByIndex) ?mCursorColor:Color.TRANSPARENT);
-            canvas.drawRect(
-                    (float)((rectF.left+rectF.right)/2-mCursorStrokeWidth),
-                    (float)(mCursorHeightPadding<=1?(rectF.top+rectF.bottom)/4:mCursorHeightPadding),
-                    (float)( (rectF.left+rectF.right)/2+mCursorStrokeWidth),
-                    (float)( rectF.bottom-(mCursorHeightPadding<=1?(rectF.top+rectF.bottom)/4:mCursorHeightPadding))
-                    ,paint);
+            if(null!=mCursorBackgroundDrawable ){
+                rect.left= (int)((rectF.left + rectF.right) / 2 - mCursorStrokeWidth);
+                rect.top=(int)(mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding);
+                rect.right=(int)((rectF.left + rectF.right) / 2 + mCursorStrokeWidth);
+                rect.bottom=(int) (rectF.bottom - (mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding));
+                mCursorBackgroundDrawable.setBounds(rect);
+                if((mCursorDisplayingByTimer || mCursorDisplayingByIndex) ){
+                    mCursorBackgroundDrawable.draw(canvas);
+                }
+            }else {
+                mCursorPaint.setColor((mCursorDisplayingByTimer || mCursorDisplayingByIndex) ? mCursorBackgroundColor : Color.TRANSPARENT);
+                canvas.drawRect(
+                        (float) ((rectF.left + rectF.right) / 2 - mCursorStrokeWidth),
+                        (float) (mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding),
+                        (float) ((rectF.left + rectF.right) / 2 + mCursorStrokeWidth),
+                        (float) (rectF.bottom - (mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding))
+                        , paint);
+            }
         }
+
         mCursorDisplayingByIndex=false;
     }
 
@@ -366,8 +416,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             if(null!=mOnResultListener) {
                 mOnResultListener.finish(text.toString());
                }
-
-            if(mEnableSoftKeyboardAutoClose){
+            if(mEnableSoftKeyboardAutoClose || mIsEnableLock){
                 closeSoftKeyboard();
               }
                 mIsLocked = mEnableLockCodeTextIfMaxCode ? true : false;
@@ -393,6 +442,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     }
     //打开软键盘
     public void openSoftKeyboard(){
+        Log.d(TAG, "openSoftKeyboard: ");
             this.setFocusable(true);
             this.setFocusableInTouchMode(true);
             this.requestFocus();
@@ -401,7 +451,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     }
     //关闭软键盘
     public void closeSoftKeyboard(){
-        if(mEnableSoftKeyboardAutoClose||mIsLocked) {
+        Log.d(TAG, "closeSoftKeyboard: ");
+        if(mEnableSoftKeyboardAutoClose||mIsLocked||mIsEnableLock) {
             this.clearFocus();
 //            this.setFocusable(false);
             inputMethodManager.hideSoftInputFromWindow(this.getWindowToken(), 0);
