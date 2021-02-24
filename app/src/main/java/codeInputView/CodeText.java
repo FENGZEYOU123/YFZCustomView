@@ -1,6 +1,7 @@
 package codeInputView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -13,6 +14,9 @@ import android.graphics.RectF;
 import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.yfz.yfzcustomview.R;
@@ -36,7 +40,10 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private boolean mEnableHighLight=false;//是否开启高亮
     private boolean mEnableCursor =false;//是否开启光标
     private boolean mEnableHideNotInputBox=false;//是否将没有输入内容的盒子隐藏
+    private boolean mEnableSoftKeyboardAutoShow=true;//是否将没有输入内容的盒子隐藏
+    private boolean mEnableSoftKeyboardAutoClose=true;//是否将没有输入内容的盒子隐藏
 
+    private boolean mCurrentCodeFull=false;
     private final String TAG= CodeText.class.getName();
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
 //    private final int CODE_TEXT_STYLE_NORMAL=200,CODE_TEXT_STYLE_HIGHLIGHT=201;
@@ -46,6 +53,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int viewHeight=0;
     private int viewWidth=0;
     private OnResultListener mOnResultListener;
+    private InputMethodManager inputMethodManager;
     //组件
     private String mHideCodeString;//隐藏输入code-显示的内容
     private int mViewBackground=Color.TRANSPARENT;//背景Drawable
@@ -111,6 +119,9 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
 //        mCodeStyle=typedArray.getInt(R.styleable.CodeText_codeText_Style,mCodeStyle);//View的样式
         mViewBackground =typedArray.getResourceId(R.styleable.CodeText_codeText_viewBackground,Color.TRANSPARENT);//View背景Drawable
         //控制
+        mEnableSoftKeyboardAutoShow=typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoShow, mEnableSoftKeyboardAutoShow);//自动弹出键盘
+        mEnableSoftKeyboardAutoClose =typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoClose, mEnableSoftKeyboardAutoClose);//自动隐藏键盘
+
         mEnableHideNotInputBox =typedArray.getBoolean(R.styleable.CodeText_codeText_enableHideNotInputBox, mEnableHideNotInputBox);//是否将没有输入内容的盒子隐藏
         //盒子
         mBoxMaxLength=typedArray.getInt(R.styleable.CodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
@@ -166,12 +177,14 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 break;
         }
         setMeasuredDimension(viewWidth, viewHeight);
+
     }
 
     //初始化-CodeText
     @SuppressLint("ResourceType")
     private void initial(Context context){
         this.mContext=context;
+        inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         this.setSingleLine();
         this.setCursorVisible(false);
         this.setBackgroundResource(mViewBackground);
@@ -206,6 +219,27 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         };
         mCursorTimer = new Timer();
         initialPaint();
+        layoutListener();
+    }
+
+    //监听View是否渲染完成
+    private void layoutListener(){
+        this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                if(!mCurrentCodeFull) {
+                    openSoftKeyboard();
+                }
+            }
+            
+            
+        });
+        
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
     }
 
     //初始化-笔刷
@@ -304,7 +338,9 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
             postInvalidate();
             this.mCursorDisplayingByIndex=true;
             if( null!=mOnResultListener && text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
+                mCurrentCodeFull=true;
                 mOnResultListener.finish(text.toString());
+                closeSoftKeyboard();
             }
         }
     }
@@ -312,6 +348,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     //开始计时器，开始光标闪烁
     @Override
     protected void onAttachedToWindow() {
+        Log.d(TAG, "onAttachedToWindow: ");
         super.onAttachedToWindow();
         if(mEnableCursor) {
             mCursorTimer.scheduleAtFixedRate(mCursorTimerTask, 0, mCursorFrequency);
@@ -323,7 +360,21 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         super.onDetachedFromWindow();
         mCursorTimer.cancel();
     }
-
+    //打开软键盘
+    private void openSoftKeyboard(){
+        if(mEnableSoftKeyboardAutoShow ) {
+            this.setFocusable(true);
+            this.setFocusableInTouchMode(true);
+            this.requestFocus();
+            inputMethodManager.showSoftInput(this, 0);
+        }
+    }
+    //关闭软键盘
+    private void closeSoftKeyboard(){
+        if(mEnableSoftKeyboardAutoClose) {
+            inputMethodManager.hideSoftInputFromWindow(this.getWindowToken(), 0);
+        }
+    }
     //接口回调输入结果
     public interface OnResultListener {
         void finish(String result);

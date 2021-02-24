@@ -30,6 +30,7 @@
         app:codeText_boxAfterBackgroundColor="@color/colorGray"
         app:codeText_boxAfterStrokeWidth="1"
         app:codeText_boxAfterRadius="40"
+
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

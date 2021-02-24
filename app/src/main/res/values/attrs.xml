@@ -7,6 +7,10 @@
         <attr name="codeText_enableHideCode_displayContent" format="string"></attr>
         <attr name="codeText_enableCursor" format="boolean"></attr>
         <attr name="codeText_enableHighLight" format="boolean"></attr>
+        <attr name="codeText_enableSoftKeyboardAutoShow" format="boolean"></attr>
+        <attr name="codeText_enableSoftKeyboardAutoClose" format="boolean"></attr>
+
+
 
 
         <attr name="codeText_textColor" format="color"></attr>
