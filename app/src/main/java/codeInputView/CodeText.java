@@ -14,6 +14,7 @@ import android.graphics.RectF;
 import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 
@@ -44,6 +45,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private boolean mEnableSoftKeyboardAutoClose=true;//是否将没有输入内容的盒子隐藏
 
     private boolean mCurrentCodeFull=false;
+    private int mIsFirstTime=0;
     private final String TAG= CodeText.class.getName();
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
 //    private final int CODE_TEXT_STYLE_NORMAL=200,CODE_TEXT_STYLE_HIGHLIGHT=201;
@@ -218,6 +220,12 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mCursorTimer = new Timer();
         initialPaint();
         layoutListener();
+        setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Log.d(TAG, "onFocusChange: "+hasFocus);
+            }
+        });
     }
 
     //监听View是否渲染完成
@@ -225,12 +233,11 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if(!mCurrentCodeFull) {
+                if(!mCurrentCodeFull && mIsFirstTime<=3) {
                     openSoftKeyboard();
+                    mIsFirstTime++;
                 }
             }
-            
-            
         });
         
     }
@@ -370,6 +377,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     //关闭软键盘
     private void closeSoftKeyboard(){
         if(mEnableSoftKeyboardAutoClose) {
+            this.setFocusableInTouchMode(false);
+//            this.setFocusable(false);
             inputMethodManager.hideSoftInputFromWindow(this.getWindowToken(), 0);
         }
     }
