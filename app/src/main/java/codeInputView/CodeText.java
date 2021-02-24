@@ -388,7 +388,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mCursorTimer.cancel();
     }
     //打开软键盘
-    private void openSoftKeyboard(){
+    public void openSoftKeyboard(){
             this.setFocusable(true);
             this.setFocusableInTouchMode(true);
             this.requestFocus();
@@ -396,7 +396,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
 
     }
     //关闭软键盘
-    private void closeSoftKeyboard(){
+    public void closeSoftKeyboard(){
         if(mEnableSoftKeyboardAutoClose||mIsLocked) {
             this.clearFocus();
 //            this.setFocusable(false);
