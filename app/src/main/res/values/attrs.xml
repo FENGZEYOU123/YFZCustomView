@@ -9,6 +9,7 @@
         <attr name="codeText_enableHighLight" format="boolean"></attr>
         <attr name="codeText_enableSoftKeyboardAutoShow" format="boolean"></attr>
         <attr name="codeText_enableSoftKeyboardAutoClose" format="boolean"></attr>
+        <attr name="codeText_enableLockTextView" format="boolean"></attr>
 
 
 

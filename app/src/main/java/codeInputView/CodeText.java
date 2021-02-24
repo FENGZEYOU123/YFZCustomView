@@ -14,6 +14,7 @@ import android.graphics.RectF;
 import android.text.InputFilter;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
@@ -41,10 +42,12 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private boolean mEnableHighLight=false;//是否开启高亮
     private boolean mEnableCursor =false;//是否开启光标
     private boolean mEnableHideNotInputBox=false;//是否将没有输入内容的盒子隐藏
-    private boolean mEnableSoftKeyboardAutoShow=true;//是否将没有输入内容的盒子隐藏
-    private boolean mEnableSoftKeyboardAutoClose=true;//是否将没有输入内容的盒子隐藏
+    private boolean mEnableSoftKeyboardAutoShow=false;//是否将没有输入内容的盒子隐藏
+    private boolean mEnableSoftKeyboardAutoClose=false;//是否将没有输入内容的盒子隐藏
+    private boolean mEnableLockCodeTextIfMaxCode =false;//是否限制输满后锁定view
 
-    private boolean mCurrentCodeFull=false;
+    private boolean mIsLocked=false;
+    private boolean mIsCodeFull =false;
     private int mIsFirstTime=0;
     private final String TAG= CodeText.class.getName();
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
@@ -128,6 +131,7 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mEnableHideNotInputBox =typedArray.getBoolean(R.styleable.CodeText_codeText_enableHideNotInputBox, mEnableHideNotInputBox);//是否将没有输入内容的盒子隐藏
         mEnableHighLight=typedArray.getBoolean(R.styleable.CodeText_codeText_enableHighLight,mEnableHighLight);//开启关闭
         mEnableCursor =typedArray.getBoolean(R.styleable.CodeText_codeText_enableCursor, mEnableCursor);//开启关闭
+        mEnableLockCodeTextIfMaxCode =typedArray.getBoolean(R.styleable.CodeText_codeText_enableLockTextView, mEnableLockCodeTextIfMaxCode);//开启关闭
         //盒子
         mBoxMaxLength=typedArray.getInt(R.styleable.CodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
         mBoxMargin=typedArray.getInt(R.styleable.CodeText_codeText_boxMargin,mBoxMargin);//获取盒子边距
@@ -218,20 +222,35 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mCursorTimer = new Timer();
         initialPaint();
         layoutListener();
-        this.setOnFocusChangeListener(new OnFocusChangeListener() {
+        this.setOnTouchListener(new OnTouchListener() {
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.d(TAG, "onFocusChange: "+hasFocus);
+            public boolean onTouch(View v, MotionEvent event) {
+                if(mIsLocked){
+                    return true;
+                }
+                return false;
             }
         });
     }
-    
+
+    //锁定CodeText
+    public void setOnLock(){
+        mEnableLockCodeTextIfMaxCode=true;
+        mIsLocked=true;
+    }
+    //解除锁定CodeText
+    public void setUnLock(){
+        mEnableLockCodeTextIfMaxCode=false;
+        mIsLocked=false;
+        openSoftKeyboard();
+    }
+
     //监听View是否渲染完成
     private void layoutListener(){
         this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                if(!mCurrentCodeFull && mIsFirstTime<=3) {
+                if(!mIsCodeFull && mIsFirstTime<=3) {
                     openSoftKeyboard();
                     mIsFirstTime++;
                 }
@@ -300,11 +319,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                 mPaintBox.setColor(mBoxBackgroundColor);
                 canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
             }
-
-//            if(null != mCodeArray[i]mCodeArray[i].length()>0 ){
-//                mBoxAfterPaint.setColor(mBoxAfterBackgroundColor);
-//                canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mBoxAfterPaint);
-//            }
         }
 
     }
@@ -338,13 +352,15 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
                     mCodeArray[i-1] = null;
                 }
             }
-            postInvalidate();
             this.mCursorDisplayingByIndex=true;
             if( null!=mOnResultListener && text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
-                mCurrentCodeFull=true;
+                mIsCodeFull =true;
                 mOnResultListener.finish(text.toString());
+                mIsLocked= mEnableLockCodeTextIfMaxCode?true:false;
                 closeSoftKeyboard();
+
             }
+            postInvalidate();
         }
     }
 
@@ -367,15 +383,15 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private void openSoftKeyboard(){
         if(mEnableSoftKeyboardAutoShow ) {
             this.setFocusable(true);
-//            this.setFocusableInTouchMode(true);
-//            this.requestFocus();
+            this.setFocusableInTouchMode(true);
+            this.requestFocus();
             inputMethodManager.showSoftInput(this, 0);
         }
     }
     //关闭软键盘
     private void closeSoftKeyboard(){
-        if(mEnableSoftKeyboardAutoClose) {
-            this.clearAnimation();
+        if(mEnableSoftKeyboardAutoClose||mIsLocked) {
+            this.clearFocus();
 //            this.setFocusable(false);
             inputMethodManager.hideSoftInputFromWindow(this.getWindowToken(), 0);
         }

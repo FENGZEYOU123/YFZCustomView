@@ -33,12 +33,14 @@
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:codeText_enableCursor="true"
+        app:codeText_enableLockTextView="true"
+        app:codeText_enableSoftKeyboardAutoShow="true"
         app:codeText_enableHideCode="true"
         app:codeText_enableHighLight="true">
     </codeInputView.CodeText>
 
     <codeInputView.CodeText
+        android:id="@+id/codeText1"
         app:layout_constraintTop_toBottomOf="@+id/codeText"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
