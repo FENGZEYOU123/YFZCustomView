@@ -22,10 +22,14 @@
     </TextView>
     <codeInputView.CodeText
         android:id="@+id/codeText"
-        app:codeText_viewBackground="@drawable/yfz_codeinput_notinput_background"
         app:layout_constraintTop_toBottomOf="@+id/codeTextDisplay"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:codeText_boxBackgroundColor="@color/colorAccent"
+        app:codeText_boxHighLightBackgroundColor="@color/colorPrimaryDark"
+        app:codeText_boxAfterBackgroundColor="@color/colorGray"
+        app:codeText_boxAfterStrokeWidth="1"
+        app:codeText_boxAfterRadius="40"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

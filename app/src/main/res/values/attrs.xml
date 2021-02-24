@@ -2,6 +2,13 @@
 <resources>
     <declare-styleable name="CodeText">
         <attr name="codeText_viewBackground" format="reference|color"></attr>
+        <attr name="codeText_enableHideCode" format="boolean"></attr>
+        <attr name="codeText_enableHideNotInputBox" format="boolean"></attr>
+        <attr name="codeText_enableHideCode_displayContent" format="string"></attr>
+        <attr name="codeText_enableCursor" format="boolean"></attr>
+        <attr name="codeText_enableHighLight" format="boolean"></attr>
+
+
         <attr name="codeText_textColor" format="color"></attr>
         <attr name="codeText_boxStrokeStyle">
             <enum name="Stroke" value="101" />
@@ -14,19 +21,21 @@
         <attr name="codeText_boxBackgroundDrawable" format="reference|color"></attr>
         <attr name="codeText_boxStrokeWidth" format="integer"></attr>
         <attr name="codeText_boxRadius" format="float"></attr>
-        <attr name="codeText_enableHighLight" format="boolean"></attr>
-        <attr name="codeText_highLightStrokeWidth" format="integer"></attr>
-        <attr name="codeText_highLightRadius" format="float"></attr>
-        <attr name="codeText_highLightBackgroundColor" format="color"></attr>
-        <attr name="codeText_highLightStrokeStyle">
+        <attr name="codeText_boxHighLightStrokeWidth" format="integer"></attr>
+        <attr name="codeText_boxHighLightRadius" format="float"></attr>
+        <attr name="codeText_boxHighLightBackgroundColor" format="color"></attr>
+        <attr name="codeText_boxHighLightStrokeStyle">
             <enum name="Stroke" value="101" />
             <enum name="Filled" value="100" />
         </attr>
 
-        <attr name="codeText_enableHideCode" format="boolean"></attr>
-        <attr name="codeText_enableHideCode_displayContent" format="string"></attr>
-
-        <attr name="codeText_enableCursor" format="boolean"></attr>
+        <attr name="codeText_boxAfterStrokeWidth" format="integer"></attr>
+        <attr name="codeText_boxAfterRadius" format="float"></attr>
+        <attr name="codeText_boxAfterBackgroundColor" format="color"></attr>
+        <attr name="codeText_boxAfterStrokeStyle">
+            <enum name="Stroke" value="101" />
+            <enum name="Filled" value="100" />
+        </attr>
         <attr name="codeText_cursorStrokeWidth" format="integer"></attr>
         <attr name="codeText_cursorColor" format="color"></attr>
         <attr name="codeText_cursorHeightPadding" format="integer"></attr>
