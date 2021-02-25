@@ -357,6 +357,7 @@ public class CodeText extends LinearLayout {
         }
         @Override
         public void afterTextChanged(Editable text) {
+            mBoxHighLightIndex=text.length();
             if(null!= mCodeArray ) {
                     for (int i=0;i<mBoxMaxLength;i++){
                         if(i<=text.length()-1) {
@@ -495,37 +496,6 @@ public class CodeText extends LinearLayout {
 
         mCursorDisplayingByIndex=false;
     }
-//
-//    //检测输入内容，并画在画布上
-//    @Override
-//    protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-//        super.onTextChanged(text, start, lengthBefore, lengthAfter);
-//        mBoxHighLightIndex =text.length();
-//        Log.d(TAG, "onTextChanged: 高亮下坐标: "+ mBoxHighLightIndex);
-//        if(null!= mCodeArray) {
-//            if (lengthAfter > lengthBefore) {
-//                for (int i = 0; i < text.length(); i++) {
-//                    mCodeArray[i] = String.valueOf(text.charAt(i));
-//                }
-//            } else {
-//                for (int i = mCodeArray.length; i > text.length(); i--) {
-//                    mCodeArray[i-1] = null;
-//                }
-//            }
-//            this.mCursorDisplayingByIndex=true;
-//            if( text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
-//                mIsCodeFull = true;
-//            if(null!=mOnResultListener) {
-//                mOnResultListener.finish(text.toString());
-//               }
-//            if(mEnableSoftKeyboardAutoClose || mIsEnableLock){
-//                closeSoftKeyboard();
-//              }
-//                mIsLocked = mEnableLockCodeTextIfMaxCode ? true : false;
-//            }
-//            postInvalidate();
-//        }
-//    }
 
     //开始计时器，开始光标闪烁
     @Override
