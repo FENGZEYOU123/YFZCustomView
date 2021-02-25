@@ -71,7 +71,9 @@
         <attr name="codeTextLayout_enableSoftKeyboardAutoClose" format="boolean"></attr>
         <attr name="codeTextLayout_enableLockTextView" format="boolean"></attr>
 
+        <attr name="codeTextLayout_textSizeSp" format="integer"></attr>
         <attr name="codeTextLayout_textColor" format="color"></attr>
+        <attr name="codeTextLayout_textBold" format="boolean"></attr>
         <attr name="codeTextLayout_boxStrokeStyle">
             <enum name="Stroke" value="101" />
             <enum name="Filled" value="100" />

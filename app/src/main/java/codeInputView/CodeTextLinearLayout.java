@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -106,6 +105,9 @@ public class CodeTextLinearLayout extends LinearLayout {
     private Rect mTextRect;//矩形（绘制位置）
     private String[] mCodeArray;//输入Code内容
     private int mTextColor=Color.BLACK;//颜色
+    private int mTextSizePx =10;//文字大小
+    private boolean mTextBold=true;//文字粗细
+
     //光标-笔刷
     private Paint mCursorPaint;//笔刷
     private Timer mCursorTimer;//定时器
@@ -137,6 +139,8 @@ public class CodeTextLinearLayout extends LinearLayout {
         mViewBackground =typedArray.getResourceId(R.styleable.CodeTextLinearLayout_codeTextLayout_viewBackground,Color.TRANSPARENT);//View背景Drawable
         //文字颜色
         mTextColor=typedArray.getColor(R.styleable.CodeTextLinearLayout_codeTextLayout_textColor,mTextColor);
+        mTextSizePx =typedArray.getInt(R.styleable.CodeTextLinearLayout_codeTextLayout_textColor, mTextSizePx);
+        mTextBold=typedArray.getBoolean(R.styleable.CodeTextLinearLayout_codeTextLayout_textBold, mTextBold);
         //控制
         mEnableSoftKeyboardAutoShow=typedArray.getBoolean(R.styleable.CodeTextLinearLayout_codeTextLayout_enableSoftKeyboardAutoShow, mEnableSoftKeyboardAutoShow);//自动弹出键盘
         mEnableSoftKeyboardAutoClose =typedArray.getBoolean(R.styleable.CodeTextLinearLayout_codeTextLayout_enableSoftKeyboardAutoClose, mEnableSoftKeyboardAutoClose);//自动隐藏键盘
@@ -251,28 +255,99 @@ public class CodeTextLinearLayout extends LinearLayout {
 
     }
     private void onKeyListener(){
-        this.setOnKeyListener(new SoftKeyBoardListener(new OnInputListener() {
+        this.setOnKeyListener(new SoftKeyBoardListener(this,new OnInputListener() {
             @Override
             public void inputNumber(int number) {
                 Log.d(TAG, "inputNumber: "+number);
+                inputAddOperator(String.valueOf(number));
             }
 
             @Override
-            public void inputLetter(String str, boolean isUpperCase) {
-                Log.d(TAG, "inputLetter: "+str+" "+isUpperCase);
+            public void inputLetter(String str, boolean isSingleLetter) {
+                Log.d(TAG, "inputLetter: "+str+" "+isSingleLetter);
+                    inputAddOperator(str);
             }
 
             @Override
-            public void IsDeleteClick(boolean isClick) {
+            public void isDeleteClick(boolean isClick) {
                 Log.d(TAG, "IsDeleteClick: "+isClick);
+                if(isClick) { inputDeleteOperator(); }
             }
 
             @Override
             public void isBackClick(boolean isClick) {
                 Log.d(TAG, "isBackClick: "+isClick);
+                closeSoftKeyboard();
             }
         }));
     }
+
+    private void inputAddOperator(String str){
+        mBoxHighLightIndex =str.length();
+        if(null != mCodeArray && str.length()>=1) {
+                for (int i = 0; i < mCodeArray.length; i++) {
+                    if(str.length()==1) {
+                        if (mCodeArray[i] == null) {
+                            mCodeArray[i] = str;
+                            if (i == mBoxHighLightIndex) {
+                                mIsCodeFull = true;
+                            }
+                            break;
+                        }
+                    }else {
+                        if(i<str.length()) {
+                            mCodeArray[i] = str.substring(i, i + 1);
+                        }
+                    }
+                }
+
+            this.mCursorDisplayingByIndex=true;
+            postInvalidate();
+        }
+    }
+    private void inputDeleteOperator(){
+        if(null != mCodeArray) {
+            for(int i=mCodeArray.length-1;i>=0;i--){
+                if(mCodeArray[i]!=null){
+                    mCodeArray[i]=null;
+                    break;
+                }
+            }
+            mIsCodeFull=false;
+            this.mCursorDisplayingByIndex=true;
+            postInvalidate();
+        }
+    }
+    //检测输入内容，并画在画布上
+//    @Override
+//    protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
+//        super.onTextChanged(text, start, lengthBefore, lengthAfter);
+//        mBoxHighLightIndex =text.length();
+//        Log.d(TAG, "onTextChanged: 高亮下坐标: "+ mBoxHighLightIndex);
+//        if(null!= mCodeArray) {
+//            if (lengthAfter > lengthBefore) {
+//                for (int i = 0; i < text.length(); i++) {
+//                    mCodeArray[i] = String.valueOf(text.charAt(i));
+//                }
+//            } else {
+//                for (int i = mCodeArray.length; i > text.length(); i--) {
+//                    mCodeArray[i-1] = null;
+//                }
+//            }
+//            this.mCursorDisplayingByIndex=true;
+//            if( text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
+//                mIsCodeFull = true;
+//            if(null!=mOnResultListener) {
+//                mOnResultListener.finish(text.toString());
+//               }
+//            if(mEnableSoftKeyboardAutoClose || mIsEnableLock){
+//                closeSoftKeyboard();
+//              }
+//                mIsLocked = mEnableLockCodeTextIfMaxCode ? true : false;
+//            }
+//            postInvalidate();
+//        }
+//    }
     private void layoutChangeListener(){
         this.addOnLayoutChangeListener(new OnLayoutChangeListener() {
             @Override
@@ -292,6 +367,12 @@ public class CodeTextLinearLayout extends LinearLayout {
                 return true;
             }
         });
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d(TAG, "onKeyDown: ");
+        return super.onKeyDown(keyCode, event);
     }
 
     //锁定CodeText
@@ -325,6 +406,8 @@ public class CodeTextLinearLayout extends LinearLayout {
         this.mPaintText=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText.setStyle(Paint.Style.FILL);
         this.mPaintText.setColor(mTextColor);
+        this.mPaintText.setTextSize(YFZDisplayUtils.dip2px(mContext, mTextSizePx)*2);
+        this.mPaintText.setFakeBoldText(mTextBold);
         //盒子
         this.mPaintBox=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintBox.setStyle(mBoxStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
@@ -435,36 +518,7 @@ public class CodeTextLinearLayout extends LinearLayout {
         mCursorDisplayingByIndex=false;
     }
 
-    //检测输入内容，并画在画布上
-//    @Override
-//    protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-//        super.onTextChanged(text, start, lengthBefore, lengthAfter);
-//        mBoxHighLightIndex =text.length();
-//        Log.d(TAG, "onTextChanged: 高亮下坐标: "+ mBoxHighLightIndex);
-//        if(null!= mCodeArray) {
-//            if (lengthAfter > lengthBefore) {
-//                for (int i = 0; i < text.length(); i++) {
-//                    mCodeArray[i] = String.valueOf(text.charAt(i));
-//                }
-//            } else {
-//                for (int i = mCodeArray.length; i > text.length(); i--) {
-//                    mCodeArray[i-1] = null;
-//                }
-//            }
-//            this.mCursorDisplayingByIndex=true;
-//            if( text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
-//                mIsCodeFull = true;
-//            if(null!=mOnResultListener) {
-//                mOnResultListener.finish(text.toString());
-//               }
-//            if(mEnableSoftKeyboardAutoClose || mIsEnableLock){
-//                closeSoftKeyboard();
-//              }
-//                mIsLocked = mEnableLockCodeTextIfMaxCode ? true : false;
-//            }
-//            postInvalidate();
-//        }
-//    }
+
 
     //开始计时器，开始光标闪烁
     @Override
@@ -484,7 +538,7 @@ public class CodeTextLinearLayout extends LinearLayout {
     //打开软键盘
     public void openSoftKeyboard(){
         Log.d(TAG, "openSoftKeyboard: ");
-            this.setFocusable(true);
+//            this.setFocusable(true);
             this.setFocusableInTouchMode(true);
             this.requestFocus();
             inputMethodManager.showSoftInput(this, 0);
