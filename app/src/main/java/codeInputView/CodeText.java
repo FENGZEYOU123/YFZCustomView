@@ -316,12 +316,12 @@ public class CodeText extends LinearLayout {
         this.mPaintBox=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintBox.setStyle(mBoxStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
         this.mPaintBox.setColor(mBoxBackgroundColor);
-        this.mPaintBox.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(),STROKE_WIDTH));
+        this.mPaintBox.setStrokeWidth(STROKE_WIDTH);
         //高亮
         this.mBoxHighLightPaint =new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mBoxHighLightPaint.setStyle(mBoxHighLightStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
         this.mBoxHighLightPaint.setColor(mBoxHighLightBackgroundColor);
-        this.mBoxHighLightPaint.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(), STROKE_WIDTH));
+        this.mBoxHighLightPaint.setStrokeWidth(STROKE_WIDTH);
         //光标
         this.mCursorPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mCursorPaint.setColor(mCursorBackgroundColor);
@@ -331,7 +331,7 @@ public class CodeText extends LinearLayout {
         this.mBoxAfterPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mBoxAfterPaint.setColor(mBoxAfterBackgroundColor);
         this.mBoxAfterPaint.setStyle(mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
-        this.mBoxAfterPaint.setStrokeWidth(YFZDisplayUtils.dip2pxFloat(this.getContext(), STROKE_WIDTH));
+        this.mBoxAfterPaint.setStrokeWidth(STROKE_WIDTH);
     }
     //监听点击事件-打开弹窗
     private void setOnTouchListener(View view){
@@ -415,9 +415,9 @@ public class CodeText extends LinearLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < mBoxMaxLength; i++) {
-            mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(mBoxStrokeStyle == PAINT_STROKE || mBoxHighLightStrokeStyle == PAINT_STROKE ? STROKE_WIDTH:0 )) ;
+            mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(STROKE_WIDTH)) ;
             mBoxRectF.top =(float)( mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ?STROKE_WIDTH :0);
-            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (mBoxStrokeStyle == PAINT_STROKE || mBoxHighLightStrokeStyle == PAINT_STROKE ?STROKE_WIDTH:0 ));
+            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (STROKE_WIDTH*2 ));
             mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ? STROKE_WIDTH :0));
 
             mBoxRect.left=i * (mBoxSize + mBoxMargin) ;
