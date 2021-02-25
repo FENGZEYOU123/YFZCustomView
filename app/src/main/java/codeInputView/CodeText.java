@@ -464,7 +464,12 @@ public class CodeText extends LinearLayout {
                 }else {
                     mPaintBox.setStyle(mIsLocked?mBoxLockStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL:mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
                     mPaintBox.setColor((mIsLocked&&mBoxLockBackgroundColor!=-1)?mBoxLockBackgroundColor:mBoxBackgroundColor);
-                    canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
+                    if(null != mBoxBackgroundDrawable){
+                        mBoxBackgroundDrawable.setBounds(mBoxRect);
+                        mBoxBackgroundDrawable.draw(canvas);
+                    }else {
+                        canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
+                    }
                     Log.d(TAG, "onDraw: 画未输入过的 "+i);
 
                 }
