@@ -11,9 +11,6 @@
         <attr name="codeText_enableSoftKeyboardAutoClose" format="boolean"></attr>
         <attr name="codeText_enableLockTextView" format="boolean"></attr>
 
-
-
-
         <attr name="codeText_textColor" format="color"></attr>
         <attr name="codeText_boxStrokeStyle">
             <enum name="Stroke" value="101" />
@@ -60,7 +57,65 @@
             <enum name="Filled" value="100" />
         </attr>
 
+    </declare-styleable>
 
+
+    <declare-styleable name="CodeTextLinearLayout">
+        <attr name="codeTextLayout_viewBackground" format="reference|color"></attr>
+        <attr name="codeTextLayout_enableHideCode" format="boolean"></attr>
+        <attr name="codeTextLayout_enableHideNotInputBox" format="boolean"></attr>
+        <attr name="codeTextLayout_enableHideCode_displayContent" format="string"></attr>
+        <attr name="codeTextLayout_enableCursor" format="boolean"></attr>
+        <attr name="codeTextLayout_enableHighLight" format="boolean"></attr>
+        <attr name="codeTextLayout_enableSoftKeyboardAutoShow" format="boolean"></attr>
+        <attr name="codeTextLayout_enableSoftKeyboardAutoClose" format="boolean"></attr>
+        <attr name="codeTextLayout_enableLockTextView" format="boolean"></attr>
+
+        <attr name="codeTextLayout_textColor" format="color"></attr>
+        <attr name="codeTextLayout_boxStrokeStyle">
+            <enum name="Stroke" value="101" />
+            <enum name="Filled" value="100" />
+        </attr>
+        <attr name="codeTextLayout_boxLength" format="integer"></attr>
+        <attr name="codeTextLayout_boxMargin" format="integer"></attr>
+        <attr name="codeTextLayout_boxSize" format="integer"></attr>
+        <attr name="codeTextLayout_boxBackgroundColor" format="color"></attr>
+        <attr name="codeTextLayout_boxBackgroundDrawable" format="reference|color"></attr>
+        <attr name="codeTextLayout_boxStrokeWidth" format="integer"></attr>
+        <attr name="codeTextLayout_boxRadius" format="float"></attr>
+
+        <attr name="codeTextLayout_boxHighLightStrokeWidth" format="integer"></attr>
+        <attr name="codeTextLayout_boxHighLightRadius" format="float"></attr>
+        <attr name="codeTextLayout_boxHighLightBackgroundColor" format="color"></attr>
+        <attr name="codeTextLayout_boxHighLightBackgroundDrawable" format="reference|color"></attr>
+        <attr name="codeTextLayout_boxHighLightStrokeStyle">
+            <enum name="Stroke" value="101" />
+            <enum name="Filled" value="100" />
+        </attr>
+
+        <attr name="codeTextLayout_boxAfterStrokeWidth" format="integer"></attr>
+        <attr name="codeTextLayout_boxAfterRadius" format="float"></attr>
+        <attr name="codeTextLayout_boxAfterBackgroundColor" format="color"></attr>
+        <attr name="codeTextLayout_boxAfterBackgroundDrawable" format="reference|color"></attr>
+        <attr name="codeTextLayout_boxAfterStrokeStyle">
+            <enum name="Stroke" value="101" />
+            <enum name="Filled" value="100" />
+        </attr>
+        <attr name="codeTextLayout_cursorStrokeWidth" format="integer"></attr>
+        <attr name="codeTextLayout_cursorBackgroundColor" format="color"></attr>
+        <attr name="codeTextLayout_cursorHeightPadding" format="integer"></attr>
+        <attr name="codeTextLayout_cursorFrequencyMillisecond" format="integer"></attr>
+        <attr name="codeTextLayout_cursorBackgroundDrawable" format="reference|color"></attr>
+
+
+
+        <attr name="codeTextLayout_boxLockTextColor" format="color"></attr>
+        <attr name="codeTextLayout_boxLockBackgroundColor" format="color"></attr>
+        <attr name="codeTextLayout_boxLockBackgroundDrawable" format="reference|color"></attr>
+        <attr name="codeTextLayout_boxLockStrokeStyle">
+            <enum name="Stroke" value="101" />
+            <enum name="Filled" value="100" />
+        </attr>
 
     </declare-styleable>
 </resources>

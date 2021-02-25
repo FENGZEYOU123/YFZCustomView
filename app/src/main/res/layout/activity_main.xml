@@ -21,24 +21,17 @@
         android:layout_height="wrap_content">
     </buttonView.YFZGestureButton>
 
-    <codeInputView.CodeText
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <codeInputView.CodeTextLinearLayout
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:codeText_enableHighLight="true"
-        app:codeText_cursorBackgroundDrawable="@drawable/yfz_codeinput_currentfocus_background"
-        app:codeText_boxHighLightBackgroundDrawable="@drawable/yfz_codeinput_hasinput_background"
-        app:codeText_boxAfterBackgroundDrawable="@drawable/yfz_codeinput_slide1_hasinput_background"
-        app:codeText_boxAfterBackgroundColor="@color/colorGray"
-        app:codeText_enableLockTextView="true"
-        app:codeText_boxLockBackgroundColor="@color/colorRed"
-        app:codeText_enableCursor="true"
-        app:codeText_boxLockBackgroundDrawable="@drawable/yfz_codeinput_slide2_hasinput_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:codeTextLayout_viewBackground="@drawable/yfz_codeinput_currentfocus_background"
+        android:background="@drawable/yfz_codeinput_currentfocus_background"
+        app:codeTextLayout_enableSoftKeyboardAutoClose="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </codeInputView.CodeText>
-
+    </codeInputView.CodeTextLinearLayout>
     <yfzView.BasicEditText
         android:background="@drawable/yfz_codeinput_notinput_background"
         app:layout_constraintBottom_toBottomOf="parent"
