@@ -29,6 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:codeText_enableHighLight="true"
+        app:codeText_boxHighLightBackgroundDrawable="@drawable/yfz_codeinput_currentfocus_background"
         >
     </codeInputView.CodeText>
 

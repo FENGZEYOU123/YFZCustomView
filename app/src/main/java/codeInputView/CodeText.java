@@ -58,7 +58,7 @@ public class CodeText extends LinearLayout {
     private boolean mEnableLockCodeTextIfMaxCode =false;//是否限制输满后锁定view
 
 
-    private final int STROKE_WIDTH=1;
+    private final int STROKE_WIDTH=5;
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
     private final int TEXT_INPUT_TYPE_NUMBER=200, TEXT_INPUT_TYPE_PHONE =201, TEXT_INPUT_TYPE_TEXT =202,TEXT_INPUT_TYPE_DATETIME=203;
 
@@ -376,7 +376,9 @@ public class CodeText extends LinearLayout {
                     }
                     mIsLocked = mEnableLockCodeTextIfMaxCode ? true : false;
                 }
-                postInvalidate();
+//             postInvalidate();
+                invalidate();
+
             }
         }
     }
@@ -429,7 +431,7 @@ public class CodeText extends LinearLayout {
                 }else {
                     canvas.drawRoundRect(mBoxRectF, mBoxHighLightRadius, mBoxHighLightRadius, mBoxHighLightPaint);
                 }
-
+                Log.d(TAG, "onDraw: 画高亮 "+i);
                     onDrawCursor(canvas, mCursorPaint, mBoxRectF,mBoxRect);
 
             } else if (null != mCodeArray[i]) {
@@ -442,20 +444,29 @@ public class CodeText extends LinearLayout {
                             if(null!=mBoxLockBackgroundDrawable){
                                 mBoxLockBackgroundDrawable.setBounds(mBoxRect);
                                 mBoxLockBackgroundDrawable.draw(canvas);
+                                Log.d(TAG, "onDraw: 画输入过的，锁住 "+i);
+
                             }else {
                                 canvas.drawRoundRect(mBoxRectF, mBoxAfterRadius, mBoxAfterRadius, mBoxAfterPaint);
+                                Log.d(TAG, "onDraw: 画输入过的，锁住 "+i);
                             }
                         }else {
                             mBoxAfterBackgroundDrawable.setBounds(mBoxRect);
                             mBoxAfterBackgroundDrawable.draw(canvas);
+                            Log.d(TAG, "onDraw: 画输入过的，未锁住 "+i);
+
                         }
                     }else {
                         canvas.drawRoundRect(mBoxRectF, mBoxAfterRadius, mBoxAfterRadius, mBoxAfterPaint);
+                        Log.d(TAG, "onDraw: 画输入过的，未锁住 "+i);
+
                     }
                 }else {
                     mPaintBox.setStyle(mIsLocked?mBoxLockStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL:mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
                     mPaintBox.setColor((mIsLocked&&mBoxLockBackgroundColor!=-1)?mBoxLockBackgroundColor:mBoxBackgroundColor);
                     canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
+                    Log.d(TAG, "onDraw: 画未输入过的 "+i);
+
                 }
                 mPaintText.setColor((mIsLocked&&mBoxLockTextColor!=-1)?mBoxLockTextColor: mTextColor);
                 mPaintText.getTextBounds(mEnableHideCode ?mHideCodeString: mCodeArray[i], 0, mCodeArray[i].length(), mTextRect);
@@ -468,12 +479,17 @@ public class CodeText extends LinearLayout {
                     mPaintBox.setColor(mBoxBackgroundColor);
                     canvas.drawRoundRect(mBoxRectF, mBoxRadius, mBoxRadius, mPaintBox);
                 }
+                Log.d(TAG, "onDraw: 画输入过的，未隐藏 "+i);
+
             }
         }
+
     }
     //绘制-光标
     private void onDrawCursor(Canvas canvas,Paint paint,RectF rectF,Rect rect){
         if(paint!=null && mEnableCursor){
+            Log.d(TAG, "onDraw: 画指针 ");
+
             if(null!=mCursorBackgroundDrawable ){
                 rect.left= (int)((rectF.left + rectF.right) / 2 - STROKE_WIDTH);
                 rect.top=(int)(mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding);
