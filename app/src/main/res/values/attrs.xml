@@ -24,10 +24,8 @@
         <attr name="codeText_boxSize" format="integer"></attr>
         <attr name="codeText_boxBackgroundColor" format="color"></attr>
         <attr name="codeText_boxBackgroundDrawable" format="reference|color"></attr>
-        <attr name="codeText_boxStrokeWidth" format="integer"></attr>
         <attr name="codeText_boxRadius" format="float"></attr>
 
-        <attr name="codeText_boxHighLightStrokeWidth" format="integer"></attr>
         <attr name="codeText_boxHighLightRadius" format="float"></attr>
         <attr name="codeText_boxHighLightBackgroundColor" format="color"></attr>
         <attr name="codeText_boxHighLightBackgroundDrawable" format="reference|color"></attr>
@@ -36,7 +34,6 @@
             <enum name="Filled" value="100" />
         </attr>
 
-        <attr name="codeText_boxAfterStrokeWidth" format="integer"></attr>
         <attr name="codeText_boxAfterRadius" format="float"></attr>
         <attr name="codeText_boxAfterBackgroundColor" format="color"></attr>
         <attr name="codeText_boxAfterBackgroundDrawable" format="reference|color"></attr>
@@ -44,7 +41,6 @@
             <enum name="Stroke" value="101" />
             <enum name="Filled" value="100" />
         </attr>
-        <attr name="codeText_cursorStrokeWidth" format="integer"></attr>
         <attr name="codeText_cursorBackgroundColor" format="color"></attr>
         <attr name="codeText_cursorHeightPadding" format="integer"></attr>
         <attr name="codeText_cursorFrequencyMillisecond" format="integer"></attr>
