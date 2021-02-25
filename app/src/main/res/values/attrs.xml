@@ -22,8 +22,7 @@
             <enum name="Text" value="202" />
             <enum name="DateTime" value="203" />
         </attr>
-
-
+        <attr name="codeText_textBold" format="boolean"></attr>
 
         <attr name="codeText_boxStrokeStyle">
             <enum name="Stroke" value="101" />

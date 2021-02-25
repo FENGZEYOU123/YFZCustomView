@@ -112,7 +112,8 @@ public class CodeText extends LinearLayout {
     private String[] mCodeArray;//输入Code内容
     private int mTextColor=Color.BLACK;//颜色
     private int mTextSize=10;//大小
-    private int mTextInputType=TEXT_INPUT_TYPE_NUMBER;
+    private int mTextInputType=TEXT_INPUT_TYPE_NUMBER;//类型
+    private boolean mTextBold=true;//粗细
     //光标-笔刷
     private Paint mCursorPaint;//笔刷
     private Timer mCursorTimer;//定时器
@@ -145,6 +146,8 @@ public class CodeText extends LinearLayout {
         mTextColor=typedArray.getColor(R.styleable.CodeText_codeText_textColor,mTextColor);
         mTextSize=typedArray.getInt(R.styleable.CodeText_codeText_textSize,mTextSize);
         mTextInputType=typedArray.getInt(R.styleable.CodeText_codeText_textInputType,mTextInputType);
+        mTextBold=typedArray.getBoolean(R.styleable.CodeText_codeText_textBold,mTextBold);
+
         //控制
         mEnableSoftKeyboardAutoShow=typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoShow, mEnableSoftKeyboardAutoShow);//自动弹出键盘
         mEnableSoftKeyboardAutoClose =typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoClose, mEnableSoftKeyboardAutoClose);//自动隐藏键盘
@@ -307,6 +310,8 @@ public class CodeText extends LinearLayout {
         this.mPaintText.setStyle(Paint.Style.FILL);
         this.mPaintText.setTextSize(YFZDisplayUtils.dip2px(this.getContext(),mTextSize)*2);
         this.mPaintText.setColor(mTextColor);
+        this.mPaintText.setFakeBoldText(mTextBold);
+
         //盒子
         this.mPaintBox=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintBox.setStyle(mBoxStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
