@@ -16,6 +16,13 @@
 
         <attr name="codeText_textColor" format="color"></attr>
         <attr name="codeText_textSize" format="integer"></attr>
+        <attr name="codeText_textInputType" format="integer">
+            <enum name="Number" value="200" />
+            <enum name="Phone" value="201" />
+            <enum name="Text" value="202" />
+            <enum name="DateTime" value="203" />
+        </attr>
+
 
 
         <attr name="codeText_boxStrokeStyle">

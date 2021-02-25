@@ -1,7 +1,6 @@
 package codeInputView;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -12,6 +11,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -47,6 +47,8 @@ public class CodeText extends LinearLayout {
      * mEnableSoftKeyboardAutoShow 开关自动展现软键盘
      * mEnableLockCodeTextIfMaxCode 开关输入内容满足长度后是否锁定
      */
+
+
     private boolean mEnableHideCode =false;//是否隐藏输入code
     private boolean mEnableHighLight=false;//是否开启高亮
     private boolean mEnableCursor =false;//是否开启光标
@@ -55,14 +57,18 @@ public class CodeText extends LinearLayout {
     private boolean mEnableSoftKeyboardAutoClose=false;//是否将没有输入内容的盒子隐藏
     private boolean mEnableLockCodeTextIfMaxCode =false;//是否限制输满后锁定view
 
+
     private final int STROKE_WIDTH=1;
+    private final int PAINT_FILLED =100, PAINT_STROKE =101;
+    private final int TEXT_INPUT_TYPE_NUMBER=200, TEXT_INPUT_TYPE_PHONE =201, TEXT_INPUT_TYPE_TEXT =202,TEXT_INPUT_TYPE_DATETIME=203;
+
+    private final String DEFAULT_HIDE_CONTENT="*";
     private boolean mIsEnableLock=false;
     private boolean mIsLocked=false;
     private boolean mIsCodeFull =false;
     private int mIsFirstTime=0;
     private final String TAG= CodeText.class.getName();
-    private final int PAINT_FILLED =100, PAINT_STROKE =101;
-    private final String DEFAULT_HIDE_CONTENT="*";
+
     private Context mContext;
     private int measureMode=0;
     private int viewHeight=0;
@@ -106,6 +112,7 @@ public class CodeText extends LinearLayout {
     private String[] mCodeArray;//输入Code内容
     private int mTextColor=Color.BLACK;//颜色
     private int mTextSize=10;//大小
+    private int mTextInputType=TEXT_INPUT_TYPE_NUMBER;
     //光标-笔刷
     private Paint mCursorPaint;//笔刷
     private Timer mCursorTimer;//定时器
@@ -137,6 +144,7 @@ public class CodeText extends LinearLayout {
         //文字颜色
         mTextColor=typedArray.getColor(R.styleable.CodeText_codeText_textColor,mTextColor);
         mTextSize=typedArray.getInt(R.styleable.CodeText_codeText_textSize,mTextSize);
+        mTextInputType=typedArray.getInt(R.styleable.CodeText_codeText_textInputType,mTextInputType);
         //控制
         mEnableSoftKeyboardAutoShow=typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoShow, mEnableSoftKeyboardAutoShow);//自动弹出键盘
         mEnableSoftKeyboardAutoClose =typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoClose, mEnableSoftKeyboardAutoClose);//自动隐藏键盘
@@ -247,7 +255,7 @@ public class CodeText extends LinearLayout {
         initialEditText();
         initialPaint();
         initialBoxAndRectPosition();
-        setOnlayoutListener(this.mEditText);
+        setOnLayoutListener(this.mEditText);
         setOnTouchListener(this);
     }
 
@@ -261,7 +269,21 @@ public class CodeText extends LinearLayout {
         this.mEditText.setWidth(1);
         this.mEditText.setHeight(1);
         this.mEditText.setFilters(new InputFilter[]{new InputFilter.LengthFilter(mBoxMaxLength)});
-//        this.mEditText.setInputType(getInputType());
+        switch (mTextInputType){
+            case TEXT_INPUT_TYPE_NUMBER:
+                this.mEditText.setInputType(InputType.TYPE_CLASS_NUMBER);
+                break;
+            case TEXT_INPUT_TYPE_PHONE:
+                this.mEditText.setInputType(InputType.TYPE_CLASS_PHONE);
+                break;
+            case TEXT_INPUT_TYPE_TEXT:
+                this.mEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+                break;
+            case TEXT_INPUT_TYPE_DATETIME:
+                this.mEditText.setInputType(InputType.TYPE_CLASS_DATETIME);
+                break;
+        }
+
         this.mEditText.setSingleLine();
         this.mEditText.setCursorVisible(false);
         inputMethodManager = (InputMethodManager) this.mEditText.getContext().getSystemService(this.mEditText.getContext().INPUT_METHOD_SERVICE);
@@ -277,7 +299,6 @@ public class CodeText extends LinearLayout {
         this.mBoxRectF=new RectF();
         this.mBoxRect=new Rect();
         this.mTextRect=new Rect();
-
     }
     //初始化-笔刷
     private void initialPaint(){
@@ -367,7 +388,7 @@ public class CodeText extends LinearLayout {
     }
 
     //监听View是否渲染完成
-    private void setOnlayoutListener(final View view){
+    private void setOnLayoutListener(final View view){
         if(null != view) {
             view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
