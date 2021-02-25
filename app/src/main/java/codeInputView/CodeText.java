@@ -62,6 +62,8 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     private int measureMode=0;
     private int viewHeight=0;
     private int viewWidth=0;
+    private int mMaxHeight=0;
+    private int mMaxWidth=0;
     private OnResultListener mOnResultListener;
     private InputMethodManager inputMethodManager;
     //组件
@@ -140,7 +142,6 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
         mBoxMaxLength=typedArray.getInt(R.styleable.CodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
         mBoxMargin=typedArray.getInt(R.styleable.CodeText_codeText_boxMargin,mBoxMargin);//获取盒子边距
         mBoxSize=typedArray.getInt(R.styleable.CodeText_codeText_boxSize,mBoxSize);//获取盒子大小
-        if(mBoxSize<50)mBoxSize=50;
         mBoxBackgroundColor =typedArray.getColor(R.styleable.CodeText_codeText_boxBackgroundColor, mBoxBackgroundColor);//获取盒子背景颜色
         mBoxBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_boxBackgroundDrawable);//获取盒子背景Drawable
         mBoxStrokeStyle =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeStyle, mBoxStrokeStyle);//笔刷样式
@@ -176,18 +177,32 @@ public class CodeText extends androidx.appcompat.widget.AppCompatEditText {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         measureMode=MeasureSpec.getMode(widthMeasureSpec);
-
+        Log.d(TAG, "onMeasure: ");
         switch (measureMode) {
             case MeasureSpec.AT_MOST:
-                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) + STROKE_WIDTH;
+                mMaxWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH;
+                mMaxHeight = mBoxSize;
+                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) ;
                 viewHeight = mBoxSize;
                 break;
             case MeasureSpec.EXACTLY:
-//                viewWidth = MeasureSpec.getSize(widthMeasureSpec);
-//                if(viewWidth<mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +mBoxStrokeWidth) {
-                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) + STROKE_WIDTH;
-//        }
-                viewHeight = mBoxSize;
+                viewHeight=MeasureSpec.getSize(heightMeasureSpec);
+                viewWidth=MeasureSpec.getSize(widthMeasureSpec);
+                mMaxWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH ;
+                mMaxHeight = mBoxSize;
+//                double tempHeight= MeasureSpec.getSize(heightMeasureSpec);
+//                double tempWidth= MeasureSpec.getSize(widthMeasureSpec);
+//                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) + mBoxStrokeWidth;
+//                viewHeight = mBoxSize;
+//                double tempViewWidth=Double.valueOf(viewWidth);
+//                double tempViewHeight=Double.valueOf(viewHeight);
+//
+//                if(viewWidth>tempWidth){
+//                    mBoxSize=(int)(mBoxSize*(tempWidth/tempViewWidth));
+//                    viewWidth=(int)tempWidth;
+//                    viewHeight=mBoxSize;
+//                }
+
                 break;
             case MeasureSpec.UNSPECIFIED:
                 Log.d(TAG, "onMeasure:UNSPECIFIED ");
