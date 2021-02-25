@@ -70,7 +70,7 @@ public class CodeText extends LinearLayout {
     private final String TAG= CodeText.class.getName();
 
     private Context mContext;
-    private int measureMode=0;
+    private int measureModeWidth =0;
     private int viewHeight=0;
     private int viewWidth=0;
     private int mMaxHeight=0;
@@ -195,9 +195,9 @@ public class CodeText extends LinearLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        measureMode=MeasureSpec.getMode(widthMeasureSpec);
+        measureModeWidth =MeasureSpec.getMode(widthMeasureSpec);
         Log.d(TAG, "onMeasure: ");
-        switch (measureMode) {
+        switch (measureModeWidth) {
             case MeasureSpec.AT_MOST:
                 mMaxWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH;
                 mMaxHeight = mBoxSize;
@@ -216,11 +216,11 @@ public class CodeText extends LinearLayout {
 //                double tempViewWidth=Double.valueOf(viewWidth);
 //                double tempViewHeight=Double.valueOf(viewHeight);
 //
-//                if(viewWidth>tempWidth){
-//                    mBoxSize=(int)(mBoxSize*(tempWidth/tempViewWidth));
-//                    viewWidth=(int)tempWidth;
-//                    viewHeight=mBoxSize;
-//                }
+                if(mMaxWidth>viewWidth){
+                    mBoxSize=(int)(mBoxSize*(tempWidth/tempViewWidth));
+                    viewWidth=(int)tempWidth;
+                    viewHeight=mBoxSize;
+                }
 
                 break;
             case MeasureSpec.UNSPECIFIED:
@@ -366,6 +366,7 @@ public class CodeText extends LinearLayout {
                             mCodeArray[i] = "";
                         }
                     }
+                    mCursorDisplayingByIndex=true;
                 if( text.length()==mBoxMaxLength){ //内容长度与盒子数量一致->返回回调结果
                     mIsCodeFull = true;
                     if(null!=mOnResultListener) {
@@ -376,8 +377,7 @@ public class CodeText extends LinearLayout {
                     }
                     mIsLocked = mEnableLockCodeTextIfMaxCode ? true : false;
                 }
-//             postInvalidate();
-                invalidate();
+             postInvalidate();
 
             }
         }
