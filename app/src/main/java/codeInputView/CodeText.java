@@ -247,7 +247,7 @@ public class CodeText extends LinearLayout {
         initialEditText();
         initialPaint();
         initialBoxAndRectPosition();
-        setOnlayoutListener();
+        setOnlayoutListener(this.mEditText);
         setOnTouchListener(this);
     }
 
@@ -313,12 +313,10 @@ public class CodeText extends LinearLayout {
             view.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
-                    if (mIsLocked) {
-                        return true;
-                    }else if(event.getAction()==MotionEvent.ACTION_UP){
-                        openSoftKeyboard(mEditText);
-                    }
-                    return false;
+                  if(event.getAction()==MotionEvent.ACTION_UP && !mIsLocked) {
+                          openSoftKeyboard(mEditText);
+                  }
+                    return true;
                 }
             });
         }
@@ -369,16 +367,18 @@ public class CodeText extends LinearLayout {
     }
 
     //监听View是否渲染完成
-    private void setOnlayoutListener(){
-        this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                if(!mIsCodeFull && mIsFirstTime<=3) {
-                    openSoftKeyboard(mEditText);
-                    mIsFirstTime++;
+    private void setOnlayoutListener(final View view){
+        if(null != view) {
+            view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (!mIsCodeFull && mIsFirstTime <= 3) {
+                        openSoftKeyboard(view);
+                        mIsFirstTime++;
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 
