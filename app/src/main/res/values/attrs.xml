@@ -15,6 +15,9 @@
 
 
         <attr name="codeText_textColor" format="color"></attr>
+        <attr name="codeText_textSize" format="integer"></attr>
+
+
         <attr name="codeText_boxStrokeStyle">
             <enum name="Stroke" value="101" />
             <enum name="Filled" value="100" />
