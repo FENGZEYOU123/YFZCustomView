@@ -33,12 +33,7 @@
         app:codeText_enableCursor="false"
         app:codeText_enableLockTextView="true"
         app:codeText_enableSoftKeyboardAutoShow="false"
-        app:codeText_viewBackground="@color/colorRed"
-        app:codeText_boxLockBackgroundDrawable="@drawable/yfz_codeinput_slide2_hasinput_background"
-        app:codeText_boxBackgroundDrawable="@drawable/yfz_codeinput_notinput_background"
-        app:codeText_boxAfterBackgroundDrawable="@drawable/yfz_codeinput_hasinput_background"
-        app:codeText_boxHighLightBackgroundDrawable="@drawable/yfz_codeinput_currentfocus_background"
-        >
+       >
     </codeInputView.CodeText>
 
     <yfzView.BasicEditText

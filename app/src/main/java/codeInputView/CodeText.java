@@ -404,9 +404,9 @@ public class CodeText extends LinearLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < mBoxMaxLength; i++) {
-            mBoxRectF.left =(float)( i * (mBoxSizeDp + mBoxMargin) +(STROKE_WIDTH)) ;
+            mBoxRectF.left =(float)( i * (mBoxSizeDp + mBoxMargin) ) ;
             mBoxRectF.top =(float)( mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ?STROKE_WIDTH :0);
-            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSizeDp - (STROKE_WIDTH*2 ));
+            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSizeDp );
             mBoxRectF.bottom = (float)(measureHeightSize - (mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ? STROKE_WIDTH :0));
 
             mBoxRect.left=i * (mBoxSizeDp + mBoxMargin) ;
