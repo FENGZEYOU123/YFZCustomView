@@ -60,7 +60,7 @@ public class CodeText extends LinearLayout {
     private final int TEXT_INPUT_TYPE_NUMBER=200, TEXT_INPUT_TYPE_PHONE =201, TEXT_INPUT_TYPE_TEXT =202,TEXT_INPUT_TYPE_DATETIME=203;
     private final String DEFAULT_HIDE_CONTENT="*";
 
-    private int STROKE_WIDTH=1;
+    private int mStrokeWidth=1;
     private boolean mIsEnableLock=false;
     private boolean mIsLocked=false;
     private boolean mIsCodeFull =false;
@@ -72,15 +72,12 @@ public class CodeText extends LinearLayout {
     private int measureWidthSize =0;
     private int measureHeightMode =0;
     private int measureHeightSize =0;
-    private int mMaxHeight=0;
-    private int mMaxWidth=0;
     private OnResultListener mOnResultListener;
     private InputMethodManager inputMethodManager;
     //组件
     private EditText mEditText;
     private String mHideCodeString;//隐藏输入code-显示的内容
     private int mViewBackground=Color.TRANSPARENT;//背景Drawable
-//    private int mCodeStyle=CODE_TEXT_STYLE_NORMAL;//组件模式 （正常，高光）
     //盒子
     private Paint mPaintBox;//笔刷
     private RectF mBoxRectF;//矩形（绘制位置）
@@ -128,10 +125,7 @@ public class CodeText extends LinearLayout {
     private int mBoxLockStrokeStyle = PAINT_STROKE;//高亮样式（空心，实心）
     private int mBoxLockTextColor = -1;//文字颜色
     private Drawable  mBoxLockBackgroundDrawable;
-    private Paint mBoxLockPaint;//笔刷
-
-
-
+    
     public CodeText(@NonNull Context context) {
         super(context);
         initial(context);
@@ -199,20 +193,18 @@ public class CodeText extends LinearLayout {
             //宽高均未声明绝对值
             //组件宽 = (盒子大小*数量)+（盒子边距*(数量-1))+画笔宽度
             //组件高 = (盒子大小)
-            mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH;
-            mMaxHeight = mBoxSizeDp;
             measureWidthSize = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) ;
             measureHeightSize = mBoxSizeDp;
         }else if(measureWidthMode==MeasureSpec.EXACTLY && measureHeightMode==MeasureSpec.EXACTLY){
             //宽高均声明了绝对值
             //只需计算盒子大小= (测量高-（盒子边距*（数量-1）+画笔宽度）/ 盒子数量)
-            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
+            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)- mStrokeWidth)/(mBoxMaxLength));
         }else if(measureWidthMode==MeasureSpec.EXACTLY && measureHeightMode==MeasureSpec.AT_MOST){
             //只声明了宽的绝对值，高未声明
-            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
+            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)- mStrokeWidth)/(mBoxMaxLength));
         }else if(measureHeightMode==MeasureSpec.EXACTLY && measureWidthMode==MeasureSpec.AT_MOST){
             //只声明了高的绝对值，宽未声明
-            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
+            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)- mStrokeWidth)/(mBoxMaxLength));
         }
         setMeasuredDimension(measureWidthSize, measureHeightSize);
     }
@@ -292,34 +284,32 @@ public class CodeText extends LinearLayout {
     }
     //初始化-笔刷
     private void initialPaint(){
-        STROKE_WIDTH=YFZDisplayUtils.dip2px(mContext,STROKE_WIDTH);
+        this.mStrokeWidth =YFZDisplayUtils.dip2px(mContext, mStrokeWidth);
         //文字
         this.mPaintText=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText.setStyle(Paint.Style.FILL);
         this.mPaintText.setTextSize(YFZDisplayUtils.dip2px(this.getContext(),mTextSize)*2);
         this.mPaintText.setColor(mTextColor);
         this.mPaintText.setFakeBoldText(mTextBold);
-
         //盒子
         this.mPaintBox=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintBox.setStyle(mBoxStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
         this.mPaintBox.setColor(mBoxBackgroundColor);
-        this.mPaintBox.setStrokeWidth(STROKE_WIDTH);
+        this.mPaintBox.setStrokeWidth(mStrokeWidth);
         //高亮
         this.mBoxHighLightPaint =new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mBoxHighLightPaint.setStyle(mBoxHighLightStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
         this.mBoxHighLightPaint.setColor(mBoxHighLightBackgroundColor);
-        this.mBoxHighLightPaint.setStrokeWidth(STROKE_WIDTH);
+        this.mBoxHighLightPaint.setStrokeWidth(mStrokeWidth);
         //光标
         this.mCursorPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mCursorPaint.setColor(mCursorBackgroundColor);
         this.mCursorPaint.setStyle(Paint.Style.FILL);
-        this.mCursorPaint.setStrokeWidth(STROKE_WIDTH);
         //输入后
         this.mBoxAfterPaint=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mBoxAfterPaint.setColor(mBoxAfterBackgroundColor);
         this.mBoxAfterPaint.setStyle(mBoxAfterStrokeStyle == PAINT_STROKE ?Paint.Style.STROKE:Paint.Style.FILL);
-        this.mBoxAfterPaint.setStrokeWidth(STROKE_WIDTH);
+        this.mBoxAfterPaint.setStrokeWidth(mStrokeWidth);
     }
     //监听点击事件-打开弹窗
     private void setOnTouchListener(View view){
@@ -486,9 +476,9 @@ public class CodeText extends LinearLayout {
             Log.d(TAG, "onDraw: 画指针 ");
 
             if(null!=mCursorBackgroundDrawable ){
-                rect.left= (int)((rectF.left + rectF.right) / 2 - STROKE_WIDTH);
+                rect.left= (int)((rectF.left + rectF.right) / 2 - mStrokeWidth);
                 rect.top=(int)(mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding);
-                rect.right=(int)((rectF.left + rectF.right) / 2 + STROKE_WIDTH);
+                rect.right=(int)((rectF.left + rectF.right) / 2 + mStrokeWidth);
                 rect.bottom=(int) (rectF.bottom - (mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding));
                 mCursorBackgroundDrawable.setBounds(rect);
                 if((mCursorDisplayingByTimer || mCursorDisplayingByIndex) ){
@@ -497,9 +487,9 @@ public class CodeText extends LinearLayout {
             }else {
                 mCursorPaint.setColor((mCursorDisplayingByTimer || mCursorDisplayingByIndex) ? mCursorBackgroundColor : Color.TRANSPARENT);
                 canvas.drawRect(
-                        (float) ((rectF.left + rectF.right) / 2 - STROKE_WIDTH),
+                        (float) ((rectF.left + rectF.right) / 2 - mStrokeWidth),
                         (float) (mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding),
-                        (float) ((rectF.left + rectF.right) / 2 + STROKE_WIDTH),
+                        (float) ((rectF.left + rectF.right) / 2 + mStrokeWidth),
                         (float) (rectF.bottom - (mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding))
                         , paint);
             }
