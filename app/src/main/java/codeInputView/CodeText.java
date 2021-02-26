@@ -216,11 +216,11 @@ public class CodeText extends LinearLayout {
 //                double tempViewWidth=Double.valueOf(viewWidth);
 //                double tempViewHeight=Double.valueOf(viewHeight);
 //
-                if(mMaxWidth>viewWidth){
-                    mBoxSize=(int)(mBoxSize*(tempWidth/tempViewWidth));
-                    viewWidth=(int)tempWidth;
-                    viewHeight=mBoxSize;
-                }
+//                if(mMaxWidth>viewWidth){
+//                    mBoxSize=(int)(mBoxSize*(tempWidth/tempViewWidth));
+//                    viewWidth=(int)tempWidth;
+//                    viewHeight=mBoxSize;
+//                }
 
                 break;
             case MeasureSpec.UNSPECIFIED:
@@ -391,8 +391,10 @@ public class CodeText extends LinearLayout {
     //解除锁定CodeText
     public void setUnLock(){
 //        mEnableLockCodeTextIfMaxCode=false;
-        mIsLocked=false;
-        openSoftKeyboard(mEditText);
+        if(mIsCodeFull) {
+            openSoftKeyboard(mEditText);
+            mIsLocked=false;
+        }
     }
 
     //监听View是否渲染完成
@@ -401,7 +403,7 @@ public class CodeText extends LinearLayout {
             view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    if (!mIsCodeFull && mIsFirstTime <= 3) {
+                    if (!mIsCodeFull && mIsFirstTime <= 3 && mEnableSoftKeyboardAutoShow) {
                         openSoftKeyboard(view);
                         mIsFirstTime++;
                     }
@@ -535,7 +537,7 @@ public class CodeText extends LinearLayout {
     }
     //打开软键盘
     public void openSoftKeyboard(View view){
-        if(null != view) {
+        if(null != view ) {
             Log.d(TAG, "openSoftKeyboard: ");
             view.setFocusable(true);
             view.setFocusableInTouchMode(true);
