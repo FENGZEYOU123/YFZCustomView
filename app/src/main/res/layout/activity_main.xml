@@ -28,11 +28,9 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:codeText_boxHighLightBackgroundDrawable="@drawable/yfz_codeinput_notinput_background"
         app:codeText_enableHighLight="true"
-        app:codeText_boxStrokeStyle="Filled"
-        app:codeText_enableCursor="false"
-        app:codeText_enableLockTextView="true"
-        app:codeText_enableSoftKeyboardAutoShow="false"
+        app:codeText_enableCursor="true"
        >
     </codeInputView.CodeText>
 

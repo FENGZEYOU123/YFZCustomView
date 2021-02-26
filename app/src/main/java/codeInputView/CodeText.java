@@ -56,11 +56,11 @@ public class CodeText extends LinearLayout {
     private boolean mEnableSoftKeyboardAutoClose=false;//是否将没有输入内容的盒子隐藏
     private boolean mEnableLockCodeTextIfMaxCode =false;//是否限制输满后锁定view
 
-    private final int STROKE_WIDTH=5;
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
     private final int TEXT_INPUT_TYPE_NUMBER=200, TEXT_INPUT_TYPE_PHONE =201, TEXT_INPUT_TYPE_TEXT =202,TEXT_INPUT_TYPE_DATETIME=203;
-
     private final String DEFAULT_HIDE_CONTENT="*";
+
+    private int STROKE_WIDTH=1;
     private boolean mIsEnableLock=false;
     private boolean mIsLocked=false;
     private boolean mIsCodeFull =false;
@@ -292,6 +292,7 @@ public class CodeText extends LinearLayout {
     }
     //初始化-笔刷
     private void initialPaint(){
+        STROKE_WIDTH=YFZDisplayUtils.dip2px(mContext,STROKE_WIDTH);
         //文字
         this.mPaintText=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText.setStyle(Paint.Style.FILL);
@@ -405,14 +406,14 @@ public class CodeText extends LinearLayout {
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < mBoxMaxLength; i++) {
             mBoxRectF.left =(float)( i * (mBoxSizeDp + mBoxMargin) ) ;
-            mBoxRectF.top =(float)( mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ?STROKE_WIDTH :0);
+            mBoxRectF.top =(float)(0);
             mBoxRectF.right = (float)(mBoxRectF.left + mBoxSizeDp );
-            mBoxRectF.bottom = (float)(measureHeightSize - (mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ? STROKE_WIDTH :0));
+            mBoxRectF.bottom = (float)(measureHeightSize);
 
-            mBoxRect.left=i * (mBoxSizeDp + mBoxMargin) ;
-            mBoxRect.top=0 ;
-            mBoxRect.right=(int) mBoxRect.left+ mBoxSizeDp;
-            mBoxRect.bottom=(int) measureHeightSize;
+            mBoxRect.left=(int)(i * (mBoxSizeDp + mBoxMargin)) ;
+            mBoxRect.top=(int) (mBoxRectF.top);
+            mBoxRect.right=(int) mBoxRectF.right;
+            mBoxRect.bottom=(int) (mBoxRectF.bottom);
             if(mEnableHighLight && i == mBoxHighLightIndex){
                 if(null!= mBoxHighBackgroundDrawable) {  //如果有规定drawable，则使用drawable
                     mBoxHighBackgroundDrawable.setBounds(mBoxRect);
