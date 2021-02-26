@@ -197,76 +197,25 @@ public class CodeText extends LinearLayout {
         measureHeightMode =MeasureSpec.getMode(heightMeasureSpec);
         measureHeightSize =MeasureSpec.getSize(heightMeasureSpec);
         if(measureWidthMode==MeasureSpec.AT_MOST && measureHeightMode==MeasureSpec.AT_MOST){
-            //长宽均未声明绝对值
-            //组件长 = (盒子大小*数量)+（盒子边距*(数量-1))+画笔宽度
-            //组件宽 = (盒子大小)
+            //宽高均未声明绝对值
+            //组件宽 = (盒子大小*数量)+（盒子边距*(数量-1))+画笔宽度
+            //组件高 = (盒子大小)
             mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH;
             mMaxHeight = mBoxSizeDp;
             measureWidthSize = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) ;
             measureHeightSize = mBoxSizeDp;
         }else if(measureWidthMode==MeasureSpec.EXACTLY && measureHeightMode==MeasureSpec.EXACTLY){
-            //长宽均声明了绝对值
-            //只需计算盒子大小= (测量长度-（盒子边距*（数量-1）+画笔宽度）/ 盒子数量)
+            //宽高均声明了绝对值
+            //只需计算盒子大小= (测量高-（盒子边距*（数量-1）+画笔宽度）/ 盒子数量)
             mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
         }else if(measureWidthMode==MeasureSpec.EXACTLY && measureHeightMode==MeasureSpec.AT_MOST){
-            //只声明了长的绝对值，宽度未声明
-            
+            //只声明了宽的绝对值，高未声明
+            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
+        }else if(measureHeightMode==MeasureSpec.EXACTLY && measureWidthMode==MeasureSpec.AT_MOST){
+            //只声明了高的绝对值，宽未声明
+            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
         }
-//        switch (measureWidthMode) {
-//            case MeasureSpec.AT_MOST:
-//                mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH;
-//                mMaxHeight = mBoxSizeDp;
-//                measureWidthSize = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) ;
-//                measureHeightSize = mBoxSizeDp;
-//                break;
-//            case MeasureSpec.EXACTLY:
-//                measureHeightSize =MeasureSpec.getSize(heightMeasureSpec);
-//                measureWidthSize =MeasureSpec.getSize(widthMeasureSpec);
-//                mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH ;
-//                mMaxHeight = mBoxSizeDp;
-//                if(mMaxWidth> measureWidthSize){
-//                    mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
-//                    measureHeightSize = mBoxSizeDp;
-//                }else {
-//                    Log.d(TAG, "onMeasure: ");
-//                }
-//                break;
-//            case MeasureSpec.UNSPECIFIED:
-//                Log.d(TAG, "onMeasure:UNSPECIFIED ");
-//                break;
-//            default:
-//                break;
-//        }
-//        switch (measureHeightMode){
-//            case MeasureSpec.AT_MOST:
-//                mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH;
-//                mMaxHeight = mBoxSizeDp;
-//                measureWidthSize = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) ;
-//                measureHeightSize = mBoxSizeDp;
-//                break;
-//            case MeasureSpec.UNSPECIFIED:
-//                Log.d(TAG, "onMeasure:UNSPECIFIED ");
-//            case MeasureSpec.EXACTLY:
-//                measureHeightSize =MeasureSpec.getSize(heightMeasureSpec);
-//                measureWidthSize =MeasureSpec.getSize(widthMeasureSpec);
-//                mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH ;
-//                mMaxHeight = mBoxSizeDp;
-//                if(measureHeightSize >mMaxHeight){
-//                    mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
-//                    measureHeightSize = mBoxSizeDp;
-//                }else {
-//                    mBoxSizeDp = measureHeightSize;
-//                    mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
-//                }
-//
-//                break;
-//            default:
-//                break;
-//        }
-
-
         setMeasuredDimension(measureWidthSize, measureHeightSize);
-
     }
 
     //初始化-CodeText
