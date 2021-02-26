@@ -49,11 +49,11 @@ public class CodeText extends LinearLayout {
 
 
     private boolean mEnableHideCode =false;//是否隐藏输入code
-    private boolean mEnableHighLight=false;//是否开启高亮
+    private boolean mEnableHighLight=true;//是否开启高亮
     private boolean mEnableCursor =false;//是否开启光标
     private boolean mEnableHideNotInputBox=false;//是否将没有输入内容的盒子隐藏
-    private boolean mEnableSoftKeyboardAutoShow=false;//是否将没有输入内容的盒子隐藏
-    private boolean mEnableSoftKeyboardAutoClose=false;//是否将没有输入内容的盒子隐藏
+    private boolean mEnableSoftKeyboardAutoShow=true;//是否自动打开软键盘
+    private boolean mEnableSoftKeyboardAutoClose=true;//是否自动关闭软键盘（输入内容长度==最大长度）
     private boolean mEnableLockCodeTextIfMaxCode =false;//是否限制输满后锁定view
 
     private final int PAINT_FILLED =100, PAINT_STROKE =101;
