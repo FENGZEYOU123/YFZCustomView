@@ -71,6 +71,7 @@ public class CodeText extends LinearLayout {
 
     private Context mContext;
     private int measureModeWidth =0;
+    private int measureModeHeight =0;
     private int viewHeight=0;
     private int viewWidth=0;
     private int mMaxHeight=0;
@@ -87,7 +88,7 @@ public class CodeText extends LinearLayout {
     private RectF mBoxRectF;//矩形（绘制位置）
     private Rect mBoxRect;//矩形（绘制位置）
     private int mBoxMaxLength=4;//数量
-    private int mBoxSize=50;//大小
+    private int mBoxSizeDp=50;//大小
     private int mBoxMargin=10;//盒子之间的间距
     private int mBoxBackgroundColor =Color.RED;//背景颜色（空心边框，实心背景）
     private Drawable mBoxBackgroundDrawable;//背景Drawable
@@ -160,7 +161,7 @@ public class CodeText extends LinearLayout {
         //盒子
         mBoxMaxLength=typedArray.getInt(R.styleable.CodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
         mBoxMargin=typedArray.getInt(R.styleable.CodeText_codeText_boxMargin,mBoxMargin);//获取盒子边距
-        mBoxSize=typedArray.getInt(R.styleable.CodeText_codeText_boxSize,mBoxSize);//获取盒子大小
+        mBoxSizeDp =typedArray.getInt(R.styleable.CodeText_codeText_boxSizeDp, mBoxSizeDp);//获取盒子大小
         mBoxBackgroundColor =typedArray.getColor(R.styleable.CodeText_codeText_boxBackgroundColor, mBoxBackgroundColor);//获取盒子背景颜色
         mBoxBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_boxBackgroundDrawable);//获取盒子背景Drawable
         mBoxStrokeStyle =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeStyle, mBoxStrokeStyle);//笔刷样式
@@ -196,31 +197,27 @@ public class CodeText extends LinearLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         measureModeWidth =MeasureSpec.getMode(widthMeasureSpec);
+        measureModeHeight=MeasureSpec.getMode(heightMeasureSpec);
         Log.d(TAG, "onMeasure: ");
         switch (measureModeWidth) {
             case MeasureSpec.AT_MOST:
-                mMaxWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH;
-                mMaxHeight = mBoxSize;
-                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) ;
-                viewHeight = mBoxSize;
+                mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH;
+                mMaxHeight = mBoxSizeDp;
+                viewWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) ;
+                viewHeight = mBoxSizeDp;
                 break;
             case MeasureSpec.EXACTLY:
                 viewHeight=MeasureSpec.getSize(heightMeasureSpec);
                 viewWidth=MeasureSpec.getSize(widthMeasureSpec);
-                mMaxWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH ;
-                mMaxHeight = mBoxSize;
-//                double tempHeight= MeasureSpec.getSize(heightMeasureSpec);
-//                double tempWidth= MeasureSpec.getSize(widthMeasureSpec);
-//                viewWidth = mBoxSize * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) + mBoxStrokeWidth;
-//                viewHeight = mBoxSize;
-//                double tempViewWidth=Double.valueOf(viewWidth);
-//                double tempViewHeight=Double.valueOf(viewHeight);
-//
-//                if(mMaxWidth>viewWidth){
-//                    mBoxSize=(int)(mBoxSize*(tempWidth/tempViewWidth));
-//                    viewWidth=(int)tempWidth;
-//                    viewHeight=mBoxSize;
-//                }
+                mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH ;
+                mMaxHeight = mBoxSizeDp;
+                if(mMaxWidth>viewWidth){
+                    mBoxSizeDp =(int)((viewWidth -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
+                    viewHeight= mBoxSizeDp;
+                }else {
+
+                    Log.d(TAG, "onMeasure: ");
+                }
 
                 break;
             case MeasureSpec.UNSPECIFIED:
@@ -229,6 +226,34 @@ public class CodeText extends LinearLayout {
             default:
                 break;
         }
+        switch (measureModeHeight){
+            case MeasureSpec.AT_MOST:
+                mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH;
+                mMaxHeight = mBoxSizeDp;
+                viewWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) ;
+                viewHeight = mBoxSizeDp;
+                break;
+            case MeasureSpec.UNSPECIFIED:
+                Log.d(TAG, "onMeasure:UNSPECIFIED ");
+            case MeasureSpec.EXACTLY:
+                viewHeight=MeasureSpec.getSize(heightMeasureSpec);
+                viewWidth=MeasureSpec.getSize(widthMeasureSpec);
+                mMaxWidth = mBoxSizeDp * (mBoxMaxLength) + mBoxMargin * (mBoxMaxLength - 1) +STROKE_WIDTH ;
+                mMaxHeight = mBoxSizeDp;
+                if(viewHeight>mMaxHeight){
+                    mBoxSizeDp =(int)((viewWidth -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
+                    viewHeight= mBoxSizeDp;
+                }else {
+                    mBoxSizeDp =viewHeight;
+                    mBoxSizeDp =(int)((viewWidth -  mBoxMargin * (mBoxMaxLength - 1)-STROKE_WIDTH)/(mBoxMaxLength));
+                }
+
+                break;
+            default:
+                break;
+        }
+
+
         setMeasuredDimension(viewWidth, viewHeight);
 
     }
@@ -237,7 +262,7 @@ public class CodeText extends LinearLayout {
     @SuppressLint("ResourceType")
     private void initial(Context context){
         this.mContext=context;
-            this.setBackgroundColor(mViewBackground);
+            this.setBackgroundColor(Color.TRANSPARENT);
 
 //        this.setBackgroundResource(mViewBackground);
         this.mCodeArray =new String[mBoxMaxLength];
@@ -265,9 +290,10 @@ public class CodeText extends LinearLayout {
     //初始化EdiText
     private void initialEditText(){
         this.mEditText=new EditText(this.getContext());
-        LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         this.mEditText.setLayoutParams(layoutParams);
         this.mEditText.setBackgroundColor(Color.TRANSPARENT);
+        this.mEditText.setTextColor(Color.TRANSPARENT);
         this.addView(mEditText);
         this.mEditText.setWidth(1);
         this.mEditText.setHeight(1);
@@ -294,7 +320,7 @@ public class CodeText extends LinearLayout {
     }
     //初始化-盒子和位置
     private void initialBoxAndRectPosition(){
-        this.mBoxSize=YFZDisplayUtils.dip2px(mContext,mBoxSize);
+        this.mBoxSizeDp =YFZDisplayUtils.dip2px(mContext, mBoxSizeDp);
         this.mBoxMargin=YFZDisplayUtils.dip2px(mContext,mBoxMargin);
         this.mBoxRadius=YFZDisplayUtils.dip2pxFloat(mContext,mBoxRadius);
         this.mBoxHighLightRadius =YFZDisplayUtils.dip2pxFloat(mContext, mBoxHighLightRadius);
@@ -417,14 +443,14 @@ public class CodeText extends LinearLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         for (int i = 0; i < mBoxMaxLength; i++) {
-            mBoxRectF.left =(float)( i * (mBoxSize + mBoxMargin) +(STROKE_WIDTH)) ;
+            mBoxRectF.left =(float)( i * (mBoxSizeDp + mBoxMargin) +(STROKE_WIDTH)) ;
             mBoxRectF.top =(float)( mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ?STROKE_WIDTH :0);
-            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSize - (STROKE_WIDTH*2 ));
+            mBoxRectF.right = (float)(mBoxRectF.left + mBoxSizeDp - (STROKE_WIDTH*2 ));
             mBoxRectF.bottom = (float)(viewHeight - (mBoxStrokeStyle == PAINT_STROKE|| mBoxHighLightStrokeStyle == PAINT_STROKE ? STROKE_WIDTH :0));
 
-            mBoxRect.left=i * (mBoxSize + mBoxMargin) ;
+            mBoxRect.left=i * (mBoxSizeDp + mBoxMargin) ;
             mBoxRect.top=0 ;
-            mBoxRect.right=(int) mBoxRect.left+ mBoxSize;
+            mBoxRect.right=(int) mBoxRect.left+ mBoxSizeDp;
             mBoxRect.bottom=(int)viewHeight ;
             if(mEnableHighLight && i == mBoxHighLightIndex){
                 if(null!= mBoxHighBackgroundDrawable) {  //如果有规定drawable，则使用drawable
