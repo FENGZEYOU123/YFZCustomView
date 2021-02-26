@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import codeInputView.YFZCodeInputViewBasic;
-import codeInputView.YFZCodeInputViewBasic1;
-import codeInputView.YFZCodeInputViewBasic2;
-import codeInputView.YFZCodeInputViewBasicSlide1;
-import codeInputView.YFZCodeInputViewBasicSlide2;
+import editTextView.YFZCodeInputViewBasic;
+import editTextView.YFZCodeInputViewBasic1;
+import editTextView.YFZCodeInputViewBasic2;
+import editTextView.YFZCodeInputViewBasicSlide1;
+import editTextView.YFZCodeInputViewBasicSlide2;
 
 public class CodeInputActivity extends AppCompatActivity {
     private YFZCodeInputViewBasic yfzCodeInputViewBasic;
@@ -17,12 +17,7 @@ public class CodeInputActivity extends AppCompatActivity {
     private YFZCodeInputViewBasic2 CodeInputView2;
     private YFZCodeInputViewBasicSlide1 CodeInputViewSlide1;
     private YFZCodeInputViewBasicSlide2 CodeInputViewSlide2;
-
-
-
     private TextView textView;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

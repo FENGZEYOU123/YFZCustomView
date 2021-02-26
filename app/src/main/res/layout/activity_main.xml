@@ -21,21 +21,25 @@
         android:layout_height="wrap_content">
     </buttonView.YFZGestureButton>
 
-    <codeInputView.CodeText
+    <editTextView.EditCodeText
+        android:id="@+id/aaa"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
+        app:codeText_enableSoftKeyboardAutoShow="false"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
        >
-    </codeInputView.CodeText>
+    </editTextView.EditCodeText>
 
-    <yfzView.BasicEditText
-        android:background="@drawable/yfz_codeinput_notinput_background"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <editTextView.EditTextWithImage
+        app:layout_constraintTop_toBottomOf="@+id/aaa"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:background="@drawable/yfz_codeinput_notinput_background"
+        app:editTextWithImage_imageDrawable="@drawable/yfz_codeinput_notinput_background"
         android:layout_width="100dp"
-        android:layout_height="50dp">
-    </yfzView.BasicEditText>
+        android:layout_height="wrap_content">
+    </editTextView.EditTextWithImage>
 </androidx.constraintlayout.widget.ConstraintLayout>

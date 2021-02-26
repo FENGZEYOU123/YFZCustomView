@@ -1,4 +1,4 @@
-package codeInputView;
+package editTextView;
 
 import android.content.Context;
 import android.graphics.Color;

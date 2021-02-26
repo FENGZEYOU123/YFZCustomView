@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CodeText">
+    <declare-styleable name="EditCodeText">
         <attr name="codeText_viewBackground" format="reference|color"></attr>
         <attr name="codeText_enableHideCode" format="boolean"></attr>
         <attr name="codeText_enableHideNotInputBox" format="boolean"></attr>
@@ -10,9 +10,6 @@
         <attr name="codeText_enableSoftKeyboardAutoShow" format="boolean"></attr>
         <attr name="codeText_enableSoftKeyboardAutoClose" format="boolean"></attr>
         <attr name="codeText_enableLockTextView" format="boolean"></attr>
-
-
-
 
         <attr name="codeText_textColor" format="color"></attr>
         <attr name="codeText_textSize" format="integer"></attr>
@@ -56,8 +53,6 @@
         <attr name="codeText_cursorFrequencyMillisecond" format="integer"></attr>
         <attr name="codeText_cursorBackgroundDrawable" format="reference|color"></attr>
 
-
-
         <attr name="codeText_boxLockTextColor" format="color"></attr>
         <attr name="codeText_boxLockBackgroundColor" format="color"></attr>
         <attr name="codeText_boxLockBackgroundDrawable" format="reference|color"></attr>
@@ -68,5 +63,12 @@
 
 
 
+    </declare-styleable>
+    <declare-styleable name="EditTextWithImage">
+        <attr name="editTextWithImage_imagePosition">
+            <enum name="Left" value="100" />
+            <enum name="Right" value="101" />
+        </attr>
+        <attr name="editTextWithImage_imageDrawable" format="reference|color"></attr>
     </declare-styleable>
 </resources>

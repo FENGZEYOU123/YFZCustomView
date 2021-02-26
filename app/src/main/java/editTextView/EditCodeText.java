@@ -1,4 +1,4 @@
-package codeInputView;
+package editTextView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -30,22 +30,20 @@ import java.util.TimerTask;
 import utils.YFZDisplayUtils;
 
 /**
- * 简介：自定义验证码输入框
+ * 简介：自定义验证码输入框 (组合+自绘)
  * 作者：游丰泽
+ * 主要功能: （以下功能涉及到盒子样式的改变，均可单独控制功能的盒子样式,默认为线，可自定设置backgroundDrawable替代）
+ *           codeText_box 基础盒子，codeText_boxAfter输入内容后的盒子，codeText_boxHighLight 高亮盒子，codeText_boxLock 锁住状态下盒子
+ * mEnableHideCode 是否隐藏输入内容
+ * mEnableHighLight 是否开启高亮
+ * mEnableCursor 是否开启光标
+ * mEnableHideNotInputBox 是否将没有输入内容的盒子隐藏
+ * mEnableSoftKeyboardAutoClose 开关自动关闭软键盘
+ * mEnableSoftKeyboardAutoShow 开关自动展现软键盘
+ * mEnableLockCodeTextIfMaxCode 开关输入内容满足长度后是否锁定
  */
-public class CodeText extends LinearLayout {
-    /**
-     * 主要功能: （以下功能涉及到盒子样式的改变，均可单独控制功能的盒子样式,默认为线，可自定设置backgroundDrawable替代）
-     * codeText_box 基础盒子，codeText_boxAfter输入内容后的盒子，codeText_boxHighLight 高亮盒子，codeText_boxLock 锁住状态下盒子
-     *
-     * mEnableHideCode 是否隐藏输入内容
-     * mEnableHighLight 是否开启高亮
-     * mEnableCursor 是否开启光标
-     * mEnableHideNotInputBox 是否将没有输入内容的盒子隐藏
-     * mEnableSoftKeyboardAutoClose 开关自动关闭软键盘
-     * mEnableSoftKeyboardAutoShow 开关自动展现软键盘
-     * mEnableLockCodeTextIfMaxCode 开关输入内容满足长度后是否锁定
-     */
+
+public class EditCodeText extends LinearLayout {
 
 
     private boolean mEnableHideCode =false;//是否隐藏输入code
@@ -65,7 +63,7 @@ public class CodeText extends LinearLayout {
     private boolean mIsLocked=false;
     private boolean mIsCodeFull =false;
     private int mIsFirstTime=0;
-    private final String TAG= CodeText.class.getName();
+    private final String TAG= EditCodeText.class.getName();
 
     private Context mContext;
     private int measureWidthMode =0;
@@ -127,59 +125,59 @@ public class CodeText extends LinearLayout {
     private int mBoxLockTextColor = -1;//文字颜色
     private Drawable  mBoxLockBackgroundDrawable;
 
-    public CodeText(@NonNull Context context) {
+    public EditCodeText(@NonNull Context context) {
         super(context);
         initial(context);
     }
-    public CodeText(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public EditCodeText(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.CodeText);
-        mViewBackground =typedArray.getResourceId(R.styleable.CodeText_codeText_viewBackground,Color.TRANSPARENT);//View背景Drawable
+        TypedArray typedArray=context.obtainStyledAttributes(attrs, R.styleable.EditCodeText);
+        mViewBackground =typedArray.getResourceId(R.styleable.EditCodeText_codeText_viewBackground,Color.TRANSPARENT);//View背景Drawable
         //文字颜色
-        mTextColor=typedArray.getColor(R.styleable.CodeText_codeText_textColor,mTextColor);
-        mTextSize=typedArray.getInt(R.styleable.CodeText_codeText_textSize,mTextSize);
-        mTextInputType=typedArray.getInt(R.styleable.CodeText_codeText_textInputType,mTextInputType);
-        mTextBold=typedArray.getBoolean(R.styleable.CodeText_codeText_textBold,mTextBold);
+        mTextColor=typedArray.getColor(R.styleable.EditCodeText_codeText_textColor,mTextColor);
+        mTextSize=typedArray.getInt(R.styleable.EditCodeText_codeText_textSize,mTextSize);
+        mTextInputType=typedArray.getInt(R.styleable.EditCodeText_codeText_textInputType,mTextInputType);
+        mTextBold=typedArray.getBoolean(R.styleable.EditCodeText_codeText_textBold,mTextBold);
         //控制
-        mEnableSoftKeyboardAutoShow=typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoShow, mEnableSoftKeyboardAutoShow);//自动弹出键盘
-        mEnableSoftKeyboardAutoClose =typedArray.getBoolean(R.styleable.CodeText_codeText_enableSoftKeyboardAutoClose, mEnableSoftKeyboardAutoClose);//自动隐藏键盘
-        mEnableHideCode =typedArray.getBoolean(R.styleable.CodeText_codeText_enableHideCode, mEnableHideCode);//是否隐藏输入内容
-        mHideCodeString=typedArray.getString(R.styleable.CodeText_codeText_enableHideCode_displayContent);//隐藏内容时-显示的文案
-        mEnableHideNotInputBox =typedArray.getBoolean(R.styleable.CodeText_codeText_enableHideNotInputBox, mEnableHideNotInputBox);//是否将没有输入内容的盒子隐藏
-        mEnableHighLight=typedArray.getBoolean(R.styleable.CodeText_codeText_enableHighLight,mEnableHighLight);//开启关闭
-        mEnableCursor =typedArray.getBoolean(R.styleable.CodeText_codeText_enableCursor, mEnableCursor);//开启关闭
-        mEnableLockCodeTextIfMaxCode =typedArray.getBoolean(R.styleable.CodeText_codeText_enableLockTextView, mEnableLockCodeTextIfMaxCode);//开启关闭
+        mEnableSoftKeyboardAutoShow=typedArray.getBoolean(R.styleable.EditCodeText_codeText_enableSoftKeyboardAutoShow, mEnableSoftKeyboardAutoShow);//自动弹出键盘
+        mEnableSoftKeyboardAutoClose =typedArray.getBoolean(R.styleable.EditCodeText_codeText_enableSoftKeyboardAutoClose, mEnableSoftKeyboardAutoClose);//自动隐藏键盘
+        mEnableHideCode =typedArray.getBoolean(R.styleable.EditCodeText_codeText_enableHideCode, mEnableHideCode);//是否隐藏输入内容
+        mHideCodeString=typedArray.getString(R.styleable.EditCodeText_codeText_enableHideCode_displayContent);//隐藏内容时-显示的文案
+        mEnableHideNotInputBox =typedArray.getBoolean(R.styleable.EditCodeText_codeText_enableHideNotInputBox, mEnableHideNotInputBox);//是否将没有输入内容的盒子隐藏
+        mEnableHighLight=typedArray.getBoolean(R.styleable.EditCodeText_codeText_enableHighLight,mEnableHighLight);//开启关闭
+        mEnableCursor =typedArray.getBoolean(R.styleable.EditCodeText_codeText_enableCursor, mEnableCursor);//开启关闭
+        mEnableLockCodeTextIfMaxCode =typedArray.getBoolean(R.styleable.EditCodeText_codeText_enableLockTextView, mEnableLockCodeTextIfMaxCode);//开启关闭
         //盒子
-        mBoxMaxLength=typedArray.getInt(R.styleable.CodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
-        mBoxMargin=typedArray.getInt(R.styleable.CodeText_codeText_boxMargin,mBoxMargin);//获取盒子边距
-        mBoxSizeDp =typedArray.getInt(R.styleable.CodeText_codeText_boxSizeDp, mBoxSizeDp);//获取盒子大小
-        mBoxBackgroundColor =typedArray.getColor(R.styleable.CodeText_codeText_boxBackgroundColor, mBoxBackgroundColor);//获取盒子背景颜色
-        mBoxBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_boxBackgroundDrawable);//获取盒子背景Drawable
-        mBoxStrokeStyle =typedArray.getInt(R.styleable.CodeText_codeText_boxStrokeStyle, mBoxStrokeStyle);//笔刷样式
-        mBoxRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxRadius,mBoxRadius);//圆弧半径
+        mBoxMaxLength=typedArray.getInt(R.styleable.EditCodeText_codeText_boxLength,mBoxMaxLength);//获取盒子数量（长度）
+        mBoxMargin=typedArray.getInt(R.styleable.EditCodeText_codeText_boxMargin,mBoxMargin);//获取盒子边距
+        mBoxSizeDp =typedArray.getInt(R.styleable.EditCodeText_codeText_boxSizeDp, mBoxSizeDp);//获取盒子大小
+        mBoxBackgroundColor =typedArray.getColor(R.styleable.EditCodeText_codeText_boxBackgroundColor, mBoxBackgroundColor);//获取盒子背景颜色
+        mBoxBackgroundDrawable=typedArray.getDrawable(R.styleable.EditCodeText_codeText_boxBackgroundDrawable);//获取盒子背景Drawable
+        mBoxStrokeStyle =typedArray.getInt(R.styleable.EditCodeText_codeText_boxStrokeStyle, mBoxStrokeStyle);//笔刷样式
+        mBoxRadius=typedArray.getFloat(R.styleable.EditCodeText_codeText_boxRadius,mBoxRadius);//圆弧半径
         //高亮
-        mBoxHighBackgroundDrawable =typedArray.getDrawable(R.styleable.CodeText_codeText_boxHighLightBackgroundDrawable);//背景
-        mBoxHighLightBackgroundColor =typedArray.getInt(R.styleable.CodeText_codeText_boxHighLightBackgroundColor, mBoxHighLightBackgroundColor);//颜色-默认跟盒子一样
-        mBoxHighLightStrokeStyle =typedArray.getInt(R.styleable.CodeText_codeText_boxHighLightStrokeStyle, mBoxStrokeStyle);//笔刷样式-默认跟盒子一样
-        mBoxHighLightRadius =typedArray.getFloat(R.styleable.CodeText_codeText_boxHighLightRadius,mBoxRadius);//圆弧半径-默认跟盒子一样
+        mBoxHighBackgroundDrawable =typedArray.getDrawable(R.styleable.EditCodeText_codeText_boxHighLightBackgroundDrawable);//背景
+        mBoxHighLightBackgroundColor =typedArray.getInt(R.styleable.EditCodeText_codeText_boxHighLightBackgroundColor, mBoxHighLightBackgroundColor);//颜色-默认跟盒子一样
+        mBoxHighLightStrokeStyle =typedArray.getInt(R.styleable.EditCodeText_codeText_boxHighLightStrokeStyle, mBoxStrokeStyle);//笔刷样式-默认跟盒子一样
+        mBoxHighLightRadius =typedArray.getFloat(R.styleable.EditCodeText_codeText_boxHighLightRadius,mBoxRadius);//圆弧半径-默认跟盒子一样
         //输入之后的盒子样式
-        mBoxAfterStrokeStyle=typedArray.getInt(R.styleable.CodeText_codeText_boxAfterStrokeStyle,mBoxStrokeStyle);//样式-默认跟普通盒子一样
-        mBoxAfterBackgroundColor=typedArray.getColor(R.styleable.CodeText_codeText_boxAfterBackgroundColor,mBoxBackgroundColor);//背景颜色-默认跟普通盒子一样
-        mBoxAfterBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_boxAfterBackgroundDrawable);//背景
-        mBoxAfterRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxAfterRadius,mBoxRadius);//圆弧半径-默认跟普通盒子一样
+        mBoxAfterStrokeStyle=typedArray.getInt(R.styleable.EditCodeText_codeText_boxAfterStrokeStyle,mBoxStrokeStyle);//样式-默认跟普通盒子一样
+        mBoxAfterBackgroundColor=typedArray.getColor(R.styleable.EditCodeText_codeText_boxAfterBackgroundColor,mBoxBackgroundColor);//背景颜色-默认跟普通盒子一样
+        mBoxAfterBackgroundDrawable=typedArray.getDrawable(R.styleable.EditCodeText_codeText_boxAfterBackgroundDrawable);//背景
+        mBoxAfterRadius=typedArray.getFloat(R.styleable.EditCodeText_codeText_boxAfterRadius,mBoxRadius);//圆弧半径-默认跟普通盒子一样
         //光标
-        mCursorBackgroundColor =typedArray.getColor(R.styleable.CodeText_codeText_cursorBackgroundColor, mCursorBackgroundColor);//颜色
-        mCursorHeight =typedArray.getInt(R.styleable.CodeText_codeText_cursorHeight,mCursorHeight);//高度边距
-        mCursorWidth =typedArray.getInt(R.styleable.CodeText_codeText_cursorWidth,mCursorWidth);//高度边距
+        mCursorBackgroundColor =typedArray.getColor(R.styleable.EditCodeText_codeText_cursorBackgroundColor, mCursorBackgroundColor);//颜色
+        mCursorHeight =typedArray.getInt(R.styleable.EditCodeText_codeText_cursorHeight,mCursorHeight);//高度边距
+        mCursorWidth =typedArray.getInt(R.styleable.EditCodeText_codeText_cursorWidth,mCursorWidth);//高度边距
 
-        mCursorFrequency=typedArray.getInt(R.styleable.CodeText_codeText_cursorFrequencyMillisecond,mCursorFrequency);//闪烁频率
-        mCursorBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_cursorBackgroundDrawable);//背景
+        mCursorFrequency=typedArray.getInt(R.styleable.EditCodeText_codeText_cursorFrequencyMillisecond,mCursorFrequency);//闪烁频率
+        mCursorBackgroundDrawable=typedArray.getDrawable(R.styleable.EditCodeText_codeText_cursorBackgroundDrawable);//背景
         //锁定
-        mBoxLockBackgroundColor=typedArray.getColor(R.styleable.CodeText_codeText_boxLockBackgroundColor, mBoxLockBackgroundColor);//颜色
-        mBoxLockStrokeStyle=typedArray.getInt(R.styleable.CodeText_codeText_boxLockStrokeStyle,mBoxLockStrokeStyle);//空心实心
-        mBoxLockTextColor=typedArray.getColor(R.styleable.CodeText_codeText_boxLockTextColor, mBoxLockTextColor);//颜色
-        mBoxLockBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_boxLockBackgroundDrawable);//背景
+        mBoxLockBackgroundColor=typedArray.getColor(R.styleable.EditCodeText_codeText_boxLockBackgroundColor, mBoxLockBackgroundColor);//颜色
+        mBoxLockStrokeStyle=typedArray.getInt(R.styleable.EditCodeText_codeText_boxLockStrokeStyle,mBoxLockStrokeStyle);//空心实心
+        mBoxLockTextColor=typedArray.getColor(R.styleable.EditCodeText_codeText_boxLockTextColor, mBoxLockTextColor);//颜色
+        mBoxLockBackgroundDrawable=typedArray.getDrawable(R.styleable.EditCodeText_codeText_boxLockBackgroundDrawable);//背景
         typedArray.recycle();
         initial(context);
     }
