@@ -33,6 +33,8 @@
         app:codeText_boxHighLightBackgroundDrawable="@drawable/yfz_codeinput_currentfocus_background"
         app:codeText_enableHighLight="true"
         app:codeText_enableCursor="true"
+        app:codeText_cursorWidth="1"
+        app:codeText_cursorHeight="20"
        >
     </codeInputView.CodeText>
 

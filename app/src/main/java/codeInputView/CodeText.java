@@ -116,7 +116,8 @@ public class CodeText extends LinearLayout {
     private TimerTask mCursorTimerTask;//定时器任务
     private int mCursorBackgroundColor =Color.BLACK;//颜色
     private Drawable mCursorBackgroundDrawable;//背景
-    private int mCursorHeightPadding=1;//上下边距
+    private int mCursorHeight =1;//上下边距
+    private int mCursorWidth =1;//上下边距
     private int mCursorFrequency=500;//闪烁频率
     private boolean mCursorDisplayingByTimer =false;//显示光标-定时器-闪烁效果
     private boolean mCursorDisplayingByIndex =false;//显示光标-第一次下坐标
@@ -169,7 +170,9 @@ public class CodeText extends LinearLayout {
         mBoxAfterRadius=typedArray.getFloat(R.styleable.CodeText_codeText_boxAfterRadius,mBoxRadius);//圆弧半径-默认跟普通盒子一样
         //光标
         mCursorBackgroundColor =typedArray.getColor(R.styleable.CodeText_codeText_cursorBackgroundColor, mCursorBackgroundColor);//颜色
-        mCursorHeightPadding=typedArray.getInt(R.styleable.CodeText_codeText_cursorHeightPadding,1);//高度边距
+        mCursorHeight =typedArray.getInt(R.styleable.CodeText_codeText_cursorHeight,mCursorHeight);//高度边距
+        mCursorWidth =typedArray.getInt(R.styleable.CodeText_codeText_cursorWidth,mCursorWidth);//高度边距
+
         mCursorFrequency=typedArray.getInt(R.styleable.CodeText_codeText_cursorFrequencyMillisecond,mCursorFrequency);//闪烁频率
         mCursorBackgroundDrawable=typedArray.getDrawable(R.styleable.CodeText_codeText_cursorBackgroundDrawable);//背景
         //锁定
@@ -285,6 +288,8 @@ public class CodeText extends LinearLayout {
     //初始化-笔刷
     private void initialPaint(){
         this.mStrokeWidth =YFZDisplayUtils.dip2px(mContext, mStrokeWidth);
+        this.mCursorHeight =YFZDisplayUtils.dip2px(mContext, mCursorHeight);
+        this.mCursorWidth =YFZDisplayUtils.dip2px(mContext, mCursorWidth);
         //文字
         this.mPaintText=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText.setStyle(Paint.Style.FILL);
@@ -476,10 +481,10 @@ public class CodeText extends LinearLayout {
             Log.d(TAG, "onDraw: 画指针 ");
 
             if(null!=mCursorBackgroundDrawable ){
-                rect.left= (int)((rectF.left + rectF.right) / 2 - mStrokeWidth);
-                rect.top=(int)(mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding);
-                rect.right=(int)((rectF.left + rectF.right) / 2 + mStrokeWidth);
-                rect.bottom=(int) (rectF.bottom - (mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding));
+                rect.left= (int)((rectF.left + rectF.right) / 2 - mCursorWidth);
+                rect.top=(int)(mCursorHeight <= 1 ? (rectF.top + rectF.bottom) / 4:mCursorHeight );
+                rect.right=(int)((rectF.left + rectF.right) / 2 + mCursorWidth);
+                rect.bottom=(int) (rectF.bottom - (mCursorHeight <= 1 ? (rectF.top + rectF.bottom) / 4:mCursorHeight ));
                 mCursorBackgroundDrawable.setBounds(rect);
                 if((mCursorDisplayingByTimer || mCursorDisplayingByIndex) ){
                     mCursorBackgroundDrawable.draw(canvas);
@@ -487,10 +492,10 @@ public class CodeText extends LinearLayout {
             }else {
                 mCursorPaint.setColor((mCursorDisplayingByTimer || mCursorDisplayingByIndex) ? mCursorBackgroundColor : Color.TRANSPARENT);
                 canvas.drawRect(
-                        (float) ((rectF.left + rectF.right) / 2 - mStrokeWidth),
-                        (float) (mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding),
-                        (float) ((rectF.left + rectF.right) / 2 + mStrokeWidth),
-                        (float) (rectF.bottom - (mCursorHeightPadding <= 1 ? (rectF.top + rectF.bottom) / 4 : mCursorHeightPadding))
+                        (float) ((rectF.left + rectF.right) / 2 - mCursorWidth),
+                        (float) (mCursorHeight <= 1 ? (rectF.top + rectF.bottom) / 4:mCursorHeight ),
+                        (float) ((rectF.left + rectF.right) / 2 + mCursorWidth),
+                        (float) (rectF.bottom - (mCursorHeight <= 1 ? (rectF.top + rectF.bottom) / 4 :mCursorHeight))
                         , paint);
             }
         }

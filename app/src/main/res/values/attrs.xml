@@ -51,7 +51,8 @@
             <enum name="Filled" value="100" />
         </attr>
         <attr name="codeText_cursorBackgroundColor" format="color"></attr>
-        <attr name="codeText_cursorHeightPadding" format="integer"></attr>
+        <attr name="codeText_cursorHeight" format="integer"></attr>
+        <attr name="codeText_cursorWidth" format="integer"></attr>
         <attr name="codeText_cursorFrequencyMillisecond" format="integer"></attr>
         <attr name="codeText_cursorBackgroundDrawable" format="reference|color"></attr>
 
