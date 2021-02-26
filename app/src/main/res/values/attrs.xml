@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="EditCodeText">
+    <declare-styleable name="EditTextCode">
         <attr name="codeText_viewBackground" format="reference|color"></attr>
         <attr name="codeText_enableHideCode" format="boolean"></attr>
         <attr name="codeText_enableHideNotInputBox" format="boolean"></attr>
@@ -64,7 +64,7 @@
 
 
     </declare-styleable>
-    <declare-styleable name="EditTextWithImage">
+    <declare-styleable name="EditTextImage">
         <attr name="editTextWithImage_imagePosition">
             <enum name="Left" value="100" />
             <enum name="Right" value="101" />

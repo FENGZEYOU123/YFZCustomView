@@ -21,7 +21,7 @@
         android:layout_height="wrap_content">
     </buttonView.YFZGestureButton>
 
-    <editTextView.EditCodeText
+    <editTextView.EditTextCode
         android:id="@+id/aaa"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -31,15 +31,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
        >
-    </editTextView.EditCodeText>
+    </editTextView.EditTextCode>
 
-    <editTextView.EditTextWithImage
+    <editTextView.EditTextImage
         app:layout_constraintTop_toBottomOf="@+id/aaa"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:background="@drawable/yfz_codeinput_notinput_background"
-        app:editTextWithImage_imageDrawable="@drawable/yfz_codeinput_notinput_background"
         android:layout_width="100dp"
-        android:layout_height="wrap_content">
-    </editTextView.EditTextWithImage>
+        android:layout_height="100dp">
+    </editTextView.EditTextImage>
 </androidx.constraintlayout.widget.ConstraintLayout>
