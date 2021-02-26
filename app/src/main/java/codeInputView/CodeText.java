@@ -125,7 +125,7 @@ public class CodeText extends LinearLayout {
     private int mBoxLockStrokeStyle = PAINT_STROKE;//高亮样式（空心，实心）
     private int mBoxLockTextColor = -1;//文字颜色
     private Drawable  mBoxLockBackgroundDrawable;
-    
+
     public CodeText(@NonNull Context context) {
         super(context);
         initial(context);
@@ -198,13 +198,13 @@ public class CodeText extends LinearLayout {
         }else if(measureWidthMode==MeasureSpec.EXACTLY && measureHeightMode==MeasureSpec.EXACTLY){
             //宽高均声明了绝对值
             //只需计算盒子大小= (测量高-（盒子边距*（数量-1）+画笔宽度）/ 盒子数量)
-            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)- mStrokeWidth)/(mBoxMaxLength));
+            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1))/(mBoxMaxLength));
         }else if(measureWidthMode==MeasureSpec.EXACTLY && measureHeightMode==MeasureSpec.AT_MOST){
             //只声明了宽的绝对值，高未声明
-            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)- mStrokeWidth)/(mBoxMaxLength));
+            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1))/(mBoxMaxLength));
         }else if(measureHeightMode==MeasureSpec.EXACTLY && measureWidthMode==MeasureSpec.AT_MOST){
             //只声明了高的绝对值，宽未声明
-            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1)- mStrokeWidth)/(mBoxMaxLength));
+            mBoxSizeDp =(int)((measureWidthSize -  mBoxMargin * (mBoxMaxLength - 1))/(mBoxMaxLength));
         }
         setMeasuredDimension(measureWidthSize, measureHeightSize);
     }
