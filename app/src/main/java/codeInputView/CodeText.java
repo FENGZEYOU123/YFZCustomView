@@ -22,7 +22,6 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.yfz.yfzcustomview.R;
@@ -222,9 +221,12 @@ public class CodeText extends LinearLayout {
     @SuppressLint("ResourceType")
     private void initial(Context context){
         this.mContext=context;
-            this.setBackgroundColor(Color.TRANSPARENT);
-
-//        this.setBackgroundResource(mViewBackground);
+            try{
+                Drawable drawable= getResources().getDrawable(mViewBackground);
+                this.setBackground(drawable);
+            }catch (Exception e){
+                this.setBackgroundColor(mViewBackground);
+            }
         this.mCodeArray =new String[mBoxMaxLength];
         this.mIsEnableLock=mEnableLockCodeTextIfMaxCode;
         if(null==this.mHideCodeString){
