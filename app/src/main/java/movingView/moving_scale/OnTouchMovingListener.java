@@ -7,22 +7,23 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import utils.YFZUtils;
+
 /**
  * 作者：有丰泽
  * 简介：Implements OnTouchListener 为组件添加更多触摸效果
  * 双击放大，自由拖动，四角缩放，预览延迟移动
  */
 public class OnTouchMovingListener implements View.OnTouchListener{
-    private final static int MODE_DRAW_MOVING=100;
-    private final static int MODE_CORNER_TOP_LEFT=200,MODE_CORNER_TOP_RIGHT=201,MODE_CORNER_BOTTOM_LEFT=202,MODE_CORNER_BOTTOM_RIGHT=203;
-
     private final static String TAG=OnTouchMovingListener.class.getName();
+    private final static int MODE_DRAW_MOVING=100,MODE_DOUBLE_CLICK=101;
+    private final static int MODE_CORNER_TOP_LEFT=200,MODE_CORNER_TOP_RIGHT=201,MODE_CORNER_BOTTOM_LEFT=202,MODE_CORNER_BOTTOM_RIGHT=203;
     private View mView;
     private boolean isFirstTime=false;
     private ArrayList<Rect> mRectArrayList=new ArrayList<>();
     private float mDownX,mDownY;
 
-    private boolean mModeMoving=false;
+    private boolean mModeMoving=false,mModeDoubleClick=false;
     private boolean mModeCornerTopLeft=false,mModeCornerTopRight=false,mModeCornerBottomLeft=false,mModeCornerBottomRight=false;
 
 
@@ -95,41 +96,11 @@ public class OnTouchMovingListener implements View.OnTouchListener{
      */
     private void downCheckMode(MotionEvent event){
         if(null != mView) {
-                mCornerRect.left   = - mCornerRadius;
-                mCornerRect.right  =   mCornerRadius;
-                mCornerRect.top    = - mCornerRadius;
-                mCornerRect.bottom =   mCornerRadius;
-            if(mCornerRect.contains((int)event.getX(),(int)event.getY())){
-                mCheckMode=MODE_CORNER_TOP_LEFT;
-            }else{
-                mCornerRect.left   = mView.getWidth() - mCornerRadius;
-                mCornerRect.right  = mView.getWidth() + mCornerRadius;
-                mCornerRect.top    = - mCornerRadius;
-                mCornerRect.bottom =   mCornerRadius;
-                if(mCornerRect.contains((int)event.getX(),(int)event.getY())) {
-                    mCheckMode=MODE_CORNER_TOP_RIGHT;
-                }else {
-                    mCornerRect.left   = - mCornerRadius;
-                    mCornerRect.right  =   mCornerRadius;
-                    mCornerRect.top    = mView.getHeight() - mCornerRadius;
-                    mCornerRect.bottom = mView.getHeight() + mCornerRadius;
-                    if(mCornerRect.contains((int)event.getX(),(int)event.getY())){
-                        mCheckMode=MODE_CORNER_BOTTOM_LEFT;
-                    }else {
-                        mCornerRect.left   = mView.getWidth()  - mCornerRadius;
-                        mCornerRect.right  = mView.getWidth()  + mCornerRadius;
-                        mCornerRect.top    = mView.getHeight() - mCornerRadius;
-                        mCornerRect.bottom = mView.getHeight() + mCornerRadius;
-                        if(mCornerRect.contains((int)event.getX(),(int)event.getY())){
-                            mCheckMode=MODE_CORNER_BOTTOM_RIGHT;
-                        }
-                    }
-                }
-            }
 
-            switch (mCheckMode) {
+            switch (getMode(event)) {
                 case MODE_DRAW_MOVING:
                     mModeMoving = true;
+                    Log.d(TAG, "downCheckMode: 当前模式为拖拽平移");
                     break;
                 case MODE_CORNER_TOP_LEFT:
                     mModeCornerTopLeft = true;
@@ -147,10 +118,52 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                     mModeCornerBottomRight = true;
                     Log.d(TAG, "downCheckMode: 当前模式为四角缩放-右下角");
                     break;
+                case MODE_DOUBLE_CLICK:
+                    mModeDoubleClick = true;
+                    Log.d(TAG, "downCheckMode: 当前模式为双击-放大/缩小");
+                    break;
                 default:
                     break;
             }
         }
+    }
+    private int getMode(MotionEvent event){
+        if(YFZUtils.isDoubleClick()){
+            return MODE_DOUBLE_CLICK;
+        }
+        mCornerRect.left   = - mCornerRadius;
+        mCornerRect.right  =   mCornerRadius;
+        mCornerRect.top    = - mCornerRadius;
+        mCornerRect.bottom =   mCornerRadius;
+        if(mCornerRect.contains((int)event.getX(),(int)event.getY())){
+            return MODE_CORNER_TOP_LEFT;
+        }else {
+            mCornerRect.left = mView.getWidth() - mCornerRadius;
+            mCornerRect.right = mView.getWidth() + mCornerRadius;
+            mCornerRect.top = -mCornerRadius;
+            mCornerRect.bottom = mCornerRadius;
+            if (mCornerRect.contains((int) event.getX(), (int) event.getY())) {
+                return MODE_CORNER_TOP_RIGHT;
+            } else {
+                mCornerRect.left = -mCornerRadius;
+                mCornerRect.right = mCornerRadius;
+                mCornerRect.top = mView.getHeight() - mCornerRadius;
+                mCornerRect.bottom = mView.getHeight() + mCornerRadius;
+                if (mCornerRect.contains((int) event.getX(), (int) event.getY())) {
+                    return MODE_CORNER_BOTTOM_LEFT;
+                } else {
+                    mCornerRect.left = mView.getWidth() - mCornerRadius;
+                    mCornerRect.right = mView.getWidth() + mCornerRadius;
+                    mCornerRect.top = mView.getHeight() - mCornerRadius;
+                    mCornerRect.bottom = mView.getHeight() + mCornerRadius;
+                    if (mCornerRect.contains((int) event.getX(), (int) event.getY())) {
+                        return MODE_CORNER_BOTTOM_RIGHT;
+                    }
+                }
+            }
+        }
+
+        return MODE_DRAW_MOVING;
     }
     private void OnModeMoving(){
         mViewNP_left=mView.getLeft()+mDistanceX;
@@ -168,6 +181,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mModeCornerTopRight = false;
         mModeCornerBottomLeft = false;
         mModeCornerBottomRight = false;
+        mModeDoubleClick=false;
         mCheckMode=MODE_DRAW_MOVING;
     }
     /**

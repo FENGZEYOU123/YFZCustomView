@@ -43,12 +43,12 @@ public class YFZUtils {
     }
 
     /**
-     * 是否为点击事件
+     * 是否为双击事件
      * @return
      */
     public synchronized static boolean isDoubleClick(){
         long time = System.currentTimeMillis();
-        if ( time - lastClickTime < 200) {
+        if ( time - lastClickTime < 250) {
             lastClickTime=0;
             return true;
         }
