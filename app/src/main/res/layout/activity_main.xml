@@ -21,6 +21,16 @@
         android:layout_height="wrap_content">
     </buttonView.YFZGestureButton>
 
+
+    <buttonView.YFZGestureButton
+        android:id="@+id/buttonMovingView"
+        app:layout_constraintTop_toBottomOf="@+id/newCodeInputButton"
+        android:layout_marginTop="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    </buttonView.YFZGestureButton>
+
     <editTextView.EditTextCode
         android:id="@+id/aaa"
         app:layout_constraintTop_toTopOf="parent"
