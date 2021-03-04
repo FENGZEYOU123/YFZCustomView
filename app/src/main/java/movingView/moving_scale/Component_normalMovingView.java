@@ -28,6 +28,7 @@ public class Component_normalMovingView extends LinearLayout {
     private int mViewWidth, mViewHeight;
     private float mDistanceX,mDistanceY;
     private float mNextMovingLeft,mNextMovingTop,mNextMovingRight,mNextMovingBottom;
+    private float mCurrentLeft,mCurrentTop,mCurrentRight,mCurrentBottom;
 
     public Component_normalMovingView(Context context) {
         super(context);
@@ -69,6 +70,10 @@ public class Component_normalMovingView extends LinearLayout {
                 mY =  event.getY();
                 mViewWidth =this.getWidth();
                 mViewHeight =this.getHeight();
+                mCurrentLeft=getLeft();
+                mCurrentTop=getTop();
+                mCurrentRight=getRight();
+                mCurrentBottom=getBottom();
                 if(mViewWidth <= mViewHeight){
                     cornerRadius= mViewWidth /4;
                 }else {
@@ -81,18 +86,20 @@ public class Component_normalMovingView extends LinearLayout {
                 mDistanceY = (event.getY() - mY);
                 Log.d(TAG, "onTouch:处在H5中，自由平移");
                 mNextMovingLeft=this.getLeft()+mDistanceX;
-                mNextMovingRight=this.getRight()+mDistanceX;
+                mNextMovingRight=mNextMovingLeft+getWidth();
                 mNextMovingTop=this.getTop()+mDistanceY;
-                mNextMovingBottom=this.getBottom()+mDistanceY;
+                mNextMovingBottom=mNextMovingTop+getHeight();
 
                             if(mModeScaleTopLeft) {
                                 Log.d(TAG, "移动: mModeScaleTopLeft");
-                                mNextMovingRight =  this.getRight();
-                                mNextMovingBottom =  this.getBottom();
+                                mNextMovingRight =  mCurrentRight;
+                                mNextMovingBottom = mCurrentBottom;
                             }else if(mModeScaleTopRight){
                                 Log.d(TAG, "移动: mModeScaleTopRight");
-                                mNextMovingLeft =   this.getLeft();
-                                mNextMovingBottom=  this.getBottom();
+                                mNextMovingLeft = mCurrentLeft;
+                                mNextMovingRight=mNextMovingLeft+getWidth()+mDistanceX;
+                                mNextMovingTop=this.getTop()+mDistanceY;
+                                mNextMovingBottom=  mNextMovingTop+getHeight();
                             }else if(mModeScaleBottomLeft){
                                 Log.d(TAG, "移动: mModeScaleBottomLeft");
                                 mNextMovingRight =   this.getRight();
