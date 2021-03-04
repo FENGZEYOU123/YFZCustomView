@@ -186,10 +186,17 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mViewNP_bottom=mView.getBottom()+mDistanceY;
     }
     private void OnModeDoubleClick(){
-        mViewNP_left=mView.getLeft()+mDistanceX;
-        mViewNP_right=mView.getRight()+mDistanceX;
-        mViewNP_top=mView.getTop()+mDistanceY;
-        mViewNP_bottom=mView.getBottom()+mDistanceY;
+        if(mViewNP_left!=getMaxLeft() || mViewNP_top!=getMaxTop() ||mViewNP_right!=getMaxRight() || mViewNP_bottom!=getMaxBottom()  ) {
+            mViewNP_left = getMaxLeft();
+            mViewNP_right = getMaxRight();
+            mViewNP_top = getMaxTop();
+            mViewNP_bottom = getMaxBottom();
+        }else {
+            mViewNP_left = mViewCP_left;
+            mViewNP_right =  mViewCP_right;
+            mViewNP_top =  mViewCP_top;
+            mViewNP_bottom =  mViewCP_bottom;
+        }
     }
 
     private int getMaxLeft(){
@@ -224,6 +231,12 @@ public class OnTouchMovingListener implements View.OnTouchListener{
      * UP-重置mode
      */
     private synchronized void reset(){
+        if(!mModeDoubleClick) {
+            mViewCP_left = mView.getLeft();
+            mViewCP_top = mView.getTop();
+            mViewCP_right = mView.getRight();
+            mViewCP_bottom = mView.getBottom();
+        }
         mModeMoving=false;
         mModeCornerTopLeft= false;
         mModeCornerTopRight = false;
@@ -231,6 +244,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mModeCornerBottomRight = false;
         mModeDoubleClick=false;
         mCheckMode=MODE_DRAW_MOVING;
+
     }
     /**
      * 更新下个移动位置画面
