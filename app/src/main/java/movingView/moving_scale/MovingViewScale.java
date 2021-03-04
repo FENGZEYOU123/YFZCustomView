@@ -1,8 +1,7 @@
-package movingView.scale;
+package movingView.moving_scale;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;

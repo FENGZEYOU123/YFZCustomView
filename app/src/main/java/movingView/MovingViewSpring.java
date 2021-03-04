@@ -28,7 +28,7 @@ package movingView;
  *      popup_W();popup_H();        //记录弹簧压缩并释放后，需要回弹的高度。 由 spring_open_release_popup 开关控制是否开启
  * **/
 
-public class YFZMovingSpringView extends LinearLayout {
+public class MovingViewSpring extends LinearLayout {
     private String TAG="移动组件：    ";
     private DisplayMetrics dm= new DisplayMetrics();
     private Context context;
@@ -105,15 +105,15 @@ public class YFZMovingSpringView extends LinearLayout {
      *   （手指移动的距离-手指第一次点击组件记录的值）
      **/
 
-    public YFZMovingSpringView(Context context) {
+    public MovingViewSpring(Context context) {
         super(context);
         initView(context);
     }
-    public YFZMovingSpringView(Context context, @Nullable AttributeSet attrs) {
+    public MovingViewSpring(Context context, @Nullable AttributeSet attrs) {
         super(context,attrs);
         initView(context);
     }
-    public YFZMovingSpringView(Context context, AttributeSet attrs, int defStyle)
+    public MovingViewSpring(Context context, AttributeSet attrs, int defStyle)
     {
         super(context,attrs,defStyle);
         initView(context);

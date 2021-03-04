@@ -1,4 +1,4 @@
-package movingView.scale;
+package movingView.moving_scale;
 
 import android.content.Context;
 import android.graphics.Canvas;
