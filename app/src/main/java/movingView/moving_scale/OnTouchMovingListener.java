@@ -18,7 +18,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private final static String TAG=OnTouchMovingListener.class.getName();
     private final static int MODE_DRAW_MOVING=100,MODE_DOUBLE_CLICK=101;
     private final static int MODE_CORNER_TOP_LEFT=200,MODE_CORNER_TOP_RIGHT=201,MODE_CORNER_BOTTOM_LEFT=202,MODE_CORNER_BOTTOM_RIGHT=203;
-    private View mView;
+    private View mView,mViewParent;
     private boolean isFirstTime=false;
     private ArrayList<Rect> mRectArrayList=new ArrayList<>();
     private float mDownX,mDownY;
@@ -35,6 +35,9 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 
     private Rect mCornerRect=new Rect();
     private int mCornerRadius=10;
+    public OnTouchMovingListener(View parentView){
+        this.mViewParent=parentView;
+    }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch (event.getAction()){
@@ -48,6 +51,8 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                 mDistanceY=event.getY()-mDownY;
                 if(mModeMoving) {
                     OnModeMoving();
+                }else if(mModeDoubleClick){
+                    OnModeDoubleClick();
                 }
                 updateNextPosition();
                 break;
@@ -166,6 +171,12 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         return MODE_DRAW_MOVING;
     }
     private void OnModeMoving(){
+        mViewNP_left=mView.getLeft()+mDistanceX;
+        mViewNP_right=mView.getRight()+mDistanceX;
+        mViewNP_top=mView.getTop()+mDistanceY;
+        mViewNP_bottom=mView.getBottom()+mDistanceY;
+    }
+    private void OnModeDoubleClick(){
         mViewNP_left=mView.getLeft()+mDistanceX;
         mViewNP_right=mView.getRight()+mDistanceX;
         mViewNP_top=mView.getTop()+mDistanceY;
