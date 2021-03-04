@@ -1,6 +1,9 @@
 package movingView.moving_scale;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +21,9 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private final static String TAG=OnTouchMovingListener.class.getName();
     private final static int MODE_DRAW_MOVING=100,MODE_DOUBLE_CLICK=101;
     private final static int MODE_CORNER_TOP_LEFT=200,MODE_CORNER_TOP_RIGHT=201,MODE_CORNER_BOTTOM_LEFT=202,MODE_CORNER_BOTTOM_RIGHT=203;
+    private Context mContext;
+    private Resources mResources;
+    private DisplayMetrics mDm;
     private View mView,mViewParent;
     private boolean isFirstTime=false;
     private ArrayList<Rect> mRectArrayList=new ArrayList<>();
@@ -35,8 +41,9 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 
     private Rect mCornerRect=new Rect();
     private int mCornerRadius=10;
-    public OnTouchMovingListener(View parentView){
-        this.mViewParent=parentView;
+    public OnTouchMovingListener(Context context,View parentView_limitedBoundary){
+        this.mContext=context;
+        this.mViewParent=parentView_limitedBoundary;
     }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -79,6 +86,8 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mRectArrayList.add(new Rect());
             mRectArrayList.add(new Rect());
             mRectArrayList.add(new Rect());
+            mResources  = mContext.getResources();
+            mDm = mResources.getDisplayMetrics();
         }
     }
     /**
@@ -183,6 +192,34 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mViewNP_bottom=mView.getBottom()+mDistanceY;
     }
 
+    private int getMaxLeft(){
+        if(null != mViewParent){
+            return mViewParent.getLeft();
+        }else {
+            return 0;
+        }
+    }
+    private int getMaxTop(){
+        if(null != mViewParent){
+            return mViewParent.getTop();
+        }else {
+            return 0;
+        }
+    }
+    private int getMaxRight(){
+        if(null != mViewParent){
+            return mViewParent.getRight();
+        }else {
+            return mDm.widthPixels;
+        }
+    }
+    private int getMaxBottom(){
+        if(null != mViewParent){
+            return mViewParent.getHeight();
+        }else {
+            return mDm.heightPixels;
+        }
+    }
     /**
      * UP-重置mode
      */
@@ -204,5 +241,6 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 //            mView.postInvalidate();
         }
     }
+
 
 }
