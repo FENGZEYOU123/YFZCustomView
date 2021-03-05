@@ -1,14 +1,10 @@
 package movingView.moving_scale;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Rect;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
-import java.util.ArrayList;
 
 import utils.YFZDisplayUtils;
 import utils.YFZUtils;
@@ -24,8 +20,8 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private final static int MODE_CORNER_TOP_LEFT=200,MODE_CORNER_TOP_RIGHT=201,MODE_CORNER_BOTTOM_LEFT=202,MODE_CORNER_BOTTOM_RIGHT=203;
     private Context mContext;
     private View mView,mViewParent;
+    private MotionEvent mEvent;
     private boolean isFirstTime=false;
-    private ArrayList<Rect> mRectArrayList=new ArrayList<>();
     private float mDownX,mDownY;
 
     private boolean mModeMoving=false,mModeDoubleClick=false;
@@ -36,7 +32,6 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private int mViewOriginalWidth,mViewOriginalHeight;
     private float mViewNP_left,mViewNP_top,mViewNP_right,mViewNP_bottom;
     private float mViewCP_left,mViewCP_top,mViewCP_right,mViewCP_bottom;
-    private int mCheckMode =MODE_DRAW_MOVING;
 
     private Rect mCornerRect=new Rect();
     private int mCornerRadius=10;
@@ -59,6 +54,8 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                     OnModeMoving();
                 }else if(mModeDoubleClick){
                     OnModeDoubleClick();
+                }else if(mModeCornerTopLeft||mModeCornerTopRight||mModeCornerBottomRight||mModeCornerBottomLeft){
+                    OnModeCornerScaling();
                 }
                 updateNextPosition();
                 break;
@@ -72,6 +69,18 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         return true;
     }
 
+    private void refreshDownX(){
+        mDownX=mEvent.getX();
+    }
+    private void refreshDownY(){
+        mDownX=mEvent.getY();
+    }
+    private void refreshDistanceX(){
+        mDistanceX=mEvent.getX()-mDownX;
+    }
+    private void refreshDistanceY(){
+        mDistanceY=mEvent.getY()-mDownY;
+    }
     /**
      * Down-首次点击，记录view原始大小信息
      */
@@ -81,16 +90,13 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mViewOriginalWidth=v.getWidth();
             mViewOriginalHeight=v.getHeight();
             isFirstTime=false;
-            mRectArrayList.add(new Rect());
-            mRectArrayList.add(new Rect());
-            mRectArrayList.add(new Rect());
-            mRectArrayList.add(new Rect());
         }
     }
     /**
      * Down-每次都记录一下当前的手指位置，和view位置
      */
     private void downEveyTimeRecordInfo(MotionEvent event){
+        mEvent=event;
         mDownX=event.getX();
         mDownY=event.getY();
         if(null != mView) {
@@ -183,11 +189,11 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mViewNP_bottom=mView.getBottom()+mDistanceY;
     }
     private void OnModeDoubleClick(){
-        if(mViewNP_left!=getMaxLeft() || mViewNP_top!=getMaxTop() ||mViewNP_right!=getMaxRight() || mViewNP_bottom!=getMaxBottom()  ) {
-            mViewNP_left = getMaxLeft();
-            mViewNP_right = getMaxRight();
-            mViewNP_top = getMaxTop();
-            mViewNP_bottom = getMaxBottom();
+        if(mViewNP_left!= getLeftMax() || mViewNP_top!= getTopMax() ||mViewNP_right!= getRightMax() || mViewNP_bottom!= getBottomMax()  ) {
+            mViewNP_left = getLeftMax();
+            mViewNP_right = getRightMax();
+            mViewNP_top = getTopMax();
+            mViewNP_bottom = getBottomMax();
         }else {
             mViewNP_left = mViewCP_left;
             mViewNP_right =  mViewCP_right;
@@ -195,29 +201,88 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mViewNP_bottom =  mViewCP_bottom;
         }
     }
+    private void OnModeCornerScaling(){
 
-    private int getMaxLeft(){
+        if (mModeCornerTopLeft) {
+            mViewNP_left = ( getLeftView()+ mDistanceX);
+            mViewNP_right =  (mViewCP_right);
+            mViewNP_top =  (getTopView() + mDistanceY);
+            mViewNP_bottom =  (mViewCP_bottom);
+        } else if (mModeCornerTopRight) {
+            mViewNP_left = (getLeftView());
+            mViewNP_right = (getRightView() + mDistanceX);
+            mViewNP_top = (getTopView() + mDistanceY);
+            mViewNP_bottom = (getBottomView());
+            Log.d(TAG, "OnModeScaling: "+mDistanceX);
+        } else if (mModeCornerBottomLeft) {
+            mViewNP_left =  (getLeftView() + mDistanceX);
+            mViewNP_right =  (getRightView());
+            mViewNP_top =  (getTopView() );
+            mViewNP_bottom =  (getBottomView() + mDistanceY);
+        } else if (mModeCornerBottomRight) {
+            mViewNP_left =  (getLeftView());
+            mViewNP_right =  (getRightView() + mDistanceX);
+            mViewNP_top =  (getTopView() );
+            mViewNP_bottom =  (getBottomView() + mDistanceY);
+        }
+//        refreshDownX();
+//        refreshDownY();
+//        refreshDistanceX();
+//        refreshDistanceY();
+
+    }
+
+
+    private int getLeftView(){
+        if(null !=mView) {
+            return mView.getLeft();
+        }else {
+            return 0;
+        }
+    }
+    private int getTopView(){
+        if(null !=mView) {
+            return mView.getTop();
+        }else {
+            return 0;
+        }
+    }
+    private int getRightView(){
+        if(null !=mView) {
+            return mView.getRight();
+        }else {
+            return 0;
+        }
+    }
+    private int getBottomView(){
+        if(null !=mView) {
+            return mView.getBottom();
+        }else {
+            return 0;
+        }
+    }
+    private int getLeftMax(){
         if(null != mViewParent){
             return mViewParent.getLeft();
         }else {
             return 0;
         }
     }
-    private int getMaxTop(){
+    private int getTopMax(){
         if(null != mViewParent){
             return mViewParent.getTop();
         }else {
             return 0;
         }
     }
-    private int getMaxRight(){
+    private int getRightMax(){
         if(null != mViewParent){
             return mViewParent.getRight();
         }else {
             return YFZDisplayUtils.getScreenWidth(mContext);
         }
     }
-    private int getMaxBottom(){
+    private int getBottomMax(){
         if(null != mViewParent){
             return mViewParent.getHeight();
         }else {
@@ -240,7 +305,6 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mModeCornerBottomLeft = false;
         mModeCornerBottomRight = false;
         mModeDoubleClick=false;
-        mCheckMode=MODE_DRAW_MOVING;
 
     }
     /**

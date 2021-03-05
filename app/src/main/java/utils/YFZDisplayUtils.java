@@ -66,6 +66,42 @@ public class YFZDisplayUtils {
         }
     }
 
+    /**
+     * 获取屏幕缩放密度
+     * @param context
+     */
+    public static float getScreenScale(Context context) {
+        if(null !=context) {
+            if (null == windowManager) {
+                windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            }
+            if (null != windowManager) {
+                DisplayMetrics outMetrics = new DisplayMetrics();
+                windowManager.getDefaultDisplay().getMetrics(outMetrics);
+                float scaledDensity = outMetrics.scaledDensity;
+                return scaledDensity;
+            }
+        }
+        return 0;
+    }
+    /**
+     * 获取屏幕密度
+     * @param context
+     */
+    public static float getScreenDpi(Context context) {
+        if(null !=context) {
+            if (null == windowManager) {
+                windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            }
+            if (null != windowManager) {
+                DisplayMetrics outMetrics = new DisplayMetrics();
+                windowManager.getDefaultDisplay().getMetrics(outMetrics);
+                float density = outMetrics.density;
+                return density;
+            }
+        }
+        return 0;
+    }
 
     /**
      * 获取屏幕高度
