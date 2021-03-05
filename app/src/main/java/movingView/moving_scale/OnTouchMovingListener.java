@@ -25,9 +25,8 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private float mDownX,mDownY;
     private int mMinimumMaxRate=10;
 
-    private boolean mModeMoving=false,mModeDoubleClick=false;
+    private boolean mModeMoving=false,mModeDoubleClick=false,mModeFullScreen=false,mModeNormalScreen=false;
     private boolean mModeCornerTopLeft=false,mModeCornerTopRight=false,mModeCornerBottomLeft=false,mModeCornerBottomRight=false;
-
 
     private float mDistanceX,mDistanceY;
     private int mViewOriginalWidth,mViewOriginalHeight;
@@ -52,13 +51,10 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             case MotionEvent.ACTION_MOVE:
                 mDistanceX=(int)(event.getX()-mDownX);
                 mDistanceY=(int)(event.getY()-mDownY);
-                Log.d(TAG, "onTouch: X 移动间距 "+mDistanceX+"    "+event.getX()+"     "+mDownX);
-                Log.d(TAG, "onTouch: Y 移动间距 "+mDistanceY+"    "+event.getY()+"    "+mDownY);
-
                 if(mModeMoving) {
                     OnModeMoving();
-                }else if(mModeDoubleClick){
-                    OnModeDoubleClick();
+                }else if(mModeNormalScreen || mModeFullScreen){
+                    OnModeFullScreenOrNormalScreen();
                 }else if(mModeCornerTopLeft||mModeCornerTopRight||mModeCornerBottomRight||mModeCornerBottomLeft){
                     OnModeCornerScaling();
                 }
@@ -106,10 +102,15 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mDownX=event.getX();
         mDownY=event.getY();
         if(null != mView) {
-            mViewPP_left = mView.getLeft();
-            mViewPP_top = mView.getTop();
-            mViewPP_right = mView.getRight();
-            mViewPP_bottom = mView.getBottom();
+            if(!mModeFullScreen) {
+                mViewPP_left = mView.getLeft();
+                mViewPP_top = mView.getTop();
+                mViewPP_right = mView.getRight();
+                mViewPP_bottom = mView.getBottom();
+                Log.d(TAG, "downEveyTimeRecordInfo: 点击-记录当前坐标 "+mViewPP_left+" "+mViewPP_top+" "+mViewPP_right+" "+mViewPP_bottom);
+            }else {
+                Log.d(TAG, "downEveyTimeRecordInfo: 点击-（之前全屏模式）不记录当前坐标 "+mViewPP_left+" "+mViewPP_top+" "+mViewPP_right+" "+mViewPP_bottom);
+            }
 
             mViewPP_width=mView.getWidth();
             mViewPP_height=mView.getHeight();
@@ -147,7 +148,14 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                     break;
                 case MODE_DOUBLE_CLICK:
                     mModeDoubleClick = true;
-                    Log.d(TAG, "downCheckMode: 当前模式为双击-放大/缩小");
+                    if(getCurrentHeightView()==getMaxLimitedHeight() && getCurrentWidthView()==getMaxLimitedWidth()){
+                        mModeNormalScreen=true;
+                        Log.d(TAG, "downCheckMode: 当前模式为双击-缩小");
+                    }else {
+                        mModeFullScreen=true;
+                        Log.d(TAG, "downCheckMode: 当前模式为双击-放大");
+                    }
+
                     break;
                 default:
                     break;
@@ -198,18 +206,22 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mViewNP_top=mView.getTop()+mDistanceY;
         mViewNP_bottom=mView.getBottom()+mDistanceY;
     }
-    private void OnModeDoubleClick(){
-        if(mViewNP_left!= getMaxLimitedLeft() || mViewNP_top!= getMaxLimitedTop() ||mViewNP_right!= getMaxLimitedRight() || mViewNP_bottom!= getMaxLimitedBottom()  ) {
+    private void OnModeFullScreenOrNormalScreen(){
+        if(mModeNormalScreen){
+            mViewNP_left = mViewPP_left;
+            mViewNP_right =  mViewPP_right;
+            mViewNP_top =  mViewPP_top;
+            mViewNP_bottom =  mViewPP_bottom;
+            mModeFullScreen=false;
+        }else if(mModeFullScreen) {
             mViewNP_left = getMaxLimitedLeft();
             mViewNP_right = getMaxLimitedRight();
             mViewNP_top = getMaxLimitedTop();
             mViewNP_bottom = getMaxLimitedBottom();
-        }else {
-            mViewNP_left = mViewCP_left;
-            mViewNP_right =  mViewCP_right;
-            mViewNP_top =  mViewCP_top;
-            mViewNP_bottom =  mViewCP_bottom;
+            mModeNormalScreen=false;
+
         }
+
     }
     private void OnModeCornerScaling(){
             if (mModeCornerTopLeft) {
@@ -338,6 +350,8 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mModeCornerBottomLeft = false;
         mModeCornerBottomRight = false;
         mModeDoubleClick=false;
+        mModeNormalScreen=false;
+//        mModeFullScreen=false;
 
     }
     /**

@@ -15,14 +15,14 @@
         android:layout_height="match_parent">
     </movingView.moving_scale.Component_drawFrame>
 
-    <LinearLayout
+    <ImageView
         android:id="@+id/movingView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="@color/white"
+        android:background="@drawable/ic_launcher_background"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:orientation="horizontal">
-    </LinearLayout>
+    </ImageView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

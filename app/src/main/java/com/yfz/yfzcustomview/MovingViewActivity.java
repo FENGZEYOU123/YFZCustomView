@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import movingView.moving_scale.Component_drawFrame;
@@ -15,7 +16,7 @@ import movingView.moving_scale.OnTouchMovingListener;
 public class MovingViewActivity extends AppCompatActivity {
     private String TAG = MainActivity.class.getName();
     private Context mContext;
-    private LinearLayout movingView;
+    private ImageView movingView;
     private ConstraintLayout baseLayout;
     private Component_drawFrame drawFrame;
     @Override
