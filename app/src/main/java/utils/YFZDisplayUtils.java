@@ -14,6 +14,7 @@ import static android.view.View.GONE;
 
 public class YFZDisplayUtils {
     private static DisplayMetrics dm = new DisplayMetrics();
+    private static  WindowManager windowManager;
 
     public static int px2dip(Context context, float pxValue) {
         return (int) (pxValue / (context.getResources().getDisplayMetrics().density) + 0.5f);
@@ -63,5 +64,63 @@ public class YFZDisplayUtils {
                             | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                             | View.SYSTEM_UI_FLAG_IMMERSIVE);
         }
+    }
+
+
+    /**
+     * 获取屏幕高度
+     * @param context
+     */
+    public static int getScreenHeight(Context context) {
+        if(null !=context) {
+            if (null == windowManager) {
+                windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            }
+            if (null != windowManager) {
+                DisplayMetrics outMetrics = new DisplayMetrics();
+                windowManager.getDefaultDisplay().getMetrics(outMetrics);
+                int widthPixels = outMetrics.widthPixels;
+                int heightPixels = outMetrics.heightPixels;
+                int densityDpi = outMetrics.densityDpi;
+                float density = outMetrics.density;
+                float scaledDensity = outMetrics.scaledDensity;
+                //可用显示大小的绝对宽度（以像素为单位）。
+                //可用显示大小的绝对高度（以像素为单位）。
+                //屏幕密度表示为每英寸点数。
+                //显示器的逻辑密度。
+                //显示屏上显示的字体缩放系数。
+                return heightPixels;
+            }
+        }
+        return 0;
+    }
+
+
+    /**
+     * 获取屏幕宽度
+     * @param context
+     */
+    public static int getScreenWidth(Context context) {
+        if(null !=context) {
+            if (null == windowManager) {
+                windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+            }
+            if (null != windowManager) {
+                DisplayMetrics outMetrics = new DisplayMetrics();
+                windowManager.getDefaultDisplay().getMetrics(outMetrics);
+                int widthPixels = outMetrics.widthPixels;
+                int heightPixels = outMetrics.heightPixels;
+                int densityDpi = outMetrics.densityDpi;
+                float density = outMetrics.density;
+                float scaledDensity = outMetrics.scaledDensity;
+                //可用显示大小的绝对宽度（以像素为单位）。
+                //可用显示大小的绝对高度（以像素为单位）。
+                //屏幕密度表示为每英寸点数。
+                //显示器的逻辑密度。
+                //显示屏上显示的字体缩放系数。
+                return widthPixels;
+            }
+        }
+        return 0;
     }
 }

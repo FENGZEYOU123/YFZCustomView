@@ -10,6 +10,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import utils.YFZDisplayUtils;
 import utils.YFZUtils;
 
 /**
@@ -22,8 +23,6 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private final static int MODE_DRAW_MOVING=100,MODE_DOUBLE_CLICK=101;
     private final static int MODE_CORNER_TOP_LEFT=200,MODE_CORNER_TOP_RIGHT=201,MODE_CORNER_BOTTOM_LEFT=202,MODE_CORNER_BOTTOM_RIGHT=203;
     private Context mContext;
-    private Resources mResources;
-    private DisplayMetrics mDm;
     private View mView,mViewParent;
     private boolean isFirstTime=false;
     private ArrayList<Rect> mRectArrayList=new ArrayList<>();
@@ -86,8 +85,6 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mRectArrayList.add(new Rect());
             mRectArrayList.add(new Rect());
             mRectArrayList.add(new Rect());
-            mResources  = mContext.getResources();
-            mDm = mResources.getDisplayMetrics();
         }
     }
     /**
@@ -217,14 +214,14 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         if(null != mViewParent){
             return mViewParent.getRight();
         }else {
-            return mDm.widthPixels;
+            return YFZDisplayUtils.getScreenWidth(mContext);
         }
     }
     private int getMaxBottom(){
         if(null != mViewParent){
             return mViewParent.getHeight();
         }else {
-            return mDm.heightPixels;
+            return YFZDisplayUtils.getScreenHeight(mContext);
         }
     }
     /**
