@@ -27,6 +27,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private float mDownX,mDownY;
     private int mMinimumMaxRate=10;
 
+    private boolean mModeSecondPoint=false;
     private boolean mModeMoving=false,mModeDoubleClick=false,mModeFullScreen=false,mModeNormalScreen=false;
     private boolean mModeCornerTopLeft=false,mModeCornerTopRight=false,mModeCornerBottomLeft=false,mModeCornerBottomRight=false;
     private boolean mModeLineLeft =false,mModeLineTop=false,mModeLineRight=false,mModeLineBottom=false;
@@ -51,24 +52,25 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 
             case MotionEvent.ACTION_DOWN:
                 Log.d(TAG, "onTouch: 第 1 根手指 Down");
-
                 downFirstTimeInitial(v);
                 downEveyTimeRecordInfo(event);
-                downCheckMode(event);
+                downCheckModePointOne(event);
                 break;
             case MotionEvent.ACTION_MOVE:
                 Log.d(TAG, "onTouch: 第 1 根手指 Move");
 
                 mDistanceX=(int)(event.getX()-mDownX);
                 mDistanceY=(int)(event.getY()-mDownY);
-                if(mModeMoving) {
-                    OnModeMoving();
-                }else if(mModeCornerTopLeft||mModeCornerTopRight||mModeCornerBottomLeft||mModeCornerBottomRight){
-                    OnModeCornerScaling();
-                }else if(mModeLineLeft||mModeLineTop||mModeLineRight||mModeLineBottom){
-                    OnModeLineScaling();
-                }else if(mModeNormalScreen || mModeFullScreen){
-                    OnModeFullScreenOrNormalScreen();
+                if(!mModeSecondPoint) {  //屏幕上2触点不执行1的状态
+                    if (mModeMoving) {
+                        OnModeMoving();
+                    } else if (mModeCornerTopLeft || mModeCornerTopRight || mModeCornerBottomLeft || mModeCornerBottomRight) {
+                        OnModeCornerScaling();
+                    } else if (mModeLineLeft || mModeLineTop || mModeLineRight || mModeLineBottom) {
+                        OnModeLineScaling();
+                    } else if (mModeNormalScreen || mModeFullScreen) {
+                        OnModeFullScreenOrNormalScreen();
+                    }
                 }
                 updateNextPosition();
 
@@ -79,7 +81,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                 reset();
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
-
+                mModeSecondPoint=true;
                 Log.d(TAG, "onTouch: 第 2 根手指 Down");
                 break;
             case MotionEvent.ACTION_POINTER_UP:
@@ -123,6 +125,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mEvent=event;
         mDownX=event.getX();
         mDownY=event.getY();
+        mModeSecondPoint=false;
         if(null != mView) {
             if(!mModeFullScreen) {
                 mViewPP_left = mView.getLeft();
@@ -137,7 +140,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mViewPP_width=mView.getWidth();
             mViewPP_height=mView.getHeight();
 
-            mCornerRadius=mView.getWidth()<=mView.getHeight()?mView.getWidth()/5:mView.getHeight()/5;
+            mCornerRadius=mView.getWidth()<=mView.getHeight()?mView.getWidth()/4:mView.getHeight()/4;
             if(mCornerRadius>=40){
                 mCornerRadius=40;
             }
@@ -148,7 +151,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     /**
      * Down-检查点击的类型-拖拽移动，四角缩放
      */
-    private void downCheckMode(MotionEvent event){
+    private void downCheckModePointOne(MotionEvent event){
         if(null != mView) {
 
             switch (getMode(event)) {
