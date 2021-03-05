@@ -45,13 +45,18 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+//        event.getActionMasked();
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
+                Log.d(TAG, "onTouch: 第 1 根手指 Down");
+
                 downFirstTimeInitial(v);
                 downEveyTimeRecordInfo(event);
                 downCheckMode(event);
                 break;
             case MotionEvent.ACTION_MOVE:
+                Log.d(TAG, "onTouch: 第 1 根手指 Move");
+
                 mDistanceX=(int)(event.getX()-mDownX);
                 mDistanceY=(int)(event.getY()-mDownY);
                 if(mModeMoving) {
@@ -66,8 +71,16 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                 updateNextPosition();
 
                 break;
+
             case MotionEvent.ACTION_UP:
+                Log.d(TAG, "onTouch: 第 1 根手指 UP");
                 reset();
+                break;
+            case MotionEvent.ACTION_POINTER_DOWN:
+                Log.d(TAG, "onTouch: 第 2 根手指 Down");
+                break;
+            case MotionEvent.ACTION_POINTER_UP:
+                Log.d(TAG, "onTouch: 第 2 根手指 UP");
                 break;
             default:
                 reset();
