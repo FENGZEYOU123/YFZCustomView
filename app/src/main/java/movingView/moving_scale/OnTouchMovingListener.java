@@ -212,28 +212,27 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         }
     }
     private void OnModeCornerScaling(){
-
-        if (mModeCornerTopLeft) {
-            mViewNP_left = ( getLeftView()+ mDistanceX);
-            mViewNP_right =  (mViewPP_right);
-            mViewNP_top =  (getTopView() + mDistanceY);
-            mViewNP_bottom =  (mViewPP_bottom);
-        } else if (mModeCornerTopRight) {
-            mViewNP_left = (getLeftView());
-            mViewNP_right = (mViewPP_right+ mDistanceX);
-            mViewNP_top = (getTopView() + mDistanceY);
-            mViewNP_bottom = (mViewPP_bottom);
-        } else if (mModeCornerBottomLeft) {
-            mViewNP_left =  (getLeftView() + mDistanceX);
-            mViewNP_right =  (getRightView());
-            mViewNP_top =  (getTopView() );
-            mViewNP_bottom =  (mViewPP_bottom + mDistanceY);
-        } else if (mModeCornerBottomRight) {
-            mViewNP_left =  (getLeftView());
-            mViewNP_right =  (mViewPP_right + mDistanceX);
-            mViewNP_top =  (mViewPP_top );
-            mViewNP_bottom =  (mViewPP_bottom + mDistanceY);
-        }
+            if (mModeCornerTopLeft) {
+                mViewNP_left = (getLeftView() + mDistanceX);
+                mViewNP_right = (mViewPP_right);
+                mViewNP_top = (getTopView() + mDistanceY);
+                mViewNP_bottom = (mViewPP_bottom);
+            } else if (mModeCornerTopRight) {
+                mViewNP_left = (getLeftView());
+                mViewNP_right = (mViewPP_right + mDistanceX);
+                mViewNP_top = (getTopView() + mDistanceY);
+                mViewNP_bottom = (mViewPP_bottom);
+            } else if (mModeCornerBottomLeft) {
+                mViewNP_left = (getLeftView() + mDistanceX);
+                mViewNP_right = (getRightView());
+                mViewNP_top = (getTopView());
+                mViewNP_bottom = (mViewPP_bottom + mDistanceY);
+            } else if (mModeCornerBottomRight) {
+                mViewNP_left = (getLeftView());
+                mViewNP_right = (mViewPP_right + mDistanceX);
+                mViewNP_top = (mViewPP_top);
+                mViewNP_bottom = (mViewPP_bottom + mDistanceY);
+            }
     }
     private int getCurrentWidthView(){
         if(null !=mView) {
@@ -277,7 +276,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             return 0;
         }
     }
-    
+
     private int getMinimumLimitedWidth(){
         return getMaxLimitedWidth()/mMinimumMaxRate;
     }
@@ -346,11 +345,28 @@ public class OnTouchMovingListener implements View.OnTouchListener{
      */
     private void updateNextPosition(){
         if(null != mView) {
-            mView.layout((int)mViewNP_left,(int)mViewNP_top,(int)mViewNP_right,(int)mViewNP_bottom);
-            mViewCP_left = mView.getLeft();
-            mViewCP_top = mView.getTop();
-            mViewCP_right = mView.getRight();
-            mViewCP_bottom = mView.getBottom();
+            if(mViewNP_right-mViewNP_left<getMinimumLimitedWidth()){
+                if(mModeCornerBottomLeft||mModeCornerTopLeft){
+                    mViewNP_left = mViewCP_right - getMinimumLimitedWidth() - 1;
+                }else {
+                    mViewNP_right = mViewNP_left + getMinimumLimitedWidth() + 1;
+                }
+                Log.d(TAG, "updateNextPosition: 小于最低限制长度");
+            }
+            if(mViewNP_bottom-mViewNP_top<getMinimumLimitedHeight()){
+                Log.d(TAG, "updateNextPosition: 小于最低限制高度");
+                if(mModeCornerTopLeft ||mModeCornerTopRight) {
+                    mViewNP_top = mViewCP_bottom - getMinimumLimitedHeight() - 1;
+                }else {
+                    mViewNP_bottom = mViewNP_top + getMinimumLimitedHeight() + 1;
+                }
+            }
+                mView.layout((int) mViewNP_left, (int) mViewNP_top, (int) mViewNP_right, (int) mViewNP_bottom);
+                mViewCP_left = mView.getLeft();
+                mViewCP_top = mView.getTop();
+                mViewCP_right = mView.getRight();
+                mViewCP_bottom = mView.getBottom();
+
 
             mView.postInvalidate();
         }
