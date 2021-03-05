@@ -23,6 +23,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private MotionEvent mEvent;
     private boolean isFirstTime=false;
     private float mDownX,mDownY;
+    private int mMinimumMaxRate=10;
 
     private boolean mModeMoving=false,mModeDoubleClick=false;
     private boolean mModeCornerTopLeft=false,mModeCornerTopRight=false,mModeCornerBottomLeft=false,mModeCornerBottomRight=false;
@@ -198,11 +199,11 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mViewNP_bottom=mView.getBottom()+mDistanceY;
     }
     private void OnModeDoubleClick(){
-        if(mViewNP_left!= getLeftMax() || mViewNP_top!= getTopMax() ||mViewNP_right!= getRightMax() || mViewNP_bottom!= getBottomMax()  ) {
-            mViewNP_left = getLeftMax();
-            mViewNP_right = getRightMax();
-            mViewNP_top = getTopMax();
-            mViewNP_bottom = getBottomMax();
+        if(mViewNP_left!= getMaxLimitedLeft() || mViewNP_top!= getMaxLimitedTop() ||mViewNP_right!= getMaxLimitedRight() || mViewNP_bottom!= getMaxLimitedBottom()  ) {
+            mViewNP_left = getMaxLimitedLeft();
+            mViewNP_right = getMaxLimitedRight();
+            mViewNP_top = getMaxLimitedTop();
+            mViewNP_bottom = getMaxLimitedBottom();
         }else {
             mViewNP_left = mViewCP_left;
             mViewNP_right =  mViewCP_right;
@@ -233,11 +234,6 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mViewNP_top =  (mViewPP_top );
             mViewNP_bottom =  (mViewPP_bottom + mDistanceY);
         }
-//        refreshDownX();
-//        refreshDownY();
-//        refreshDistanceX();
-//        refreshDistanceY();
-
     }
     private int getCurrentWidthView(){
         if(null !=mView) {
@@ -281,28 +277,49 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             return 0;
         }
     }
-    private int getLeftMax(){
+    
+    private int getMinimumLimitedWidth(){
+        return getMaxLimitedWidth()/mMinimumMaxRate;
+    }
+    private int getMinimumLimitedHeight(){
+        return getMaxLimitedHeight()/mMinimumMaxRate;
+    }
+    private int getMaxLimitedHeight(){
+        if(null != mViewParent){
+            return mViewParent.getHeight();
+        }else {
+            return 0;
+        }
+    }
+    private int getMaxLimitedWidth(){
+        if(null != mViewParent){
+            return mViewParent.getWidth();
+        }else {
+            return 0;
+        }
+    }
+    private int getMaxLimitedLeft(){
         if(null != mViewParent){
             return mViewParent.getLeft();
         }else {
             return 0;
         }
     }
-    private int getTopMax(){
+    private int getMaxLimitedTop(){
         if(null != mViewParent){
             return mViewParent.getTop();
         }else {
             return 0;
         }
     }
-    private int getRightMax(){
+    private int getMaxLimitedRight(){
         if(null != mViewParent){
             return mViewParent.getRight();
         }else {
             return YFZDisplayUtils.getScreenWidth(mContext);
         }
     }
-    private int getBottomMax(){
+    private int getMaxLimitedBottom(){
         if(null != mViewParent){
             return mViewParent.getHeight();
         }else {
@@ -314,10 +331,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
      */
     private synchronized void reset(){
         if(!mModeDoubleClick) {
-            mViewCP_left = mView.getLeft();
-            mViewCP_top = mView.getTop();
-            mViewCP_right = mView.getRight();
-            mViewCP_bottom = mView.getBottom();
+            updateNextPosition();
         }
         mModeMoving=false;
         mModeCornerTopLeft= false;
