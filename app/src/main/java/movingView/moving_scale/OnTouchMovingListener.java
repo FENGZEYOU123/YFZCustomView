@@ -56,8 +56,10 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                 mDistanceY=(int)(event.getY()-mDownY);
                 if(mModeMoving) {
                     OnModeMoving();
-                }else if(mModeCornerTopLeft||mModeCornerTopRight||mModeCornerBottomRight||mModeCornerBottomLeft){
+                }else if(mModeCornerTopLeft||mModeCornerTopRight||mModeCornerBottomLeft||mModeCornerBottomRight){
                     OnModeCornerScaling();
+                }else if(mModeLineLeft||mModeLineTop||mModeLineRight||mModeLineBottom){
+                    OnModeLineScaling();
                 }else if(mModeNormalScreen || mModeFullScreen){
                     OnModeFullScreenOrNormalScreen();
                 }
@@ -118,7 +120,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mViewPP_width=mView.getWidth();
             mViewPP_height=mView.getHeight();
 
-            mCornerRadius=mView.getWidth()<=mView.getHeight()?mView.getWidth()/4:mView.getHeight()/2;
+            mCornerRadius=mView.getWidth()<=mView.getHeight()?mView.getWidth()/4:mView.getHeight()/4;
         }
     }
 
@@ -305,6 +307,29 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         }
 
     }
+    private void OnModeLineScaling(){
+        if (mModeLineLeft) {
+            mViewNP_left = (getLeftView() + mDistanceX);
+            mViewNP_right = mViewPP_right;
+            mViewNP_top = mViewPP_top;
+            mViewNP_bottom =mViewPP_bottom;
+        } else if (mModeLineRight) {
+            mViewNP_left = (mViewPP_left);
+            mViewNP_right = getRightView()+mDistanceX;
+            mViewNP_top = mViewPP_top;
+            mViewNP_bottom =mViewPP_bottom;
+        } else if (mModeLineTop) {
+            mViewNP_left = (mViewPP_left);
+            mViewNP_right = (mViewPP_right);
+            mViewNP_top = (getTopView()+mDistanceY);
+            mViewNP_bottom = (mViewPP_bottom);
+        } else if (mModeLineBottom) {
+            mViewNP_left = (mViewPP_left);
+            mViewNP_right = (mViewPP_right);
+            mViewNP_top = (mViewPP_top);
+            mViewNP_bottom = (getTopView()+mDistanceY);
+        }
+    }
     private void OnModeCornerScaling(){
             if (mModeCornerTopLeft) {
                 mViewNP_left = (getLeftView() + mDistanceX);
@@ -429,6 +454,10 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mModeCornerTopRight = false;
         mModeCornerBottomLeft = false;
         mModeCornerBottomRight = false;
+        mModeLineLeft=false;
+        mModeLineTop=false;
+        mModeLineRight=false;
+        mModeLineBottom=false;
         mModeDoubleClick=false;
         mModeNormalScreen=false;
 //        mModeFullScreen=false;
