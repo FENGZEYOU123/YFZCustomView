@@ -32,7 +32,8 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private int mViewOriginalWidth,mViewOriginalHeight;
     private float mViewNP_left,mViewNP_top,mViewNP_right,mViewNP_bottom;
     private float mViewCP_left,mViewCP_top,mViewCP_right,mViewCP_bottom;
-
+    private float mViewPP_left,mViewPP_top,mViewPP_right,mViewPP_bottom;
+    private float mViewPP_width,mViewPP_height;
     private Rect mCornerRect=new Rect();
     private int mCornerRadius=10;
     public OnTouchMovingListener(Context context,View parentView_limitedBoundary){
@@ -48,8 +49,11 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                 downCheckMode(event);
                 break;
             case MotionEvent.ACTION_MOVE:
-                mDistanceX=event.getX()-mDownX;
-                mDistanceY=event.getY()-mDownY;
+                mDistanceX=(int)(event.getX()-mDownX);
+                mDistanceY=(int)(event.getY()-mDownY);
+                Log.d(TAG, "onTouch: X 移动间距 "+mDistanceX+"    "+event.getX()+"     "+mDownX);
+                Log.d(TAG, "onTouch: Y 移动间距 "+mDistanceY+"    "+event.getY()+"    "+mDownY);
+
                 if(mModeMoving) {
                     OnModeMoving();
                 }else if(mModeDoubleClick){
@@ -58,6 +62,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                     OnModeCornerScaling();
                 }
                 updateNextPosition();
+
                 break;
             case MotionEvent.ACTION_UP:
                 reset();
@@ -100,10 +105,14 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         mDownX=event.getX();
         mDownY=event.getY();
         if(null != mView) {
-            mViewCP_left = mView.getLeft();
-            mViewCP_top = mView.getTop();
-            mViewCP_right = mView.getRight();
-            mViewCP_bottom = mView.getBottom();
+            mViewPP_left = mView.getLeft();
+            mViewPP_top = mView.getTop();
+            mViewPP_right = mView.getRight();
+            mViewPP_bottom = mView.getBottom();
+
+            mViewPP_width=mView.getWidth();
+            mViewPP_height=mView.getHeight();
+
             mCornerRadius=mView.getWidth()<=mView.getHeight()?mView.getWidth()/4:mView.getHeight()/2;
         }
     }
@@ -205,25 +214,24 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 
         if (mModeCornerTopLeft) {
             mViewNP_left = ( getLeftView()+ mDistanceX);
-            mViewNP_right =  (mViewCP_right);
+            mViewNP_right =  (mViewPP_right);
             mViewNP_top =  (getTopView() + mDistanceY);
-            mViewNP_bottom =  (mViewCP_bottom);
+            mViewNP_bottom =  (mViewPP_bottom);
         } else if (mModeCornerTopRight) {
             mViewNP_left = (getLeftView());
-            mViewNP_right = (getRightView() + mDistanceX);
+            mViewNP_right = (mViewPP_right+ mDistanceX);
             mViewNP_top = (getTopView() + mDistanceY);
-            mViewNP_bottom = (getBottomView());
-            Log.d(TAG, "OnModeScaling: "+mDistanceX);
+            mViewNP_bottom = (mViewPP_bottom);
         } else if (mModeCornerBottomLeft) {
             mViewNP_left =  (getLeftView() + mDistanceX);
             mViewNP_right =  (getRightView());
             mViewNP_top =  (getTopView() );
-            mViewNP_bottom =  (getBottomView() + mDistanceY);
+            mViewNP_bottom =  (mViewPP_bottom + mDistanceY);
         } else if (mModeCornerBottomRight) {
             mViewNP_left =  (getLeftView());
-            mViewNP_right =  (getRightView() + mDistanceX);
-            mViewNP_top =  (getTopView() );
-            mViewNP_bottom =  (getBottomView() + mDistanceY);
+            mViewNP_right =  (mViewPP_right + mDistanceX);
+            mViewNP_top =  (mViewPP_top );
+            mViewNP_bottom =  (mViewPP_bottom + mDistanceY);
         }
 //        refreshDownX();
 //        refreshDownY();
@@ -231,8 +239,20 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 //        refreshDistanceY();
 
     }
-
-
+    private int getCurrentWidthView(){
+        if(null !=mView) {
+            return mView.getWidth();
+        }else {
+            return 0;
+        }
+    }
+    private int getCurrentHeightView(){
+        if(null !=mView) {
+            return mView.getHeight();
+        }else {
+            return 0;
+        }
+    }
     private int getLeftView(){
         if(null !=mView) {
             return mView.getLeft();
@@ -313,7 +333,12 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private void updateNextPosition(){
         if(null != mView) {
             mView.layout((int)mViewNP_left,(int)mViewNP_top,(int)mViewNP_right,(int)mViewNP_bottom);
-//            mView.postInvalidate();
+            mViewCP_left = mView.getLeft();
+            mViewCP_top = mView.getTop();
+            mViewCP_right = mView.getRight();
+            mViewCP_bottom = mView.getBottom();
+
+            mView.postInvalidate();
         }
     }
 

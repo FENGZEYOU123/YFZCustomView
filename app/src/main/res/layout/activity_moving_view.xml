@@ -19,7 +19,7 @@
         android:id="@+id/movingView"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:background="@color/colorYellow"
+        android:background="@color/white"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:orientation="horizontal">
