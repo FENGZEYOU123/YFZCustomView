@@ -137,7 +137,11 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mViewPP_width=mView.getWidth();
             mViewPP_height=mView.getHeight();
 
-            mCornerRadius=mView.getWidth()<=mView.getHeight()?mView.getWidth()/4:mView.getHeight()/4;
+            mCornerRadius=mView.getWidth()<=mView.getHeight()?mView.getWidth()/5:mView.getHeight()/5;
+            if(mCornerRadius>=40){
+                mCornerRadius=40;
+            }
+            Log.d(TAG, "downEveyTimeRecordInfo: 四边+四角 距离为: "+mCornerRadius);
         }
     }
 
