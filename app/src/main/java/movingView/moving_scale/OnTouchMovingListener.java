@@ -10,14 +10,16 @@ import utils.YFZDisplayUtils;
 import utils.YFZUtils;
 
 /**
- * 作者：有丰泽
+ * 作者：游丰泽
  * 简介：Implements OnTouchListener 为组件添加更多触摸效果
  * 双击放大，自由拖动，四角缩放，预览延迟移动
  */
 public class OnTouchMovingListener implements View.OnTouchListener{
     private final static String TAG=OnTouchMovingListener.class.getName();
-    private final static int MODE_DRAW_MOVING=100,MODE_DOUBLE_CLICK=101;
-    private final static int MODE_CORNER_TOP_LEFT=200,MODE_CORNER_TOP_RIGHT=201,MODE_CORNER_BOTTOM_LEFT=202,MODE_CORNER_BOTTOM_RIGHT=203;
+    private final static int MODE_DRAW_MOVING=0x100,MODE_DOUBLE_CLICK=0x101;
+    private final static int MODE_CORNER_TOP_LEFT=0x200,MODE_CORNER_TOP_RIGHT=0x201,MODE_CORNER_BOTTOM_LEFT=0x202,MODE_CORNER_BOTTOM_RIGHT=0x203;
+    private final static int MODE_LINE_LEFT=0x300,MODE_LINE_TOP=0x301,MODE_LINE_RIGHT=0x302,MODE_LINE_BOTTOM=0x303;
+
     private Context mContext;
     private View mView,mViewParent;
     private MotionEvent mEvent;
@@ -27,6 +29,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 
     private boolean mModeMoving=false,mModeDoubleClick=false,mModeFullScreen=false,mModeNormalScreen=false;
     private boolean mModeCornerTopLeft=false,mModeCornerTopRight=false,mModeCornerBottomLeft=false,mModeCornerBottomRight=false;
+    private boolean mModeLineLeft =false,mModeLineTop=false,mModeLineRight=false,mModeLineBottom=false;
 
     private float mDistanceX,mDistanceY;
     private int mViewOriginalWidth,mViewOriginalHeight;
@@ -146,6 +149,22 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                     mModeCornerBottomRight = true;
                     Log.d(TAG, "downCheckMode: 当前模式为四角缩放-右下角");
                     break;
+                case MODE_LINE_LEFT:
+                    mModeLineLeft = true;
+                    Log.d(TAG, "downCheckMode: 当前模式为线缩放-左边");
+                    break;
+                case MODE_LINE_TOP:
+                    mModeLineTop = true;
+                    Log.d(TAG, "downCheckMode: 当前模式为线缩放-上边");
+                    break;
+                case MODE_LINE_RIGHT:
+                    mModeLineRight = true;
+                    Log.d(TAG, "downCheckMode: 当前模式为线缩放-右边");
+                    break;
+                case MODE_LINE_BOTTOM:
+                    mModeLineBottom = true;
+                    Log.d(TAG, "downCheckMode: 当前模式为线缩放-下边");
+                    break;
                 case MODE_DOUBLE_CLICK:
                     mModeDoubleClick = true;
                     if(getCurrentHeightView()==getMaxLimitedHeight() && getCurrentWidthView()==getMaxLimitedWidth()){
@@ -163,9 +182,30 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         }
     }
     private int getMode(MotionEvent event){
+        //是否为双击
         if(YFZUtils.isDoubleClick()){
             return MODE_DOUBLE_CLICK;
         }
+        //是否点击在四个角落
+        int isInCorners= checkInCorners(event);
+        if(isInCorners!=-1){
+            return checkInCorners(event);
+        }
+        //是否点击在线上
+        int isInLines=checkInLines(event);
+        if(isInLines!=-1){
+            return checkInLines(event);
+        }
+        //以上都不是，返回拖拽
+        return MODE_DRAW_MOVING;
+    }
+
+    /**
+     * 检查是否在四角
+     * @param event
+     * @return
+     */
+    private int checkInCorners(MotionEvent event){
         mCornerRect.left   = - mCornerRadius;
         mCornerRect.right  =   mCornerRadius;
         mCornerRect.top    = - mCornerRadius;
@@ -173,32 +213,74 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         if(mCornerRect.contains((int)event.getX(),(int)event.getY())){
             return MODE_CORNER_TOP_LEFT;
         }else {
-            mCornerRect.left = mView.getWidth() - mCornerRadius;
-            mCornerRect.right = mView.getWidth() + mCornerRadius;
-            mCornerRect.top = -mCornerRadius;
+            mCornerRect.left   = mView.getWidth() - mCornerRadius;
+            mCornerRect.right  = mView.getWidth() + mCornerRadius;
+            mCornerRect.top    = -mCornerRadius;
             mCornerRect.bottom = mCornerRadius;
             if (mCornerRect.contains((int) event.getX(), (int) event.getY())) {
                 return MODE_CORNER_TOP_RIGHT;
             } else {
-                mCornerRect.left = -mCornerRadius;
-                mCornerRect.right = mCornerRadius;
-                mCornerRect.top = mView.getHeight() - mCornerRadius;
+                mCornerRect.left   = -mCornerRadius;
+                mCornerRect.right  = mCornerRadius;
+                mCornerRect.top    = mView.getHeight() - mCornerRadius;
                 mCornerRect.bottom = mView.getHeight() + mCornerRadius;
                 if (mCornerRect.contains((int) event.getX(), (int) event.getY())) {
                     return MODE_CORNER_BOTTOM_LEFT;
                 } else {
-                    mCornerRect.left = mView.getWidth() - mCornerRadius;
-                    mCornerRect.right = mView.getWidth() + mCornerRadius;
-                    mCornerRect.top = mView.getHeight() - mCornerRadius;
+                    mCornerRect.left   = mView.getWidth() - mCornerRadius;
+                    mCornerRect.right  = mView.getWidth() + mCornerRadius;
+                    mCornerRect.top    = mView.getHeight() - mCornerRadius;
                     mCornerRect.bottom = mView.getHeight() + mCornerRadius;
                     if (mCornerRect.contains((int) event.getX(), (int) event.getY())) {
                         return MODE_CORNER_BOTTOM_RIGHT;
+                    }else {
+                        return -1;
                     }
                 }
             }
         }
 
-        return MODE_DRAW_MOVING;
+    }
+    /**
+     * 检查是否在角落
+     * @param event
+     * @return
+     */
+    private int checkInLines(MotionEvent event){
+        mCornerRect.left   = - mCornerRadius;
+        mCornerRect.right  =   mCornerRadius;
+        mCornerRect.top    =   mCornerRadius;
+        mCornerRect.bottom =   getCurrentHeightView()-mCornerRadius;
+        if(mCornerRect.contains((int)event.getX(),(int)event.getY())){
+            return MODE_LINE_LEFT;
+        }else {
+            mCornerRect.left   =  mCornerRadius;
+            mCornerRect.right  =  getCurrentWidthView() - mCornerRadius;
+            mCornerRect.top    = -mCornerRadius;
+            mCornerRect.bottom =  mCornerRadius;
+            if (mCornerRect.contains((int) event.getX(), (int) event.getY())) {
+                return MODE_LINE_TOP;
+            } else {
+                mCornerRect.left   = getCurrentWidthView()-mCornerRadius;
+                mCornerRect.right  = getCurrentWidthView()+mCornerRadius;
+                mCornerRect.top    = mCornerRadius;
+                mCornerRect.bottom = getCurrentHeightView()-mCornerRadius;
+                if (mCornerRect.contains((int) event.getX(), (int) event.getY())) {
+                    return MODE_LINE_RIGHT;
+                } else {
+                    mCornerRect.left   = mCornerRadius;
+                    mCornerRect.right  = getCurrentWidthView() - mCornerRadius;
+                    mCornerRect.top    = getCurrentHeightView() - mCornerRadius;
+                    mCornerRect.bottom = getCurrentHeightView() + mCornerRadius;
+                    if (mCornerRect.contains((int) event.getX(), (int) event.getY())) {
+                        return MODE_LINE_BOTTOM;
+                    }else {
+                        return -1;
+                    }
+                }
+            }
+        }
+
     }
     private void OnModeMoving(){
         mViewNP_left=mView.getLeft()+mDistanceX;

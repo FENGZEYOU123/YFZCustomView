@@ -48,8 +48,7 @@ public class YFZUtils {
      */
     public synchronized static boolean isDoubleClick(){
         long time = System.currentTimeMillis();
-        if ( time - lastClickTime < 250) {
-            lastClickTime=0;
+        if ( time - lastClickTime < 200) {
             return true;
         }
         lastClickTime = time;
