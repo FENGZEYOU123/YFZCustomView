@@ -315,10 +315,10 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mViewNP_bottom =mViewPP_bottom;
         } else if (mModeLineRight) {
             mViewNP_left = (mViewPP_left);
-            mViewNP_right = getRightView()+mDistanceX;
+            mViewNP_right = (mViewPP_right + mDistanceX);
             mViewNP_top = mViewPP_top;
             mViewNP_bottom =mViewPP_bottom;
-        } else if (mModeLineTop) {
+        } else if (mModeLineTop ) {
             mViewNP_left = (mViewPP_left);
             mViewNP_right = (mViewPP_right);
             mViewNP_top = (getTopView()+mDistanceY);
@@ -327,7 +327,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             mViewNP_left = (mViewPP_left);
             mViewNP_right = (mViewPP_right);
             mViewNP_top = (mViewPP_top);
-            mViewNP_bottom = (getTopView()+mDistanceY);
+            mViewNP_bottom =(mViewPP_bottom + mDistanceY);
         }
     }
     private void OnModeCornerScaling(){
@@ -469,7 +469,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private void updateNextPosition(){
         if(null != mView) {
             if(mViewNP_right-mViewNP_left<getMinimumLimitedWidth()){
-                if(mModeCornerBottomLeft||mModeCornerTopLeft){
+                if(mModeCornerBottomLeft||mModeCornerTopLeft ||  mModeLineLeft){
                     mViewNP_left = mViewCP_right - getMinimumLimitedWidth() - 1;
                 }else {
                     mViewNP_right = mViewNP_left + getMinimumLimitedWidth() + 1;
@@ -478,7 +478,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             }
             if(mViewNP_bottom-mViewNP_top<getMinimumLimitedHeight()){
                 Log.d(TAG, "updateNextPosition: 小于最低限制高度");
-                if(mModeCornerTopLeft ||mModeCornerTopRight) {
+                if(mModeCornerTopLeft ||mModeCornerTopRight || mModeLineTop) {
                     mViewNP_top = mViewCP_bottom - getMinimumLimitedHeight() - 1;
                 }else {
                     mViewNP_bottom = mViewNP_top + getMinimumLimitedHeight() + 1;
