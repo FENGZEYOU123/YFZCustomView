@@ -53,10 +53,10 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                 mDistanceY=(int)(event.getY()-mDownY);
                 if(mModeMoving) {
                     OnModeMoving();
-                }else if(mModeNormalScreen || mModeFullScreen){
-                    OnModeFullScreenOrNormalScreen();
                 }else if(mModeCornerTopLeft||mModeCornerTopRight||mModeCornerBottomRight||mModeCornerBottomLeft){
                     OnModeCornerScaling();
+                }else if(mModeNormalScreen || mModeFullScreen){
+                    OnModeFullScreenOrNormalScreen();
                 }
                 updateNextPosition();
 
@@ -341,9 +341,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
      * UP-重置mode
      */
     private synchronized void reset(){
-        if(!mModeDoubleClick) {
-            updateNextPosition();
-        }
+        updateNextPosition();
         mModeMoving=false;
         mModeCornerTopLeft= false;
         mModeCornerTopRight = false;
