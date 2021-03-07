@@ -24,7 +24,11 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private View mView,mViewParent;
     private MotionEvent mEvent;
     private boolean isFirstTime=false;
-    private float mDownX,mDownY;
+    private float mDistanceDownXPOne, mDistanceDownYPOne;
+    private float mDistanceMoveXPOne, mDistanceMoveYPOne;
+    private float mDistanceDownXYPTwo;
+    private float mDistanceMoveXYPTwo;
+
     private int mMinimumMaxRate=10;
 
     private boolean mModeSecondPoint=false;
@@ -32,7 +36,6 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     private boolean mModeCornerTopLeft=false,mModeCornerTopRight=false,mModeCornerBottomLeft=false,mModeCornerBottomRight=false;
     private boolean mModeLineLeft =false,mModeLineTop=false,mModeLineRight=false,mModeLineBottom=false;
 
-    private float mDistanceX,mDistanceY;
     private int mViewOriginalWidth,mViewOriginalHeight;
     private float mViewNP_left,mViewNP_top,mViewNP_right,mViewNP_bottom;
     private float mViewCP_left,mViewCP_top,mViewCP_right,mViewCP_bottom;
@@ -59,8 +62,10 @@ public class OnTouchMovingListener implements View.OnTouchListener{
             case MotionEvent.ACTION_MOVE:
                 Log.d(TAG, "onTouch: 第 1 根手指 Move");
 
-                mDistanceX=(int)(event.getX()-mDownX);
-                mDistanceY=(int)(event.getY()-mDownY);
+                mDistanceMoveXPOne =(int)(event.getX()- mDistanceDownXPOne);
+                mDistanceMoveYPOne =(int)(event.getY()- mDistanceDownYPOne);
+                mDistanceMoveXYPTwo=getDistanceTwoPoints(event);
+
                 if(!mModeSecondPoint) {  //屏幕上2触点不执行1的状态
                     if (mModeMoving) {
                         OnModeMoving();
@@ -82,6 +87,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 mModeSecondPoint=true;
+                mDistanceDownXYPTwo=getDistanceTwoPoints(event);
                 Log.d(TAG, "onTouch: 第 2 根手指 Down");
                 break;
             case MotionEvent.ACTION_POINTER_UP:
@@ -95,17 +101,17 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         return true;
     }
 
-    private void refreshDownX(){
-        mDownX=mEvent.getX();
+    private void getDownPointOneX(){
+        mDistanceDownXPOne =mEvent.getX();
     }
-    private void refreshDownY(){
-        mDownX=mEvent.getY();
+    private void getDownPointOneY(){
+        mDistanceDownXPOne =mEvent.getY();
     }
-    private void refreshDistanceX(){
-        mDistanceX=mEvent.getX()-mDownX;
+    private void getDistancePointOneX(){
+        mDistanceMoveXPOne =mEvent.getX()- mDistanceDownXPOne;
     }
-    private void refreshDistanceY(){
-        mDistanceY=mEvent.getY()-mDownY;
+    private void getDistancePointOneY(){
+        mDistanceMoveYPOne =mEvent.getY()- mDistanceDownYPOne;
     }
     /**
      * Down-首次点击，记录view原始大小信息
@@ -123,8 +129,8 @@ public class OnTouchMovingListener implements View.OnTouchListener{
      */
     private void downEveyTimeRecordInfo(MotionEvent event){
         mEvent=event;
-        mDownX=event.getX();
-        mDownY=event.getY();
+        mDistanceDownXPOne =event.getX();
+        mDistanceDownYPOne =event.getY();
         mModeSecondPoint=false;
         if(null != mView) {
             if(!mModeFullScreen) {
@@ -309,10 +315,10 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 
     }
     private void OnModeMoving(){
-        mViewNP_left=mView.getLeft()+mDistanceX;
-        mViewNP_right=mView.getRight()+mDistanceX;
-        mViewNP_top=mView.getTop()+mDistanceY;
-        mViewNP_bottom=mView.getBottom()+mDistanceY;
+        mViewNP_left=mView.getLeft()+ mDistanceMoveXPOne;
+        mViewNP_right=mView.getRight()+ mDistanceMoveXPOne;
+        mViewNP_top=mView.getTop()+ mDistanceMoveYPOne;
+        mViewNP_bottom=mView.getBottom()+ mDistanceMoveYPOne;
     }
     private void OnModeFullScreenOrNormalScreen(){
         if(mModeNormalScreen){
@@ -333,48 +339,48 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     }
     private void OnModeLineScaling(){
         if (mModeLineLeft) {
-            mViewNP_left = (getLeftView() + mDistanceX);
+            mViewNP_left = (getLeftView() + mDistanceMoveXPOne);
             mViewNP_right = mViewPP_right;
             mViewNP_top = mViewPP_top;
             mViewNP_bottom =mViewPP_bottom;
         } else if (mModeLineRight) {
             mViewNP_left = (mViewPP_left);
-            mViewNP_right = (mViewPP_right + mDistanceX);
+            mViewNP_right = (mViewPP_right + mDistanceMoveXPOne);
             mViewNP_top = mViewPP_top;
             mViewNP_bottom =mViewPP_bottom;
         } else if (mModeLineTop ) {
             mViewNP_left = (mViewPP_left);
             mViewNP_right = (mViewPP_right);
-            mViewNP_top = (getTopView()+mDistanceY);
+            mViewNP_top = (getTopView()+ mDistanceMoveYPOne);
             mViewNP_bottom = (mViewPP_bottom);
         } else if (mModeLineBottom) {
             mViewNP_left = (mViewPP_left);
             mViewNP_right = (mViewPP_right);
             mViewNP_top = (mViewPP_top);
-            mViewNP_bottom =(mViewPP_bottom + mDistanceY);
+            mViewNP_bottom =(mViewPP_bottom + mDistanceMoveYPOne);
         }
     }
     private void OnModeCornerScaling(){
             if (mModeCornerTopLeft) {
-                mViewNP_left = (getLeftView() + mDistanceX);
+                mViewNP_left = (getLeftView() + mDistanceMoveXPOne);
                 mViewNP_right = (mViewPP_right);
-                mViewNP_top = (getTopView() + mDistanceY);
+                mViewNP_top = (getTopView() + mDistanceMoveYPOne);
                 mViewNP_bottom = (mViewPP_bottom);
             } else if (mModeCornerTopRight) {
                 mViewNP_left = (getLeftView());
-                mViewNP_right = (mViewPP_right + mDistanceX);
-                mViewNP_top = (getTopView() + mDistanceY);
+                mViewNP_right = (mViewPP_right + mDistanceMoveXPOne);
+                mViewNP_top = (getTopView() + mDistanceMoveYPOne);
                 mViewNP_bottom = (mViewPP_bottom);
             } else if (mModeCornerBottomLeft) {
-                mViewNP_left = (getLeftView() + mDistanceX);
+                mViewNP_left = (getLeftView() + mDistanceMoveXPOne);
                 mViewNP_right = (getRightView());
                 mViewNP_top = (getTopView());
-                mViewNP_bottom = (mViewPP_bottom + mDistanceY);
+                mViewNP_bottom = (mViewPP_bottom + mDistanceMoveYPOne);
             } else if (mModeCornerBottomRight) {
                 mViewNP_left = (getLeftView());
-                mViewNP_right = (mViewPP_right + mDistanceX);
+                mViewNP_right = (mViewPP_right + mDistanceMoveXPOne);
                 mViewNP_top = (mViewPP_top);
-                mViewNP_bottom = (mViewPP_bottom + mDistanceY);
+                mViewNP_bottom = (mViewPP_bottom + mDistanceMoveYPOne);
             }
     }
     private int getCurrentWidthView(){
@@ -517,6 +523,13 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 
             mView.postInvalidate();
         }
+    }
+    /*获取两指之间的距离*/
+    private float getDistanceTwoPoints(MotionEvent event) {
+        float x = event.getX(1) - event.getX(0);
+        float y = event.getY(1) - event.getY(0);
+        float distance = (float) Math.sqrt(x * x + y * y);//两点间的距离
+        return distance;
     }
 
 
