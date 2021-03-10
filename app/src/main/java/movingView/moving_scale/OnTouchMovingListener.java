@@ -64,9 +64,11 @@ public class OnTouchMovingListener implements View.OnTouchListener{
 
                 mDistanceMoveXPOne =(int)(event.getX()- mDistanceDownXPOne);
                 mDistanceMoveYPOne =(int)(event.getY()- mDistanceDownYPOne);
-                mDistanceMoveXYPTwo=getDistanceTwoPoints(event);
+                if(mModeSecondPoint) {
+                    mDistanceMoveXYPTwo = getDistanceTwoPoints(event);
+                }
 
-                if(!mModeSecondPoint) {  //屏幕上2触点不执行1的状态
+                if(!mModeSecondPoint) {  //屏幕上有2个触点时不执行1的状态
                     if (mModeMoving) {
                         OnModeMoving();
                     } else if (mModeCornerTopLeft || mModeCornerTopRight || mModeCornerBottomLeft || mModeCornerBottomRight) {
@@ -76,11 +78,12 @@ public class OnTouchMovingListener implements View.OnTouchListener{
                     } else if (mModeNormalScreen || mModeFullScreen) {
                         OnModeFullScreenOrNormalScreen();
                     }
+                }else {
+//                    OnModeMoving();
                 }
                 updateNextPosition();
 
                 break;
-
             case MotionEvent.ACTION_UP:
                 Log.d(TAG, "onTouch: 第 1 根手指 UP");
                 reset();
@@ -526,9 +529,16 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     }
     /*获取两指之间的距离*/
     private float getDistanceTwoPoints(MotionEvent event) {
-        float x = event.getX(1) - event.getX(0);
-        float y = event.getY(1) - event.getY(0);
-        float distance = (float) Math.sqrt(x * x + y * y);//两点间的距离
+        float distance=0;
+        try {
+            float x = event.getX(1) - event.getX(0);
+            float y = event.getY(1) - event.getY(0);
+            distance = (float) Math.sqrt(x * x + y * y);//两点间的距离
+            Log.d(TAG, "getDistanceTwoPoints: 两指之间的距离");
+        }catch (Exception e){
+            Log.e(TAG, "getDistanceTwoPoints: "+e.toString() );
+        }
+
         return distance;
     }
 
