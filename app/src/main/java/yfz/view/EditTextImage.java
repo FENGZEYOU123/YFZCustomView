@@ -1,12 +1,9 @@
-package editTextView;
+package yfz.view;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -17,7 +14,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
-import com.yfz.yfzcustomview.R;
+import yfz.activity.R;
 
 /**
  * 简介：带图片的输入框 （组合）

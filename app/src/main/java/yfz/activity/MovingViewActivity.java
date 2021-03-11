@@ -1,4 +1,4 @@
-package com.yfz.yfzcustomview;
+package yfz.activity;
 
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,11 +7,9 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
-import movingView.moving_scale.Component_drawFrame;
-import movingView.moving_scale.Component_normalMovingView;
-import movingView.moving_scale.OnTouchMovingListener;
+import yfz.view.movingView.moving_scale.Component_drawFrame;
+import yfz.view.movingView.moving_scale.OnTouchMovingListener;
 
 public class MovingViewActivity extends AppCompatActivity {
     private String TAG = MainActivity.class.getName();

@@ -1,18 +1,16 @@
-package utils;
+package yfz.utils;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.os.Build;
 import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
 import static android.view.View.GONE;
 
-public class YFZDisplayUtils {
+public class DisplayUtils {
     private static DisplayMetrics dm = new DisplayMetrics();
     private static  WindowManager windowManager;
 

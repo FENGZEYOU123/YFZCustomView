@@ -1,8 +1,8 @@
-package utils;
+package yfz.utils;
 
 import java.util.ArrayList;
 
-public class YFZPreventError {
+public class PreventErrorUtils {
 
     /**
      * 检查数组不为空且数量>=1

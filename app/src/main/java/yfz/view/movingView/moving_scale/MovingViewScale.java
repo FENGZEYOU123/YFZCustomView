@@ -1,4 +1,4 @@
-package movingView.moving_scale;
+package yfz.view.movingView.moving_scale;
 
 import android.content.Context;
 import android.util.AttributeSet;

@@ -1,4 +1,4 @@
-package movingView.moving_scale;
+package yfz.view.movingView.moving_scale;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,11 +6,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.LinearLayout;
-
-import utils.YFZDisplayUtils;
-import utils.YFZUtils;
 
 public class Component_normalMovingView extends LinearLayout {
 

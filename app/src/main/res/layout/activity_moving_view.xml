@@ -8,12 +8,12 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <movingView.moving_scale.Component_drawFrame
+    <yfz.view.movingView.moving_scale.Component_drawFrame
         android:id="@+id/drawFrame"
         android:background="@color/colorTransparent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </movingView.moving_scale.Component_drawFrame>
+    </yfz.view.movingView.moving_scale.Component_drawFrame>
 
     <ImageView
         android:id="@+id/movingView"

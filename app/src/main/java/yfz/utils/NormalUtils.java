@@ -1,12 +1,11 @@
-package utils;
+package yfz.utils;
 import android.content.Context;
-import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
-public class YFZUtils {
+public class NormalUtils {
     private static long lastClickTime;
 
     /**

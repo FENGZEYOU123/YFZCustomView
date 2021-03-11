@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yfz.yfzcustomview">
+    package="yfz.activity">
 
     <application
         android:allowBackup="true"
@@ -10,8 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MovingViewActivity"></activity>
-        <activity android:name=".CodeTextActivity" />
-        <activity android:name=".CodeInputActivity" />
+        <activity android:name=".PasswordCodeActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,21 +1,19 @@
-package movingView;
+package yfz.view.movingView;
 
  import android.content.Context;
  import android.os.Build;
- import android.os.Message;
  import android.util.AttributeSet;
  import android.util.DisplayMetrics;
  import android.util.Log;
  import android.view.MotionEvent;
  import android.view.WindowManager;
  import android.view.animation.Animation;
- import android.view.animation.AnimationUtils;
  import android.view.animation.TranslateAnimation;
  import android.widget.LinearLayout;
  import androidx.annotation.Nullable;
  import androidx.annotation.RequiresApi;
 
- import utils.YFZUtils;
+ import yfz.utils.NormalUtils;
 
 /**
  *  编写者姓名：游丰泽
@@ -134,7 +132,7 @@ public class MovingViewSpring extends LinearLayout {
             @Override
             public void isClick(boolean isClick) {
                 if(isClick){
-                    YFZUtils.toast(context,"回调：改操作为\"点击\"事件");
+                    NormalUtils.toast(context,"回调：改操作为\"点击\"事件");
                 }
             }
         });

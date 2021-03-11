@@ -1,4 +1,4 @@
-package movingView.moving_scale;
+package yfz.view.movingView.moving_scale;
 
 import android.content.Context;
 import android.graphics.Rect;
@@ -6,8 +6,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import utils.YFZDisplayUtils;
-import utils.YFZUtils;
+import yfz.utils.DisplayUtils;
+import yfz.utils.NormalUtils;
 
 /**
  * 作者：游丰泽
@@ -218,7 +218,7 @@ public class OnTouchMovingListener implements View.OnTouchListener{
     }
     private int getMode(MotionEvent event){
         //是否为双击
-        if(YFZUtils.isDoubleClick()){
+        if(NormalUtils.isDoubleClick()){
             return MODE_DOUBLE_CLICK;
         }
         //是否点击在四个角落
@@ -467,14 +467,14 @@ public class OnTouchMovingListener implements View.OnTouchListener{
         if(null != mViewParent){
             return mViewParent.getRight();
         }else {
-            return YFZDisplayUtils.getScreenWidth(mContext);
+            return DisplayUtils.getScreenWidth(mContext);
         }
     }
     private int getMaxLimitedBottom(){
         if(null != mViewParent){
             return mViewParent.getHeight();
         }else {
-            return YFZDisplayUtils.getScreenHeight(mContext);
+            return DisplayUtils.getScreenHeight(mContext);
         }
     }
     /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="EditTextCode">
+    <declare-styleable name="passwordCode">
         <attr name="codeText_viewBackground" format="reference|color"></attr>
         <attr name="codeText_enableHideCode" format="boolean"></attr>
         <attr name="codeText_enableHideNotInputBox" format="boolean"></attr>

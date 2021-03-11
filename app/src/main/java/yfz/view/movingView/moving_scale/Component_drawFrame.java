@@ -1,4 +1,4 @@
-package movingView.moving_scale;
+package yfz.view.movingView.moving_scale;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -9,8 +9,8 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 import androidx.annotation.RequiresApi;
-import com.yfz.yfzcustomview.R;
-import utils.YFZDisplayUtils;
+import yfz.activity.R;
+import yfz.utils.DisplayUtils;
 
 public class Component_drawFrame extends FrameLayout {
     private Context mContext;
@@ -41,7 +41,7 @@ public class Component_drawFrame extends FrameLayout {
         mPaintBorder =new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintBorder.setStyle(Paint.Style.STROKE);
         mPaintBorder.setColor(Color.BLACK);
-        mPaintBorder.setStrokeWidth(YFZDisplayUtils.dip2px(mContext,1f));
+        mPaintBorder.setStrokeWidth(DisplayUtils.dip2px(mContext,1f));
         mPaintIndex =new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaintIndex.setStyle(Paint.Style.FILL);
         mPaintIndex.setColor(mContext.getResources().getColor(R.color.white90));
