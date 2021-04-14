@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     private void initialView(){
         newCodeInputButton=findViewById(R.id.newCodeInputButton);
         buttonMovingView=findViewById(R.id.buttonMovingView);
-
     }
     private void initialData(){
         newCodeInputButton.setMTextName("新密码框-自绘制");
