@@ -1,74 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="EditTextCode">
-        <attr name="codeText_viewBackground" format="reference|color"></attr>
-        <attr name="codeText_enableHideCode" format="boolean"></attr>
-        <attr name="codeText_enableHideNotInputBox" format="boolean"></attr>
-        <attr name="codeText_enableHideCode_displayContent" format="string"></attr>
-        <attr name="codeText_enableCursor" format="boolean"></attr>
-        <attr name="codeText_enableHighLight" format="boolean"></attr>
-        <attr name="codeText_enableSoftKeyboardAutoShow" format="boolean"></attr>
-        <attr name="codeText_enableSoftKeyboardAutoClose" format="boolean"></attr>
-        <attr name="codeText_enableLockTextView" format="boolean"></attr>
-
-        <attr name="codeText_textColor" format="color"></attr>
-        <attr name="codeText_textSize" format="integer"></attr>
-        <attr name="codeText_textInputType" format="integer">
-            <enum name="Number" value="200" />
-            <enum name="Phone" value="201" />
-            <enum name="Text" value="202" />
-            <enum name="DateTime" value="203" />
-        </attr>
-        <attr name="codeText_textBold" format="boolean"></attr>
-
-        <attr name="codeText_boxStrokeStyle">
-            <enum name="Stroke" value="101" />
-            <enum name="Filled" value="100" />
-        </attr>
-        <attr name="codeText_boxLength" format="integer"></attr>
-        <attr name="codeText_boxMargin" format="integer"></attr>
-        <attr name="codeText_boxSizeDp" format="integer"></attr>
-        <attr name="codeText_boxBackgroundColor" format="color"></attr>
-        <attr name="codeText_boxBackgroundDrawable" format="reference|color"></attr>
-        <attr name="codeText_boxRadius" format="float"></attr>
-
-        <attr name="codeText_boxHighLightRadius" format="float"></attr>
-        <attr name="codeText_boxHighLightBackgroundColor" format="color"></attr>
-        <attr name="codeText_boxHighLightBackgroundDrawable" format="reference|color"></attr>
-        <attr name="codeText_boxHighLightStrokeStyle">
-            <enum name="Stroke" value="101" />
-            <enum name="Filled" value="100" />
-        </attr>
-
-        <attr name="codeText_boxAfterRadius" format="float"></attr>
-        <attr name="codeText_boxAfterBackgroundColor" format="color"></attr>
-        <attr name="codeText_boxAfterBackgroundDrawable" format="reference|color"></attr>
-        <attr name="codeText_boxAfterStrokeStyle">
-            <enum name="Stroke" value="101" />
-            <enum name="Filled" value="100" />
-        </attr>
-        <attr name="codeText_cursorBackgroundColor" format="color"></attr>
-        <attr name="codeText_cursorHeight" format="integer"></attr>
-        <attr name="codeText_cursorWidth" format="integer"></attr>
-        <attr name="codeText_cursorFrequencyMillisecond" format="integer"></attr>
-        <attr name="codeText_cursorBackgroundDrawable" format="reference|color"></attr>
-
-        <attr name="codeText_boxLockTextColor" format="color"></attr>
-        <attr name="codeText_boxLockBackgroundColor" format="color"></attr>
-        <attr name="codeText_boxLockBackgroundDrawable" format="reference|color"></attr>
-        <attr name="codeText_boxLockStrokeStyle">
-            <enum name="Stroke" value="101" />
-            <enum name="Filled" value="100" />
-        </attr>
-
-
-
-    </declare-styleable>
     <declare-styleable name="EditTextImage">
         <attr name="editTextWithImage_imagePosition">
             <enum name="Left" value="100" />
             <enum name="Right" value="101" />
         </attr>
         <attr name="editTextWithImage_imageDrawable" format="reference|color"></attr>
+    </declare-styleable>
+    <declare-styleable name="PasswordView">
+        <attr name="password_setViewBackground" format="reference|color"></attr>
+        <attr name="password_enableHideCode" format="boolean"></attr>
+        <attr name="password_enableHideBoxWhenNotInput" format="boolean"></attr>
+        <attr name="password_enableHideCodeSetText" format="string"></attr>
+        <attr name="password_enableCursor" format="boolean"></attr>
+        <attr name="password_enableHighLight" format="boolean"></attr>
+        <attr name="password_enableSoftKeyboardAutoShow" format="boolean"></attr>
+        <attr name="password_enableSoftKeyboardAutoClose" format="boolean"></attr>
+        <attr name="password_enableLockTextView" format="boolean"></attr>
+        <attr name="password_text_setColor" format="color"></attr>
+        <attr name="password_text_setSize" format="integer"></attr>
+        <attr name="password_text_setInputType" format="integer">
+            <enum name="Number" value="200" />
+            <enum name="Phone" value="201" />
+            <enum name="Text" value="202" />
+            <enum name="DateTime" value="203" />
+        </attr>
+        <attr name="password_text_setIsBold" format="boolean"></attr>
+        <attr name="password_box_setNumber" format="integer"></attr>
+        <attr name="password_box_setMargin" format="integer"></attr>
+        <attr name="password_box_setSize" format="integer"></attr>
+
+        <attr name="password_box_notInput_backgroundDrawable" format="reference|color"></attr>
+        <attr name="password_box_locked_backgroundDrawable" format="reference|color"></attr>
+        <attr name="password_box_highLight_backgroundDrawable" format="reference|color"></attr>
+        <attr name="password_box_hasInput_backgroundDrawable" format="reference|color"></attr>
+
+        <attr name="password_cursorHeight" format="integer"></attr>
+        <attr name="password_cursorWidth" format="integer"></attr>
+        <attr name="password_cursorFrequencyMillisecond" format="integer"></attr>
+        <attr name="password_cursorBackgroundDrawable" format="reference|color"></attr>
+        <attr name="password_cursorColor" format="reference|color"></attr>
     </declare-styleable>
 </resources>

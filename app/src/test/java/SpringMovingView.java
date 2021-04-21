@@ -1,21 +1,18 @@
-package movingView;
+import android.content.Context;
+import android.os.Build;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.LinearLayout;
 
- import android.content.Context;
- import android.os.Build;
- import android.os.Message;
- import android.util.AttributeSet;
- import android.util.DisplayMetrics;
- import android.util.Log;
- import android.view.MotionEvent;
- import android.view.WindowManager;
- import android.view.animation.Animation;
- import android.view.animation.AnimationUtils;
- import android.view.animation.TranslateAnimation;
- import android.widget.LinearLayout;
- import androidx.annotation.Nullable;
- import androidx.annotation.RequiresApi;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
- import utils.YFZUtils;
+import utils.YFZUtils;
 
 /**
  *  编写者姓名：游丰泽
@@ -28,7 +25,7 @@ package movingView;
  *      popup_W();popup_H();        //记录弹簧压缩并释放后，需要回弹的高度。 由 spring_open_release_popup 开关控制是否开启
  * **/
 
-public class YFZMovingSpringView extends LinearLayout {
+public class SpringMovingView extends LinearLayout {
     private String TAG="移动组件：    ";
     private DisplayMetrics dm= new DisplayMetrics();
     private Context context;
@@ -105,15 +102,15 @@ public class YFZMovingSpringView extends LinearLayout {
      *   （手指移动的距离-手指第一次点击组件记录的值）
      **/
 
-    public YFZMovingSpringView(Context context) {
+    public SpringMovingView(Context context) {
         super(context);
         initView(context);
     }
-    public YFZMovingSpringView(Context context, @Nullable AttributeSet attrs) {
+    public SpringMovingView(Context context, @Nullable AttributeSet attrs) {
         super(context,attrs);
         initView(context);
     }
-    public YFZMovingSpringView(Context context, AttributeSet attrs, int defStyle)
+    public SpringMovingView(Context context, AttributeSet attrs, int defStyle)
     {
         super(context,attrs,defStyle);
         initView(context);
@@ -134,7 +131,7 @@ public class YFZMovingSpringView extends LinearLayout {
             @Override
             public void isClick(boolean isClick) {
                 if(isClick){
-                    YFZUtils.toast(context,"回调：改操作为\"点击\"事件");
+                    utils.toast(context,"回调：改操作为\"点击\"事件");
                 }
             }
         });

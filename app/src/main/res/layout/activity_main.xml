@@ -4,40 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <buttonView.YFZGestureButton
-        android:id="@+id/codeInputButton"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </buttonView.YFZGestureButton>
+    tools:context="com.yfz.MainActivity">
 
-    <buttonView.YFZGestureButton
-        android:id="@+id/newCodeInputButton"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </buttonView.YFZGestureButton>
-
-    <editTextView.EditTextCode
-        android:id="@+id/aaa"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:codeText_enableSoftKeyboardAutoShow="false"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-       >
-    </editTextView.EditTextCode>
-
-    <editTextView.EditTextImage
-        app:layout_constraintTop_toBottomOf="@+id/aaa"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="100dp"
-        android:layout_height="100dp">
-    </editTextView.EditTextImage>
 </androidx.constraintlayout.widget.ConstraintLayout>
