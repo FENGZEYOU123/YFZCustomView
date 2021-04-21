@@ -19,16 +19,11 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import com.yfz.yfzcustomview.R;
-
 import java.util.Timer;
 import java.util.TimerTask;
-
-import utils.YFZUtils;
 
 /**
  * 简介：自定义验证码输入框 (组合+自绘)
