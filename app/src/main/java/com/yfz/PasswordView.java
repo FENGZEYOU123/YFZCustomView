@@ -1,3 +1,5 @@
+package com.yfz;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -267,9 +269,9 @@ public class PasswordView extends LinearLayout {
     }
     //初始化-盒子和位置
     private void initialBoxAndRectPosition(){
-        this.mBox_setSize = utils.dip2px(mContext, mBox_setSize);
-        this.mBox_setMargin = utils.dip2px(mContext, mBox_setMargin);
-        this.mBox_default_radius = utils.dip2pxFloat(mContext, mBox_default_radius);
+        this.mBox_setSize = YfzUtil.dip2px(mContext, mBox_setSize);
+        this.mBox_setMargin = YfzUtil.dip2px(mContext, mBox_setMargin);
+        this.mBox_default_radius = YfzUtil.dip2pxFloat(mContext, mBox_default_radius);
         this.mBoxRectF=new RectF();
         this.mTextRect=new Rect();
     }
@@ -278,13 +280,13 @@ public class PasswordView extends LinearLayout {
         //文字
         this.mPaintText=new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaintText.setStyle(Paint.Style.FILL);
-        this.mPaintText.setTextSize(utils.dip2px(this.getContext(),mTextSize)*2);
+        this.mPaintText.setTextSize(YfzUtil.dip2px(this.getContext(),mTextSize)*2);
         this.mPaintText.setColor(mTextColor);
         this.mPaintText.setFakeBoldText(mTextBold);
         //盒子
         this.mBox_default_paint =new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mBox_default_paint.setStyle(Paint.Style.STROKE);
-        this.mBox_default_paint.setStrokeWidth(utils.dip2px(mContext, mBox_default_strokeWidth));
+        this.mBox_default_paint.setStrokeWidth(YfzUtil.dip2px(mContext, mBox_default_strokeWidth));
 
     }
     //监听点击事件-打开弹窗

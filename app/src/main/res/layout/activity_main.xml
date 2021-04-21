@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.yfz.MainActivity">
-    <com.SimpleMovingView
+    <com.yfz.SimpleMovingView
         android:id="@+id/simpleMovingView"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
@@ -14,6 +14,6 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="100dp"
         android:layout_height="100dp">
-    </com.SimpleMovingView>
+    </com.yfz.SimpleMovingView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

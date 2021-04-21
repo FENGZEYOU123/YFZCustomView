@@ -1,3 +1,5 @@
+package com.yfz;
+
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -127,7 +129,7 @@ public class SpringMovingView extends LinearLayout {
             @Override
             public void isClick(boolean isClick) {
                 if(isClick){
-                    utils.toast(context,"回调：改操作为\"点击\"事件");
+                    YfzUtil.toast(context,"回调：改操作为\"点击\"事件");
                 }
             }
         });

@@ -7,6 +7,7 @@
         </attr>
         <attr name="editTextWithImage_imageDrawable" format="reference|color"></attr>
     </declare-styleable>
+
     <declare-styleable name="PasswordView">
         <attr name="password_setViewBackground" format="reference|color"></attr>
         <attr name="password_enableHideCode" format="boolean"></attr>
