@@ -30,7 +30,6 @@ public class SpringMovingView extends LinearLayout {
     private double inner =15;
     private double outside =15;
     private boolean attach_open =true;
-    private String move_Dir=null;
     private float xDownInScreen,yDownInScreen,xInScreen,yInScreen;
     private boolean isClick=false;
     private CallBack mCallBack;
@@ -161,7 +160,6 @@ public class SpringMovingView extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        this.requestDisallowInterceptTouchEvent(true);//自己消耗掉事件，不向下传递
         int action=event.getAction();
         switch (action){
             case MotionEvent.ACTION_DOWN:   //当手指按下的时候，需要记录以下手指点击的位置相对于组件的坐标(以组件左上角计作(0,0))
@@ -191,7 +189,6 @@ public class SpringMovingView extends LinearLayout {
                 Display_Top = getTop() + Move_Y_Distance;
                 Display_Bottom = getBottom() + Move_Y_Distance;
                 //移动方向判断
-                move_Dir=  Move_Direction(Move_X_Distance,Move_Y_Distance);
 
                 limited_in_Max_Screen(limited_open);  //限制组件范围，不超过屏幕
                 attach_boundary(attach_open);          //吸边 当组件靠近四边时会有吸附上去的效果
@@ -389,28 +386,6 @@ public class SpringMovingView extends LinearLayout {
         }
     }
 
-    /**
-     * 判断移动的方向
-     **/
-    private String Move_Direction(double Move_X,double Move_Y){
-        String dir="";
-        if(Move_Y==0){   //Y轴为0，那么肯定是在Y轴上移动
-            if(Move_X==0){
-                return dir;
-            }else{ dir=(Move_X<0)? "West":"East"; }
-        }else if (Move_X==0){  //X轴为0，那么肯定是在Y轴上移动
-            if(Move_Y==0){
-                return dir;
-            }else{ dir=(Move_Y<0)? "North":"South"; }
-        }else if (Move_X!=0&&Move_Y!=0){   //如果都不为0，那么肯定是XY倾斜的移动
-            if(Move_X<0){
-                dir=(Move_Y<0)? "toWest_fromNorth":"toWest_fromSouth"; //左上，左下
-            }else {
-                dir=(Move_Y<0)? "toEast_fromNorth":"toEast_fromSouth"; //右上，右下
-            }
-        }
-        return dir;
-    }
     /**
      * 重置数据
      */
