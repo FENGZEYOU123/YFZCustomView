@@ -10,6 +10,9 @@
     <color name="colorPink">#708</color>
     <color name="colorYellow">#FF2</color>
     <color name="colorRed">#ff0000</color>
+    <color name="colorBackground">#f6f5ec</color>
+    <color name="colorText">#FFCC33</color>
+    <color name="colorCursor">#FF6666</color>
 
 
 

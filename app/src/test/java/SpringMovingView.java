@@ -12,12 +12,9 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-import utils.YFZUtils;
-
 /**
  *  编写者姓名：游丰泽
  *  功能介绍：仿ios移动组件，并带有弹簧回弹效果
- *
  *      limited_in_Max_Screen(limited_open);  //限制组件范围，不超过屏幕. limited_open 为true的话 则限制，否则自由移动
  *      attach_boundary();          //吸边 当组件靠近四边时会有吸附上去的效果
  *      ios_spring_press();         //模仿ios动画-弹簧阻尼效果-压缩，允许移动超过屏幕，但不超过组件自身的1/2大小。且释放之后会自动回弹
@@ -26,7 +23,7 @@ import utils.YFZUtils;
  * **/
 
 public class SpringMovingView extends LinearLayout {
-    private String TAG="移动组件：    ";
+    private static final String TAG=SpringMovingView.class.getName();
     private DisplayMetrics dm= new DisplayMetrics();
     private Context context;
     private WindowManager wm=null;
