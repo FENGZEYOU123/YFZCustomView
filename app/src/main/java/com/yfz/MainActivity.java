@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         mSimpleMovingView.setOnMovingViewClickListener(new SimpleMovingView.OnClickListener() {
             @Override
             public void isClick(boolean isClick) {
-                Toast.makeText(getApplicationContext(),"点击",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"组件没有移动，视为点击",Toast.LENGTH_SHORT).show();
             }
         });
 
