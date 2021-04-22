@@ -8,13 +8,13 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
-
 import androidx.annotation.Nullable;
 
 /**
  *  作者：游丰泽
- *  功能介绍：仿ios移动组件，并带有弹簧回弹效果
- * **/
+ *  功能介绍：仿ios具有弹簧效果的自由移动组件，靠近四边带有吸附效果。
+ *  移动超出四边具有弹簧阻尼按压效果，且释放后会有弹簧回弹效果，最终落到边界
+ **/
 
 public class SpringMovingView extends LinearLayout {
 
@@ -41,21 +41,18 @@ public class SpringMovingView extends LinearLayout {
      * 弹簧释放时,弹起的高度比例
      */
     private double mSpringReleaseHeightRate =0.5;
-
-
-    private double popup_W=0.0,popup_H=0.0;
-    private   int fromX=0,toX=0,fromY=0,toY=0;  //弹出横移位置计算
-    private   int layout_left=0,layout_top=0,layout_right=0,layout_bottom=0;  //横移后，结束位置，将属性也改变
-
     /**
-     *  ***弹簧属性设置
-     *   spring_open_press 开启压缩弹簧属性,spring_open_release 开启释放弹簧属性，spring_open_release_popup开启释放弹簧后popup属性
-     *  spring_left弹簧距离限制,数字越小，组件能够超出屏幕的距离越小，越早开始压缩
-     *  more_slow移动到弹簧距离限制后，再次放慢移动速率
-     *  popup_W,popup_H弹簧释放release后将要弹起的W,H，跟组件超出屏幕边界多少有关， popup高度为其超出的 值 * (popup_rate)
-     *  popup_rate 为弹起的倍率
-     *
-     **/
+     * 弹簧释放时,弹起的X,Y
+     */
+    private double mSpringReleaseX =0.0, mSpringReleaseY =0.0;
+    /**
+     * 弹簧释放时,动画的起终X,起终Y
+     */
+    private int mAnimStartX =0, mAnimEndX =0, mAnimStartY =0, mAnimEndY =0;
+    /**
+     * 动画结束后，组件的位置 left top right bottom
+     */
+    private   int mAnim_left =0, mAnim_top =0, mAnim_right =0, mAnim_bottom =0;
 
     public SpringMovingView(Context mContext) {
         super(mContext);
@@ -113,13 +110,13 @@ public class SpringMovingView extends LinearLayout {
             case MotionEvent.ACTION_UP:  //当手指上抬起（停止触屏屏幕）
                 //记录W超出边界值
                 if(getLeft()<0||getRight()> mScreenWidth){
-                    popup_W= popup_W(getLeft(),getRight())* mSpringReleaseHeightRate;
+                    mSpringReleaseX = popup_W(getLeft(),getRight())* mSpringReleaseHeightRate;
                 }
                 //记录H超出边界值
                 if(getTop()<0||getBottom()> mScreenHeight){
-                    popup_H= popup_H(getTop(),getBottom())* mSpringReleaseHeightRate;
+                    mSpringReleaseY = popup_H(getTop(),getBottom())* mSpringReleaseHeightRate;
                 }
-                do_spring_release_effect(popup_W,popup_H);   //弹簧回弹效果，当触发了弹簧压缩后，释放手势组件回弹，压缩越多，回弹越多
+                do_spring_release_effect(mSpringReleaseX, mSpringReleaseY);   //弹簧回弹效果，当触发了弹簧压缩后，释放手势组件回弹，压缩越多，回弹越多
                 if(null != mOnClickListener) {
                     if (mDownInScreenX == event.getRawX() && mDownInScreenY == event.getRawY()) {
                         mOnClickListener.isClick(true);
@@ -191,25 +188,27 @@ public class SpringMovingView extends LinearLayout {
     private  void do_spring_release_effect(final double popup_W, final double popup_H) { //ios弹簧方法-释放
         //当开启弹簧效果，且任意一边超出屏幕边界
         if(getLeft()<popup_W||getRight()> mScreenWidth ||getTop()<popup_H||getBottom()> mScreenHeight) {
-            layout_left=getLeft(); layout_top=getTop();layout_right=(int)(layout_left+getWidth());   layout_bottom = (int) (layout_top + getHeight());
-            toX=0;toY=0;
+            mAnim_left =getLeft(); mAnim_top =getTop();
+            mAnim_right =(int)(mAnim_left +getWidth());   mAnim_bottom = (int) (mAnim_top + getHeight());
+            mAnimEndX =0;
+            mAnimEndY =0;
             if (getLeft() < popup_W) {
-                toX = (int) (-1 * popup_W * 3);
-                layout_left = 0;
-                layout_right=(int)(layout_left+getWidth());
+                mAnimEndX = (int) (-1 * popup_W * 3);
+                mAnim_left = 0;
+                mAnim_right =(int)(mAnim_left +getWidth());
             } else if (getRight() > mScreenWidth) {
-                toX = (int) ((-1 * popup_W * 3));
-                layout_left = (int) (mScreenWidth - getWidth());
-                layout_right = (int) (mScreenWidth);
+                mAnimEndX = (int) ((-1 * popup_W * 3));
+                mAnim_left = (int) (mScreenWidth - getWidth());
+                mAnim_right = (int) (mScreenWidth);
             }
             if (getTop() < popup_H) {
-                toY = (int) (-1 * popup_H * 3);
-                layout_top = 0;
-                layout_bottom = (int) (layout_top + getHeight());
+                mAnimEndY = (int) (-1 * popup_H * 3);
+                mAnim_top = 0;
+                mAnim_bottom = (int) (mAnim_top + getHeight());
             } else if (getBottom() > mScreenHeight) {
-                toY = (int) (-1 * popup_H * 3);
-                layout_bottom = (int) mScreenHeight;
-                layout_top = (int) (layout_bottom - getHeight());
+                mAnimEndY = (int) (-1 * popup_H * 3);
+                mAnim_bottom = (int) mScreenHeight;
+                mAnim_top = (int) (mAnim_bottom - getHeight());
             }
             animation(); //开始进行位移动画
         }
@@ -219,7 +218,7 @@ public class SpringMovingView extends LinearLayout {
      * 回弹位移动画
      */
     private void animation(){
-        TranslateAnimation transAnim = new TranslateAnimation(fromX, toX, fromY, toY);
+        TranslateAnimation transAnim = new TranslateAnimation(mAnimStartX, mAnimEndX, mAnimStartY, mAnimEndY);
         transAnim.setDuration(300);
         transAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -228,7 +227,7 @@ public class SpringMovingView extends LinearLayout {
             @Override
             public void onAnimationEnd(Animation animation) {
                 clearAnimation();
-                layout(layout_left,layout_top,layout_right,layout_bottom);
+                layout(mAnim_left, mAnim_top, mAnim_right, mAnim_bottom);
             }
 
             @Override
