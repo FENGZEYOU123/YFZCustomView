@@ -7,7 +7,7 @@
     tools:context="com.yfz.MainActivity">
     <com.yfz.SpringMovingView
         android:id="@+id/springMovingView"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorText"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
