@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.yfz.MainActivity">
     <com.yfz.SpringMovingView
+        android:id="@+id/springMovingView"
         android:background="@color/colorPrimary"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
