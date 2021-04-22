@@ -2,8 +2,10 @@ package com.yfz;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
@@ -20,6 +22,8 @@ public class SimpleMovingView extends LinearLayout {
     private Context mContext;
     //是否限制仅在屏幕内移动
     private boolean mIsLimitedInScreen =true;
+    //屏幕的长宽
+    private int mScreenHeight,mScreenWidth;
     //记录手指按下时,手指相对于组件的X,Y位置.
     private float mDownOnViewX =0,mDownOnViewY =0;
     //记录手指按下时,组件相对于屏幕的X,Y绝对位置.
@@ -30,6 +34,7 @@ public class SimpleMovingView extends LinearLayout {
     private int mNewLeft=0,mNewTop=0,mNewRight=0,mNewBottom=0;
     //点击回调
     private OnClickListener mOnClickListener;
+
     public SimpleMovingView(Context context) {
         super(context);
         initial(context);
@@ -44,6 +49,11 @@ public class SimpleMovingView extends LinearLayout {
     }
     private void initial(Context context){
         mContext=context;
+        DisplayMetrics dm= new DisplayMetrics();
+        WindowManager wm=(WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics( dm );
+        mScreenHeight =dm.heightPixels;
+        mScreenWidth =dm.widthPixels;
     }
 
     //return true,截获触摸焦点，并处理不同的手势事件
@@ -51,10 +61,10 @@ public class SimpleMovingView extends LinearLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-              mDownOnViewX =  event.getX();
-              mDownOnViewY =  event.getY();
-              mDownOnScreenX= this.getX();
-              mDownOnScreenY= this.getY();
+                mDownOnViewX =  event.getX();
+                mDownOnViewY =  event.getY();
+                mDownOnScreenX= this.getX();
+                mDownOnScreenY= this.getY();
                 break;
             case MotionEvent.ACTION_MOVE:
                 mMoveOnViewXDistance =event.getX()- mDownOnViewX;
@@ -94,12 +104,12 @@ public class SimpleMovingView extends LinearLayout {
             mNewTop=0;
             mNewBottom=mNewTop+getHeight();
         }
-        if(mNewRight>YfzUtil.getScreenWidth()){ //右边朝边界
-            mNewRight=YfzUtil.getScreenWidth();
+        if(mNewRight>mScreenWidth){ //右边朝边界
+            mNewRight=mScreenWidth;
             mNewLeft=mNewRight-getWidth();
         }
-        if(mNewBottom>YfzUtil.getScreenHeight()){ //下边朝边界
-            mNewBottom=YfzUtil.getScreenHeight();
+        if(mNewBottom>mScreenHeight){ //下边朝边界
+            mNewBottom=mScreenHeight;
             mNewTop=mNewBottom-getHeight();
         }
     }
