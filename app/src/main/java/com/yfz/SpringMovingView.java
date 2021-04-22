@@ -3,7 +3,6 @@ package com.yfz;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -13,22 +12,13 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 /**
- *  编写者姓名：游丰泽
+ *  作者：游丰泽
  *  功能介绍：仿ios移动组件，并带有弹簧回弹效果
- *      attach_boundary();          //吸边 当组件靠近四边时会有吸附上去的效果
- *      ios_spring_press();         //模仿ios动画-弹簧阻尼效果-压缩，允许移动超过屏幕，但不超过组件自身的1/2大小。且释放之后会自动回弹
- *      ios_spring_release();       //模仿ios动画-弹簧阻尼效果-释放，当组件在屏幕外，这时候抬起手指，则视为从弹簧压缩状态释放
- *      popup_W();popup_H();        //记录弹簧压缩并释放后，需要回弹的高度。 由 spring_open_release_popup 开关控制是否开启
  * **/
 
 public class SpringMovingView extends LinearLayout {
-    private static final String TAG=SpringMovingView.class.getName();
 
-    private Context mContext;
-
-    private double inner =15;
     private OnClickListener mOnClickListener;
-
     //手指按下时相对于屏幕的X，Y位置
     private float mDownInScreenX, mDownInScreenY;
     //手指按下时相对于组件的X，Y位置
@@ -39,16 +29,21 @@ public class SpringMovingView extends LinearLayout {
     private double mNewPosition_left, mNewPosition_top, mNewPosition_right, mNewPosition_bottom;
     //屏幕长宽
     private double mScreenHeight, mScreenWidth;
-
-
-
     /**
-     *  ***吸附属性设置
-     *  inner屏幕内部吸附距离
-     **/
+     * inner 吸附距离四边的最小距离
+     */
+    private double inner =15;
+    /**
+     * 弹簧压缩时,移动速率比例
+     */
+    private double mSpringPressSpeed =0.1;
+    /**
+     * 弹簧释放时,弹起的高度比例
+     */
+    private double mSpringReleaseHeightRate =0.5;
 
-    private double spring_dis = 10,more_slow=0.1;
-    private double popup_W=0.0,popup_H=0.0,popup_rate=0.5;
+
+    private double popup_W=0.0,popup_H=0.0;
     private   int fromX=0,toX=0,fromY=0,toY=0;  //弹出横移位置计算
     private   int layout_left=0,layout_top=0,layout_right=0,layout_bottom=0;  //横移后，结束位置，将属性也改变
 
@@ -81,7 +76,6 @@ public class SpringMovingView extends LinearLayout {
      * @param context
      */
     private void initView(final Context context) {
-        mContext =context;
         DisplayMetrics dm= new DisplayMetrics();
         WindowManager wm=(WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         wm.getDefaultDisplay().getMetrics( dm );
@@ -119,11 +113,11 @@ public class SpringMovingView extends LinearLayout {
             case MotionEvent.ACTION_UP:  //当手指上抬起（停止触屏屏幕）
                 //记录W超出边界值
                 if(getLeft()<0||getRight()> mScreenWidth){
-                    popup_W= popup_W(getLeft(),getRight())*popup_rate;
+                    popup_W= popup_W(getLeft(),getRight())* mSpringReleaseHeightRate;
                 }
                 //记录H超出边界值
                 if(getTop()<0||getBottom()> mScreenHeight){
-                    popup_H= popup_H(getTop(),getBottom())*popup_rate;
+                    popup_H= popup_H(getTop(),getBottom())* mSpringReleaseHeightRate;
                 }
                 do_spring_release_effect(popup_W,popup_H);   //弹簧回弹效果，当触发了弹簧压缩后，释放手势组件回弹，压缩越多，回弹越多
                 if(null != mOnClickListener) {
@@ -141,20 +135,19 @@ public class SpringMovingView extends LinearLayout {
      * ios弹簧方法-压缩
      **/
     private  void do_spring_press_effect(){ //ios弹簧方法-压缩
-        if (getLeft() < 0) {  //左边小于spring_dis距离的时候，开始放慢向左移动速度
-            mNewPosition_left = (double) (getLeft() + press_speed(more_slow, mMoveDistanceX, getLeft()));
+        if (getLeft() < 0) {  //左边小于距离的时候，开始放慢向左移动速度
+            mNewPosition_left = (double) (getLeft() + press_speed(mSpringPressSpeed, mMoveDistanceX, getLeft()));
             mNewPosition_top = mNewPosition_left + getWidth();
-        } else if (getRight() > mScreenWidth) {  //右边大于spring_dis+Screen距离的时候，开始放慢向右移动速度
-            mNewPosition_top = (double) (getRight() + press_speed(more_slow, mMoveDistanceX, getRight()));
+        } else if (getRight() > mScreenWidth) {  //右边大于Screen距离的时候，开始放慢向右移动速度
+            mNewPosition_top = (double) (getRight() + press_speed(mSpringPressSpeed, mMoveDistanceX, getRight()));
             mNewPosition_left = mNewPosition_top - getWidth();
         }
-        if (getTop() < 0) {  //上边小于spring_dis距离的时候，开始放慢向上移动速度
-            mNewPosition_right = (double) (getTop() + press_speed(more_slow, mMoveDistanceY, getTop()));
+        if (getTop() < 0) {  //上边小于距离的时候，开始放慢向上移动速度
+            mNewPosition_right = (double) (getTop() + press_speed(mSpringPressSpeed, mMoveDistanceY, getTop()));
             mNewPosition_bottom = mNewPosition_right + getHeight();
         } else if (getBottom() > mScreenHeight) {
-            mNewPosition_bottom = (double) (getBottom() + press_speed(more_slow, mMoveDistanceY, getBottom())*0.3);
+            mNewPosition_bottom = (double) (getBottom() + press_speed(mSpringPressSpeed, mMoveDistanceY, getBottom())*0.3);
             mNewPosition_right = mNewPosition_bottom - getHeight();
-            Log.d(TAG, "ios_spring_press: 小于下边spring_dis距离的:getBottom()  " + getBottom());
         }
     }
 
@@ -234,23 +227,18 @@ public class SpringMovingView extends LinearLayout {
             }
             @Override
             public void onAnimationEnd(Animation animation) {
-                updateParams(layout_left,layout_top,layout_right,layout_bottom);
+                clearAnimation();
+                layout(layout_left,layout_top,layout_right,layout_bottom);
             }
 
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
         });
-        this.startAnimation(transAnim);
+
+        startAnimation(transAnim);
     }
 
-    private void updateParams(int left,int top,int right, int bottom){
-        this.clearAnimation();
-        this.layout((int)left,top,right,bottom);
-        layout_left=0;layout_bottom=0;layout_top=0;layout_right=0;
-        popup_H=0;popup_W=0;
-
-    }
 
     /**
      * 吸附屏幕方法
@@ -278,10 +266,10 @@ public class SpringMovingView extends LinearLayout {
 
     /**
      * 像外提供监听click方法
-     * @param callback
+     * @param onClickListener
      */
-    public void setOnSpringMovingClickListener(OnClickListener callback){
-        this.mOnClickListener = callback;
+    public void setOnSpringMovingClickListener(OnClickListener onClickListener){
+        this.mOnClickListener = onClickListener;
     }
 
     /**
