@@ -13,6 +13,9 @@ import com.yfz.yfzcustomview.R;
  * 简介：自定义验证码输入框 (组合+自绘)
  * 作者：游丰泽
  * 主要功能: 展示如何获取单个权限，多个权限
+ *    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+ *     <uses-permission android:name="android.permission.CAMERA" />
+ *     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
  */
 
 public class MainActivity extends AppCompatActivity {
