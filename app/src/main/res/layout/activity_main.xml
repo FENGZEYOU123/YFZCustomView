@@ -5,15 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.yfz.MainActivity">
-    <com.yfz.SpringMovingView
-        android:id="@+id/springMovingView"
-        android:background="@color/colorText"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_width="100dp"
-        android:layout_height="100dp">
-    </com.yfz.SpringMovingView>
 
+    <Button
+        android:text="获取单个权限。储存空间"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="getStoragePermission">
+    </Button>
+    <Button
+        android:text="同时获取多个权限。麦克风,照相机"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="getMicrophoneAndCameraPermission">
+    </Button>
 </androidx.constraintlayout.widget.ConstraintLayout>
