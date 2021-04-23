@@ -38,16 +38,11 @@ public class SpringMovingView extends LinearLayout {
      */
     private double mAttach_Distance =20;
     /**
-     * 弹簧压缩时,移动速率比例
-     */
-    private double mSpringPressSpeed =0.1;
-    /**
      * 弹簧释放时,弹起的高度比例
      */
     private double mSpringReleaseHeightRate =0.5;
-
     /**
-     * 动画播放时
+     * 动画播放时间
      */
     private int mAnimationDuringTime=300;
     /**
@@ -104,7 +99,7 @@ public class SpringMovingView extends LinearLayout {
                 do_spring_press_effect();  //弹簧压缩效果 当组件超过屏幕四边后,继续移动会有阻尼效果
                 //防止超出容器边界，而无法进行动画操作
                 if(mNewPosition_left >(-1*getWidth()+1)&& mNewPosition_top >(-1*getHeight()+1)&& mNewPosition_bottom <(mScreenHeight +getHeight()-1)&& mNewPosition_right <(mScreenWidth +getWidth()-1)){
-                    layout( mNewPosition_left, mNewPosition_top, mNewPosition_right,  mNewPosition_bottom); //左，上，右，下
+                    refreshNewPosition(mNewPosition_left, mNewPosition_top, mNewPosition_right,  mNewPosition_bottom);
                 }
                 break;
 
@@ -136,24 +131,24 @@ public class SpringMovingView extends LinearLayout {
      **/
     private  void do_spring_press_effect(){ //ios弹簧方法-压缩
         if (getLeft() < 0) {  //左放慢
-            mNewPosition_left = (int) (getLeft() + calculateSpringPressDistance(mMoveDistanceX, getLeft(),false));
+            mNewPosition_left = (int) (getLeft() + calculateSpringPressDistance(mMoveDistanceX, getLeft()-0));
             mNewPosition_right = mNewPosition_left + getWidth();
         } else if (getRight() > mScreenWidth) {   //右放慢
-            mNewPosition_right = (int) (getRight() + calculateSpringPressDistance(mMoveDistanceX/2, getRight(),false));
+            mNewPosition_right = (int) (getRight() + calculateSpringPressDistance(mMoveDistanceX, getRight()-mScreenWidth));
             mNewPosition_left = mNewPosition_right - getWidth();
         }
         if (getTop() < 0) {   //上放慢
-            mNewPosition_top = (int) (getTop() + calculateSpringPressDistance(mMoveDistanceY, getTop(),true));
+            mNewPosition_top = (int) (getTop() + calculateSpringPressDistance(mMoveDistanceY, getTop()-0));
             mNewPosition_bottom = mNewPosition_top + getHeight();
         } else if (getBottom() > mScreenHeight) { //下放慢
-            mNewPosition_bottom = (int) (getBottom() + calculateSpringPressDistance(mMoveDistanceY/2, getBottom(),true));
+            mNewPosition_bottom = (int) (getBottom() + calculateSpringPressDistance(mMoveDistanceY, getBottom()-mScreenHeight));
             mNewPosition_top = mNewPosition_bottom - getHeight();
         }
     }
 
     //移动速度随着组件view超出屏幕边界越多，变的越慢
-    private double calculateSpringPressDistance(double distance, double get_view, boolean isRightOrBottom){
-        return  mSpringPressSpeed * 0.1*distance * Math.sqrt(Math.abs(get_view));
+    private double calculateSpringPressDistance(double distance, double overBoundaryDistance){
+        return  0.01*distance * Math.sqrt(Math.abs(overBoundaryDistance));
     }
 
     //记录一下组件view超出边界的W
@@ -224,7 +219,7 @@ public class SpringMovingView extends LinearLayout {
             @Override
             public void onAnimationEnd(Animation animation) {
                 clearAnimation();
-                layout(mAnim_left, mAnim_top, mAnim_right, mAnim_bottom);
+                refreshNewPosition(mAnim_left, mAnim_top, mAnim_right, mAnim_bottom);
             }
 
             @Override
@@ -260,6 +255,10 @@ public class SpringMovingView extends LinearLayout {
         }
     }
 
+    //刷新组件新位置UI
+    private void refreshNewPosition(int left, int top, int right,int bottom){
+        layout(left,top,right,bottom);
+    }
     /**
      * 像外提供监听click方法
      * @param onClickListener
