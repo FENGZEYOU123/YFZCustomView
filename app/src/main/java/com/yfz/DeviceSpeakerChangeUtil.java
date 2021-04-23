@@ -10,25 +10,22 @@ public class DeviceSpeakerChangeUtil {
      * 主要功能: 设备语音切换-蓝牙-外放-听筒
      */
     private static AudioManager mAudioManager;
+
     /**
      * 切换到外放
      */
     public static void changeToSpeaker(Context context){
         deviceChangeToHeadPhone(context);
-        mAudioManager.stopBluetoothSco();
-        mAudioManager.setBluetoothScoOn(false);
-        mAudioManager.setMicrophoneMute(false);
-        mAudioManager.setSpeakerphoneOn(true);
+        mAudioManager.setSpeakerphoneOn(true);  //打开外放
     }
 
     /**
-     * 切换到蓝牙音箱
+     * 切换到蓝牙耳机
      */
     public static void changeToBlueTooth(Context context){
         deviceChangeToHeadPhone(context);
-        mAudioManager.startBluetoothSco();
-        mAudioManager.setBluetoothScoOn(true);
-        mAudioManager.setSpeakerphoneOn(false);
+        mAudioManager.startBluetoothSco(); //启动蓝牙耳机
+        mAudioManager.setBluetoothScoOn(true); //设置socOn开启，蓝牙耳机开启
     }
 
     /**
@@ -39,11 +36,9 @@ public class DeviceSpeakerChangeUtil {
             mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         }
         mAudioManager.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        mAudioManager.stopBluetoothSco();
-        mAudioManager.setBluetoothScoOn(false);
-        mAudioManager.setSpeakerphoneOn(false);
+        mAudioManager.stopBluetoothSco();        //停止蓝牙耳机
+        mAudioManager.setBluetoothScoOn(false);  //设蓝牙ScoOn关闭，蓝牙耳机则会停止
+        mAudioManager.setSpeakerphoneOn(false);  //设置外放话筒关闭
     }
-
-
 
 }
